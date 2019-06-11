@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
 
 import { CharactersService } from './characters.service'
-
-import { Character } from '../shared/character.model'
+import { Character } from '../shared/shared.interface'
 
 @Component({
     selector: 'app-characters',
@@ -19,7 +18,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.charactersSub = this.characterServices
             .fetchCharactersFromServer()
-            .subscribe(() => (this.characters = this.characterServices.fetchCharacters()))
+            .subscribe(() => (this.characters = this.characterServices.characters))
     }
 
     ngOnDestroy() {

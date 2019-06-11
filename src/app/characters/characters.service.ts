@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Subject } from 'rxjs'
 import { tap, map } from 'rxjs/operators'
 
-import { Character } from '../shared/character.model'
 import { Pagination } from '../shared/pagination.model'
+import { Character } from '../shared/shared.interface'
 
 export interface Results {
     data: {
@@ -20,12 +19,14 @@ export interface Results {
     providedIn: 'root',
 })
 export class CharactersService {
-    characters: Character[] = []
-    pagination: Pagination = null
+    _characters: Character[] = []
+    _pagination: Pagination = null
 
     constructor(private http: HttpClient) {}
 
-    public fetchCharacters = () => [...this.characters]
+    get characters() {
+        return this._characters
+    }
 
     public fetchCharactersFromServer = () =>
         this.http
@@ -33,8 +34,8 @@ export class CharactersService {
             .pipe(
                 map(res => res.data),
                 tap(res => {
-                    this.characters = res.results
-                    this.pagination = new Pagination(res.offset, res.limit, res.total, res.count)
+                    this._characters = res.results
+                    this._pagination = new Pagination(res.offset, res.limit, res.total, res.count)
                 })
             )
 }
