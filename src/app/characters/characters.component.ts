@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
+import { Store } from '@ngrx/store'
 
-import { CharactersService } from './characters.service'
 import { Character } from '../shared/shared.interface'
-
+import { AppState } from '../store/app.reducer'
+import * as fromCharactersAction from './store/characters.actions'
 @Component({
     selector: 'app-characters',
     templateUrl: './characters.component.html',
@@ -13,12 +14,11 @@ export class CharactersComponent implements OnInit, OnDestroy {
     private charactersSub: Subscription
     characters: Character[] = []
 
-    constructor(private characterServices: CharactersService) {}
+    constructor(private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.charactersSub = this.characterServices
-            .fetchCharactersFromServer()
-            .subscribe(() => (this.characters = this.characterServices.characters))
+        this.store.dispatch(new fromCharactersAction.FetchCharactersStart())
+        this.charactersSub = this.store.select('characters').subscribe(res => (this.characters = res.data))
     }
 
     ngOnDestroy() {

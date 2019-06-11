@@ -23,3 +23,13 @@ export interface Character {
     comics: Collections
     series: Collections
 }
+
+export interface CharacterResults {
+    data: {
+        offset: number
+        limit: number
+        total: number
+        count: number
+        results: Character[]
+    }
+}
