@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store'
 import { Character } from '../shared/shared.interface'
 import { AppState } from '../store/app.reducer'
 import * as fromCharactersAction from './store/characters.actions'
+
 @Component({
     selector: 'app-characters',
     templateUrl: './characters.component.html',

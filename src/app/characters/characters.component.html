@@ -1,10 +1,11 @@
 <div class="grid">
-    <app-card
-        *ngFor="let character of characters"
-        [image-src]="character.thumbnail.path + '/standard_fantastic.' + character.thumbnail.extension"
-        [placeholder-image-src]="character.thumbnail.path + '/standard_small.' + character.thumbnail.extension"
-        [title]="character.name"
-        [animated-card]="true"
-        [floating-label]="true"
-    ></app-card>
+    <a [routerLink]="['/character', character.id]" *ngFor="let character of characters">
+        <app-card
+            [image-src]="character.thumbnail.path + '/standard_fantastic.' + character.thumbnail.extension"
+            [placeholder-image-src]="character.thumbnail.path + '/landscape_small.' + character.thumbnail.extension"
+            [title]="character.name"
+            [animated-card]="true"
+            [floating-label]="true"
+        ></app-card>
+    </a>
 </div>

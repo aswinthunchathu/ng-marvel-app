@@ -11,16 +11,18 @@
     justify-content: space-between;
 
     .card-component--image {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+
         &-holder {
             height: 100%;
             width: 100%;
             overflow: hidden;
+            position: relative;
         }
-
-        background-position: center;
-        background-size: cover;
-        height: 100%;
-        width: 100%;
     }
 
     .card-component--title {

@@ -4,11 +4,12 @@
     [title]="title"
 >
     <div class="card-component--image-holder">
-        <div
+        <img
             class="card-component--image"
             [appProgressiveImageLoading]="src"
             [appProgressiveImageLoading-placeholder]="placeholderImage"
-        ></div>
+            [alt]="title"
+        />
     </div>
     <div class="card-component--title">{{ title }}</div>
 </div>
