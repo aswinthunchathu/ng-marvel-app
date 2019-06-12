@@ -1,16 +1,52 @@
 @import '../mixins';
+@import '../variables';
 
 .card-component {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    justify-content: space-between;
 
-    &--image {
-        max-width: 100%;
+    .card-component--image {
+        &-holder {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        background-position: center;
+        background-size: cover;
+        height: 100%;
+        width: 100%;
     }
 
-    &--title {
+    .card-component--title {
+        width: 100%;
         align-self: flex-start;
+        color: $white;
+        background-color: rgba(0, 0, 0, 0.5);
         @include rem-fallback(font-size, 24px);
+        @include rem-fallback(padding, 5px);
+    }
+
+    &.cc--animated {
+        .card-component--image {
+            transition: all 0.5s ease-in-out;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    &.cc--floating-label {
+        position: relative;
+        .card-component--title {
+            position: absolute;
+            bottom: 0;
+        }
     }
 }

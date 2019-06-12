@@ -1,7 +1,10 @@
 <div class="grid">
     <app-card
         *ngFor="let character of characters"
-        [src]="character.thumbnail.path + '.' + character.thumbnail.extension"
+        [image-src]="character.thumbnail.path + '/standard_fantastic.' + character.thumbnail.extension"
+        [placeholder-image-src]="character.thumbnail.path + '/standard_small.' + character.thumbnail.extension"
         [title]="character.name"
+        [animated-card]="true"
+        [floating-label]="true"
     ></app-card>
 </div>

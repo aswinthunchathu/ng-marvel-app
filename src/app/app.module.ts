@@ -13,10 +13,11 @@ import { CharacterDetailsComponent } from './characters/character-details/charac
 import { appReducer } from './store/app.reducer'
 import { environment } from '../environments/environment'
 import { CharactersEffects } from './characters/store/characters.effects'
-import { ApiInterceptor } from './shared/api-interceptor.services'
+import { ApiInterceptor } from './shared/api-interceptor.services';
+import { ProgressiveImageLoadingDirective } from './shared/progressive-image-loading.directive'
 
 @NgModule({
-    declarations: [AppComponent, CardComponent, CharactersComponent, CharacterDetailsComponent],
+    declarations: [AppComponent, CardComponent, CharactersComponent, CharacterDetailsComponent, ProgressiveImageLoadingDirective],
     imports: [
         BrowserModule,
         HttpClientModule,
