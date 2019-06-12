@@ -8,13 +8,6 @@ export interface Collections {
     collectionURI: string
 }
 
-export interface Page {
-    offset: number
-    limit: number
-    total: number
-    count: number
-}
-
 export interface Character {
     id: number
     name: string

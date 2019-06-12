@@ -1,6 +1,4 @@
-import { Page } from './shared.interface'
-
-export class Pagination implements Page {
+export class Pagination {
     constructor(public offset: number, public limit: number, public total: number, public count: number) {}
 
     get hasMore() {
