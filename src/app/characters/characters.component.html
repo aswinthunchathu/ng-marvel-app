@@ -1,5 +1,12 @@
-<div class="grid" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
-    <a [routerLink]="['/character', character.id]" *ngFor="let character of characters">
+<div
+    class="grid"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+    [infiniteScrollDisabled]="!hasMore"
+>
+    <a [routerLink]="['/character', character.id]" *ngFor="let character of characters | async">
         <app-card
             [image-src]="character.thumbnail.path + '/standard_fantastic.' + character.thumbnail.extension"
             [placeholder-image-src]="character.thumbnail.path + '/landscape_small.' + character.thumbnail.extension"
@@ -9,3 +16,5 @@
         ></app-card>
     </a>
 </div>
+
+<app-loader *ngIf="loading"></app-loader>

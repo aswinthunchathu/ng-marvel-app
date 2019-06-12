@@ -1,7 +1,23 @@
 @import '../shared/styles/mixins';
 
+@mixin column-template($size) {
+    grid-template-columns: repeat(auto-fill, minmax($size, 1fr));
+    grid-auto-rows: minmax($size, auto);
+}
+
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-rows: minmax(300px, auto);
+    @include column-template(160px);
+
+    @media (min-width: $breakpoint-sm) {
+        @include column-template(200px);
+    }
+
+    @media (min-width: $breakpoint-md) {
+        @include column-template(250px);
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        @include column-template(300px);
+    }
 }

@@ -29,9 +29,15 @@
         width: 100%;
         align-self: flex-start;
         color: $white;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
         background-color: rgba(0, 0, 0, 0.5);
-        @include rem-fallback(font-size, 24px);
+        @include rem-fallback(font-size, 18px);
         @include rem-fallback(padding, 5px);
+        @media (min-width: $breakpoint-sm) {
+            @include rem-fallback(font-size, 24px);
+        }
     }
 
     &.cc--animated {

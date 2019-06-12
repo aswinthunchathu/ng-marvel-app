@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
-import { Actions, Effect, ofType } from '@ngrx/effects'
+import { Actions, Effect, ofType, act } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { Store, Action } from '@ngrx/store'
 
 import * as fromCharactersActions from './characters.actions'
 import { CharacterResults } from '../../shared/model/shared.interface'
@@ -14,14 +14,16 @@ import { State } from './characters.reducer'
 @Injectable()
 export class CharactersEffects {
     @Effect() fetchCharacters = this.actions$.pipe(
-        ofType(fromCharactersActions.FETCH_CHARACTERS_START),
+        ofType(fromCharactersActions.FETCH_CHARACTERS_INIT, fromCharactersActions.FETCH_CHARACTERS_NEXT_PAGE),
         withLatestFrom(this.store.select('characters')),
-        switchMap(([action, characterState]: [fromCharactersActions.FetchCharactersStart, State]) => {
+        switchMap(([action, characterState]: [Action, State]) => {
+            if (action.type === fromCharactersActions.FETCH_CHARACTERS_INIT && characterState.data.length > 0) {
+                return of({ type: fromCharactersActions.FETCHED_CHARACTERS_FROM_STORE })
+            }
+
             const pagination: Pagination = characterState.pagination
 
-            if (!action.loadMore && characterState.data.length > 0) {
-                return of({ type: fromCharactersActions.FETCH_CHARACTERS_STORE })
-            } else if (!pagination.hasMore) {
+            if (!pagination.hasMore) {
                 return of({ type: fromCharactersActions.NO_MORE_CHARACTERS })
             } else {
                 return this.http$
