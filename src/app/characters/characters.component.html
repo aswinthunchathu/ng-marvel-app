@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
     <a [routerLink]="['/character', character.id]" *ngFor="let character of characters">
         <app-card
             [image-src]="character.thumbnail.path + '/standard_fantastic.' + character.thumbnail.extension"

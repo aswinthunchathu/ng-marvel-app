@@ -1,24 +1,20 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
-import { Character } from 'src/app/shared/shared.interface'
-import { Page } from '../../shared/shared.interface'
+import { Character } from '../../shared/model/shared.interface'
 import * as fromCharacterActions from './characters.actions'
+import { CHARACTER_LIMIT } from 'src/app/shared/constants'
+import { Pagination } from '../../shared/model/pagination.model'
 
 export interface State {
     fetching: boolean
     data: Character[]
-    pagination: Page
+    pagination: Pagination
     error: HttpErrorResponse
 }
 
 const initialState: State = {
     fetching: false,
-    pagination: {
-        offset: 0,
-        limit: 0,
-        total: 0,
-        count: 0,
-    },
+    pagination: new Pagination(-1, CHARACTER_LIMIT, 0, 0),
     data: [],
     error: null,
 }
@@ -36,8 +32,8 @@ export const CharactersReducer = (state = initialState, action: fromCharacterAct
                 ...state,
                 fetching: false,
                 error: null,
-                pagination: { ...state.pagination, ...action.pagination },
-                data: [...action.payload],
+                pagination: action.pagination,
+                data: [...state.data, ...action.payload],
             }
         case fromCharacterActions.FETCH_CHARACTERS_ERROR:
             return {
