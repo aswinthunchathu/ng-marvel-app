@@ -5,6 +5,8 @@
     [infiniteScrollThrottle]="50"
     (scrolled)="onScroll()"
     [infiniteScrollDisabled]="!hasMore"
+    [fromRoot]="true"
+    infiniteScrollContainer=".layout-main"
 >
     <a [routerLink]="['/character', character.id]" *ngFor="let character of characters | async">
         <app-card

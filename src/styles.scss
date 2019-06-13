@@ -3,6 +3,7 @@
 
 html {
     font-size: $base_font;
+    height: 100%;
 }
 
 html,
@@ -12,12 +13,11 @@ body {
     font-family: 'Teko', sans-serif;
     padding: 0;
     margin: 0;
-    background-color: black;
 }
 
 body {
-    @media (min-width: 1920px) {
-        width: 1900px;
+    @media (min-width: $website-max-width) {
+        width: calc($website-max-width - 20px);
         margin: auto;
     }
 }
@@ -33,4 +33,8 @@ body {
     width: 50px !important;
     position: absolute !important;
     transform: translate(-50%, -50%) !important;
+}
+
+.img-fluid {
+    max-width: 100%;
 }

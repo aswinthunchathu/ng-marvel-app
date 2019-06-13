@@ -18,6 +18,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     private characterSub: Subscription
     loading: boolean = true
     character: Character = null
+    bgImage: string = null
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -28,7 +29,10 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
 
         this.characterSub = this.store.select('character').subscribe(res => {
             this.loading = res.fetching
-            this.character = res.data
+            if (res.data) {
+                this.character = res.data
+                this.bgImage = `url(${res.data.thumbnail.path}.${res.data.thumbnail.extension})`
+            }
         })
     }
 

@@ -17,7 +17,8 @@ import { CharactersEffects } from './characters/store/characters.effects'
 import { ApiInterceptor } from './shared/services/api-interceptor.services'
 import { ProgressiveImageLoadingDirective } from './shared/directives/progressive-image-loading.directive'
 import { LoaderComponent } from './shared/components/loader/loader.component'
-import { CharacterEffects } from './characters/character-details/store/character.effects'
+import { CharacterEffects } from './characters/character-details/store/character.effects';
+import { SidebarComponent } from './sidebar/sidebar.component'
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { CharacterEffects } from './characters/character-details/store/character
         CharacterDetailsComponent,
         ProgressiveImageLoadingDirective,
         LoaderComponent,
+        SidebarComponent,
     ],
     imports: [
         BrowserModule,
