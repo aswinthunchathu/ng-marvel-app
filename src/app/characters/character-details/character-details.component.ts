@@ -7,6 +7,8 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { AppState } from '../../store/app.reducer'
 import * as fromCharacterActions from './store/character.actions'
 import { Character } from '../../shared/model/shared.interface'
+import { BgService } from 'src/app/shared/services/bg.service'
+import { ImageGenerator } from 'src/app/shared/model/image-generator.model'
 
 @Component({
     selector: 'app-character-details',
@@ -20,7 +22,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     character: Character = null
     bgImage: string = null
 
-    constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
+    constructor(private store: Store<AppState>, private route: ActivatedRoute, private bgService: BgService) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
@@ -31,7 +33,9 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
             this.loading = res.fetching
             if (res.data) {
                 this.character = res.data
-                this.bgImage = `url(${res.data.thumbnail.path}.${res.data.thumbnail.extension})`
+                this.bgService.setBgImage(
+                    new ImageGenerator(res.data.thumbnail.path, res.data.thumbnail.extension).image
+                )
             }
         })
     }
@@ -39,5 +43,6 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.routeSub.unsubscribe()
         this.characterSub.unsubscribe()
+        this.bgService.setBgImage('')
     }
 }
