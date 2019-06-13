@@ -25,8 +25,8 @@ export class CharactersComponent implements OnInit {
             tap(res => {
                 if (this.hasMore !== res.pagination.hasMore) {
                     this.hasMore = res.pagination.hasMore
-                    this.loading = res.fetching
                 }
+                this.loading = res.fetching
             }),
             map(res => res.data)
         )

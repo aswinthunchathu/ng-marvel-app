@@ -1,3 +1,6 @@
-<p>
-  character-details works!
+<p style="color: wheat">
+    {{ characterId }}
+    {{ character ? character.name : '' }}
 </p>
+
+<app-loader *ngIf="loading"></app-loader>

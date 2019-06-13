@@ -7,7 +7,6 @@ export const FETCH_CHARACTERS_INIT = '[CHARACTERS] Fetch Init'
 export const FETCH_CHARACTERS_NEXT_PAGE = '[CHARACTERS] Fetch Next Page'
 export const FETCH_CHARACTERS_SUCCESS = '[CHARACTERS] Fetch Success'
 export const FETCH_CHARACTERS_ERROR = '[CHARACTERS] Fetch Error'
-export const FETCHED_CHARACTERS_FROM_STORE = '[CHARACTERS] Fetched From Store'
 export const NO_MORE_CHARACTERS = '[CHARACTERS] No More'
 
 export class FetchCharactersInit implements Action {

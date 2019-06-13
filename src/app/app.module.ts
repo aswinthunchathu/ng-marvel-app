@@ -15,8 +15,9 @@ import { appReducer } from './store/app.reducer'
 import { environment } from '../environments/environment'
 import { CharactersEffects } from './characters/store/characters.effects'
 import { ApiInterceptor } from './shared/services/api-interceptor.services'
-import { ProgressiveImageLoadingDirective } from './shared/directives/progressive-image-loading.directive';
+import { ProgressiveImageLoadingDirective } from './shared/directives/progressive-image-loading.directive'
 import { LoaderComponent } from './shared/components/loader/loader.component'
+import { CharacterEffects } from './characters/character-details/store/character.effects'
 
 @NgModule({
     declarations: [
@@ -33,7 +34,7 @@ import { LoaderComponent } from './shared/components/loader/loader.component'
         AppRoutingModule,
         InfiniteScrollModule,
         StoreModule.forRoot(appReducer),
-        EffectsModule.forRoot([CharactersEffects]),
+        EffectsModule.forRoot([CharactersEffects, CharacterEffects]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,
         }),

@@ -19,7 +19,7 @@ const initialState: State = {
     error: null,
 }
 
-export const CharactersReducer = (state = initialState, action: fromCharacterActions.type) => {
+export const charactersReducer = (state = initialState, action: fromCharacterActions.type) => {
     switch (action.type) {
         case fromCharacterActions.FETCH_CHARACTERS_INIT:
             return {
