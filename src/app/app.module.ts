@@ -17,8 +17,12 @@ import { CharactersEffects } from './characters/store/characters.effects'
 import { ApiInterceptor } from './shared/services/api-interceptor.services'
 import { ProgressiveImageLoadingDirective } from './shared/directives/progressive-image-loading.directive'
 import { LoaderComponent } from './shared/components/loader/loader.component'
-import { CharacterEffects } from './characters/character-details/store/character.effects';
+import { CharacterEffects } from './characters/character-details/store/character.effects'
+import { ComicsEffects } from './comics/store/comics.effects'
 import { SidebarComponent } from './sidebar/sidebar.component'
+import { ComicsComponent } from './comics/comics.component'
+import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
+import { ComicEffects } from './comics/comic-details/store/comic.effects'
 
 @NgModule({
     declarations: [
@@ -29,6 +33,8 @@ import { SidebarComponent } from './sidebar/sidebar.component'
         ProgressiveImageLoadingDirective,
         LoaderComponent,
         SidebarComponent,
+        ComicsComponent,
+        ComicDetailsComponent,
     ],
     imports: [
         BrowserModule,
@@ -36,7 +42,7 @@ import { SidebarComponent } from './sidebar/sidebar.component'
         AppRoutingModule,
         InfiniteScrollModule,
         StoreModule.forRoot(appReducer),
-        EffectsModule.forRoot([CharactersEffects, CharacterEffects]),
+        EffectsModule.forRoot([CharactersEffects, CharacterEffects, ComicsEffects, ComicEffects]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,
         }),

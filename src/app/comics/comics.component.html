@@ -1,0 +1,20 @@
+<div
+    class="grid"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+    [infiniteScrollDisabled]="!hasMore"
+    [fromRoot]="true"
+    infiniteScrollContainer=".layout-main"
+>
+    <a [routerLink]="['/comic', comic.id]" *ngFor="let comic of comics | async">
+        <app-card
+            [image-src]="getImage(comic.thumbnail)"
+            [placeholder-image-src]="getImage(comic.thumbnail, true)"
+            [title]="comic.title"
+        ></app-card>
+    </a>
+</div>
+
+<app-loader *ngIf="loading"></app-loader>
