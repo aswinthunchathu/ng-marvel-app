@@ -20,8 +20,9 @@ import { LoaderComponent } from './shared/components/loader/loader.component'
 import { CharacterEffects } from './characters/character-details/store/character.effects'
 import { ComicsEffects } from './comics/store/comics.effects'
 import { SidebarComponent } from './sidebar/sidebar.component'
-import { ComicsComponent } from './comics/comics.component';
+import { ComicsComponent } from './comics/comics.component'
 import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
+import { ComicEffects } from './comics/comic-details/store/comic.effects'
 
 @NgModule({
     declarations: [
@@ -41,7 +42,7 @@ import { ComicDetailsComponent } from './comics/comic-details/comic-details.comp
         AppRoutingModule,
         InfiniteScrollModule,
         StoreModule.forRoot(appReducer),
-        EffectsModule.forRoot([CharactersEffects, CharacterEffects, ComicsEffects]),
+        EffectsModule.forRoot([CharactersEffects, CharacterEffects, ComicsEffects, ComicEffects]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,
         }),

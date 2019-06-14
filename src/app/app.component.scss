@@ -20,6 +20,12 @@
 
     .layout-sidebar {
         position: relative;
+
+        display: none;
+
+        @media (min-width: $breakpoint-lg) {
+            display: block;
+        }
     }
 
     .layout-main {

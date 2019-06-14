@@ -1,3 +1,18 @@
-<p>
-  comic-details works!
-</p>
+<div class="container">
+    <div class="container-grid--main" *ngIf="comic; else loader">
+        <img
+            class="container-grid-image"
+            [alt]="comic.description"
+            [appProgressiveImageLoading]="getImage(comic.thumbnail)"
+            [appProgressiveImageLoading-placeholder]="getImage(comic.thumbnail, true)"
+        />
+        <h1 class="container-grid--title">{{ comic.title }}</h1>
+        <div class="container-grid--description">
+            {{ comic.description ? comic.description : 'No description available.' }}
+        </div>
+    </div>
+</div>
+
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>

@@ -5,13 +5,13 @@ import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
-import * as fromComicActions from './comics.actions'
+import * as fromComicActions from './comic.actions'
 import * as fromComicsReducer from '../../store/comics.reducer'
 import { AppState } from '../../../store/app.reducer'
 import { ComicsResults } from 'src/app/shared/model/shared.interface'
 
 @Injectable()
-export class CharacterEffects {
+export class ComicEffects {
     @Effect() fetchCharacters = this.actions$.pipe(
         ofType(fromComicActions.FETCH_COMIC_START),
         withLatestFrom(this.store.select('comics')),
