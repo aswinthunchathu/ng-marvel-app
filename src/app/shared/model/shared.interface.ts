@@ -8,6 +8,11 @@ export interface Collections {
     collectionURI: string
 }
 
+export interface Price {
+    type: string
+    price: number
+}
+
 export interface Character {
     id: number
     name: string
@@ -24,5 +29,25 @@ export interface CharacterResults {
         total: number
         count: number
         results: Character[]
+    }
+}
+
+export interface Comic {
+    id: number
+    title: string
+    description: string
+    thumbnail: Image
+    characters: Collections
+    series: Collections
+    prices: Price[]
+}
+
+export interface ComicsResults {
+    data: {
+        offset: number
+        limit: number
+        total: number
+        count: number
+        results: Comic[]
     }
 }
