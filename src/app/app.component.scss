@@ -1,4 +1,30 @@
+@import './shared/styles/variables';
+
 .layout {
     display: grid;
-    grid-template-columns: 300px auto;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: $black;
+    background: -moz-linear-gradient(top, $body-gradient 0%, $black 100%);
+    background: -webkit-linear-gradient(top, $body-gradient 0%, $black 100%);
+    background: linear-gradient(to bottom, $body-gradient 0%, $black 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    @media (min-width: $breakpoint-lg) {
+        grid-template-columns: minmax(250px, 20%) auto;
+    }
+
+    .layout-sidebar {
+        position: relative;
+    }
+
+    .layout-main {
+        overflow-y: auto;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 }

@@ -1,8 +1,9 @@
-@import './app/shared/variables';
+@import './app/shared/styles/variables';
 @import url('https://fonts.googleapis.com/css?family=Teko');
 
 html {
     font-size: $base_font;
+    height: 100%;
 }
 
 html,
@@ -12,5 +13,28 @@ body {
     font-family: 'Teko', sans-serif;
     padding: 0;
     margin: 0;
-    // background-color: black;
+}
+
+body {
+    @media (min-width: $website-max-width) {
+        width: calc($website-max-width - 20px);
+        margin: auto;
+    }
+}
+
+.blur {
+    filter: blur(5px);
+}
+
+.default-loader {
+    top: 50% !important;
+    left: 50% !important;
+    height: 50px !important;
+    width: 50px !important;
+    position: absolute !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.img-fluid {
+    max-width: 100%;
 }

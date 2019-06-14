@@ -1,0 +1,15 @@
+<div
+    class="card-component"
+    [ngClass]="{ 'cc--floating-label': floatingLabel, 'cc--animated': animated }"
+    [title]="title"
+>
+    <div class="card-component--image-holder">
+        <img
+            class="card-component--image"
+            [appProgressiveImageLoading]="src"
+            [appProgressiveImageLoading-placeholder]="placeholderImage"
+            [alt]="title"
+        />
+    </div>
+    <div class="card-component--title">{{ title }}</div>
+</div>

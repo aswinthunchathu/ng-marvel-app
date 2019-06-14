@@ -8,13 +8,6 @@ export interface Collections {
     collectionURI: string
 }
 
-export interface Page {
-    offset: number
-    limit: number
-    total: number
-    count: number
-}
-
 export interface Character {
     id: number
     name: string
@@ -22,4 +15,14 @@ export interface Character {
     thumbnail: Image
     comics: Collections
     series: Collections
+}
+
+export interface CharacterResults {
+    data: {
+        offset: number
+        limit: number
+        total: number
+        count: number
+        results: Character[]
+    }
 }

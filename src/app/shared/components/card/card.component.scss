@@ -1,0 +1,60 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.card-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    justify-content: space-between;
+
+    .card-component--image {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+
+        &-holder {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+    }
+
+    .card-component--title {
+        width: 100%;
+        align-self: flex-start;
+        color: $white;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        background-color: rgba(0, 0, 0, 0.5);
+        @include rem-fallback(font-size, 18px);
+        @include rem-fallback(padding, 5px);
+        @media (min-width: $breakpoint-sm) {
+            @include rem-fallback(font-size, 24px);
+        }
+    }
+
+    &.cc--animated {
+        .card-component--image {
+            transition: all 0.5s ease-in-out;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    &.cc--floating-label {
+        position: relative;
+        .card-component--title {
+            position: absolute;
+            bottom: 0;
+        }
+    }
+}

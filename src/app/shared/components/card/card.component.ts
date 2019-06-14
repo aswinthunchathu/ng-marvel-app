@@ -6,8 +6,11 @@ import { Component, OnInit, Input } from '@angular/core'
     styleUrls: ['./card.component.scss'],
 })
 export class CardComponent implements OnInit {
-    @Input() title: string
-    @Input() src: string
+    @Input('title') title: string
+    @Input('image-src') src: string
+    @Input('animated-card') animated?: boolean = false
+    @Input('floating-label') floatingLabel?: boolean = true
+    @Input('placeholder-image-src') placeholderImage?: string
 
     constructor() {}
 
