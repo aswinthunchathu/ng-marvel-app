@@ -25,6 +25,8 @@ import { ComicDetailsComponent } from './comics/comic-details/comic-details.comp
 import { ComicEffects } from './comics/comic-details/store/comic.effects'
 import { SeriesComponent } from './series/series.component'
 import { SeriesEffects } from './series/store/series.effects'
+import { SeriesDetailsComponent } from './series/series-details/series-details.component'
+import { SeriesDetailsEffects } from './series/series-details/store/series-details.effects'
 
 @NgModule({
     declarations: [
@@ -38,6 +40,7 @@ import { SeriesEffects } from './series/store/series.effects'
         ComicsComponent,
         ComicDetailsComponent,
         SeriesComponent,
+        SeriesDetailsComponent,
     ],
     imports: [
         BrowserModule,
@@ -45,7 +48,14 @@ import { SeriesEffects } from './series/store/series.effects'
         AppRoutingModule,
         InfiniteScrollModule,
         StoreModule.forRoot(appReducer),
-        EffectsModule.forRoot([CharactersEffects, CharacterEffects, ComicsEffects, ComicEffects, SeriesEffects]),
+        EffectsModule.forRoot([
+            CharactersEffects,
+            CharacterEffects,
+            ComicsEffects,
+            ComicEffects,
+            SeriesEffects,
+            SeriesDetailsEffects,
+        ]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,
         }),
