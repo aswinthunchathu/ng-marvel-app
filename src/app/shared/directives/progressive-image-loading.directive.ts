@@ -19,7 +19,7 @@ export class ProgressiveImageLoadingDirective implements OnInit {
             this.bgImage = this.placeholder
         } else {
             this.newCssClass = `${this.cssClass} default-loader`
-            this.bgImage = 'assets/loading.gif'
+            this.bgImage = 'assets/image-placeholder.gif'
         }
         this.loadActualImage()
     }
