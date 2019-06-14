@@ -8,7 +8,7 @@
     [fromRoot]="true"
     infiniteScrollContainer=".layout-main"
 >
-    <a [routerLink]="['/comic', comic.id]" *ngFor="let comic of comics | async">
+    <a class="grid--txt-decoration" [routerLink]="['/comic', comic.id]" *ngFor="let comic of comics | async">
         <app-card
             [image-src]="getImage(comic.thumbnail)"
             [placeholder-image-src]="getImage(comic.thumbnail, true)"

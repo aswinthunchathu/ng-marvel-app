@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
-import { Character } from '../../shared/model/shared.interface'
-import * as fromCharacterActions from './characters.actions'
+import { Series } from '../../shared/model/shared.interface'
+import * as fromSeriesActions from './series.actions'
 import { PAGE_LIMIT } from 'src/app/shared/constants'
 import { Pagination } from '../../shared/model/pagination.model'
 
 export interface State {
     fetching: boolean
-    data: Character[]
+    data: Series[]
     pagination: Pagination
     error: HttpErrorResponse
 }
@@ -19,16 +19,16 @@ const initialState: State = {
     error: null,
 }
 
-export const charactersReducer = (state = initialState, action: fromCharacterActions.type) => {
+export const seriesReducer = (state = initialState, action: fromSeriesActions.type) => {
     switch (action.type) {
-        case fromCharacterActions.FETCH_CHARACTERS_NEXT_PAGE:
-        case fromCharacterActions.FETCH_CHARACTERS_INIT:
+        case fromSeriesActions.FETCH_SERIES_NEXT_PAGE:
+        case fromSeriesActions.FETCH_SERIES_INIT:
             return {
                 ...state,
                 fetching: true,
                 error: null,
             }
-        case fromCharacterActions.FETCH_CHARACTERS_SUCCESS:
+        case fromSeriesActions.FETCH_SERIES_SUCCESS:
             return {
                 ...state,
                 fetching: false,
@@ -36,7 +36,7 @@ export const charactersReducer = (state = initialState, action: fromCharacterAct
                 pagination: action.pagination,
                 data: [...state.data, ...action.payload],
             }
-        case fromCharacterActions.FETCH_CHARACTERS_ERROR:
+        case fromSeriesActions.FETCH_SERIES_ERROR:
             return {
                 ...state,
                 fetching: false,

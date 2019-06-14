@@ -23,6 +23,8 @@ import { SidebarComponent } from './sidebar/sidebar.component'
 import { ComicsComponent } from './comics/comics.component'
 import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
 import { ComicEffects } from './comics/comic-details/store/comic.effects'
+import { SeriesComponent } from './series/series.component'
+import { SeriesEffects } from './series/store/series.effects'
 
 @NgModule({
     declarations: [
@@ -35,6 +37,7 @@ import { ComicEffects } from './comics/comic-details/store/comic.effects'
         SidebarComponent,
         ComicsComponent,
         ComicDetailsComponent,
+        SeriesComponent,
     ],
     imports: [
         BrowserModule,
@@ -42,7 +45,7 @@ import { ComicEffects } from './comics/comic-details/store/comic.effects'
         AppRoutingModule,
         InfiniteScrollModule,
         StoreModule.forRoot(appReducer),
-        EffectsModule.forRoot([CharactersEffects, CharacterEffects, ComicsEffects, ComicEffects]),
+        EffectsModule.forRoot([CharactersEffects, CharacterEffects, ComicsEffects, ComicEffects, SeriesEffects]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,
         }),
