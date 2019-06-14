@@ -24,10 +24,10 @@ export class CharactersComponent implements OnInit {
         this.store.dispatch(new fromCharactersAction.FetchCharactersInit())
         this.characters = this.store.select('characters').pipe(
             tap(res => {
+                this.loading = res.fetching
                 if (this.hasMore !== res.pagination.hasMore) {
                     this.hasMore = res.pagination.hasMore
                 }
-                this.loading = res.fetching
             }),
             map(res => res.data)
         )

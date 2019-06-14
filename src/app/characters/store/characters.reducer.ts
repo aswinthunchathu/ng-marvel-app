@@ -21,6 +21,7 @@ const initialState: State = {
 
 export const charactersReducer = (state = initialState, action: fromCharacterActions.type) => {
     switch (action.type) {
+        case fromCharacterActions.FETCH_CHARACTERS_NEXT_PAGE:
         case fromCharacterActions.FETCH_CHARACTERS_INIT:
             return {
                 ...state,

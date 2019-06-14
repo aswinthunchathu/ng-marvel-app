@@ -28,7 +28,7 @@ export class CharactersEffects {
                 return of({ type: fromCharactersActions.NO_MORE_CHARACTERS })
             } else {
                 return this.http$
-                    .get<CharacterResults>('characters', {
+                    .get<CharacterResults>('characters?orderBy=-modified', {
                         params: new HttpParams()
                             .set('limit', String(pagination.limit))
                             .set('offset', String(pagination.nextPage)),

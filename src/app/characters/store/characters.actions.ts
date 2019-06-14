@@ -29,4 +29,4 @@ export class FetchCharactersError implements Action {
     constructor(public payload: HttpErrorResponse) {}
 }
 
-export type type = FetchCharactersInit | FetchCharactersSuccess | FetchCharactersError
+export type type = FetchCharactersInit | FetchCharactersSuccess | FetchCharactersError | FetchCharactersNextPage
