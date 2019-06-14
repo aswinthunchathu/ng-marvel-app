@@ -5,8 +5,12 @@ import { CharactersComponent } from './characters/characters.component'
 import { ComicsComponent } from './comics/comics.component'
 import { CharacterDetailsComponent } from './characters/character-details/character-details.component'
 import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
+import { SeriesComponent } from './series/series.component'
+import { SeriesDetailsComponent } from './series/series-details/series-details.component'
 
 const routes: Routes = [
+    { path: 'series/:id', component: SeriesDetailsComponent },
+    { path: 'series', component: SeriesComponent },
     { path: 'comic/:id', component: ComicDetailsComponent },
     { path: 'character/:id', component: CharacterDetailsComponent },
     { path: 'comics', component: ComicsComponent },

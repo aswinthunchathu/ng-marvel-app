@@ -20,4 +20,8 @@
     @media (min-width: $breakpoint-lg) {
         @include column-template(300px);
     }
+
+    .grid--txt-decoration {
+        text-decoration: none !important;
+    }
 }

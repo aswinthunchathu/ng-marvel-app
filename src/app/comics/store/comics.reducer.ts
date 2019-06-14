@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 
 import { Comic } from '../../shared/model/shared.interface'
 import * as fromComicsActions from './comics.actions'
-import { CHARACTER_LIMIT } from 'src/app/shared/constants'
+import { PAGE_LIMIT } from 'src/app/shared/constants'
 import { Pagination } from '../../shared/model/pagination.model'
 
 export interface State {
@@ -14,7 +14,7 @@ export interface State {
 
 const initialState: State = {
     fetching: false,
-    pagination: new Pagination(-1, CHARACTER_LIMIT, 0, 0),
+    pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
     data: [],
     error: null,
 }

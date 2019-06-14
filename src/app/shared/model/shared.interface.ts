@@ -51,3 +51,22 @@ export interface ComicsResults {
         results: Comic[]
     }
 }
+export interface Series {
+    id: number
+    title: string
+    description: string
+    thumbnail: Image
+    characters: Collections
+    comics: Collections
+    prices: Price[]
+}
+
+export interface SeriesResults {
+    data: {
+        offset: number
+        limit: number
+        total: number
+        count: number
+        results: Series[]
+    }
+}
