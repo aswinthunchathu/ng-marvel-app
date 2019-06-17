@@ -37,7 +37,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
                     res.data.placeholder,
                     res.data.description
                 )
-                this.bgImage = res.data.bgImage
+                this.bgService.setBgImage(res.data.bgImage)
             }
         })
     }
