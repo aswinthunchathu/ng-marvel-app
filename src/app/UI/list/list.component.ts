@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 
-import { Character } from '../../shared/model/shared.interface'
+export enum Style {
+    grid = 'grid',
+    gridSpaced = 'grid-spaced',
+}
 
 @Component({
     selector: 'app-list',
@@ -8,7 +11,8 @@ import { Character } from '../../shared/model/shared.interface'
     styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-    @Input('grid-style') style: 'grid' | 'grid-spaced' = 'grid'
+    @Input('isInfiniteScroll') isInfiniteScroll: boolean = false
+    @Input('grid-style') style: Style = Style.grid
     @Input('isFetching') loading: boolean
     @Input('hasMore') hasMore: boolean
 

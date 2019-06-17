@@ -1,12 +1,22 @@
-<div
-    class="grid"
-    infiniteScroll
-    [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50"
-    [infiniteScrollDisabled]="!hasMore"
-    (scrolled)="onScroll()"
->
+<ng-container [ngSwitch]="isInfiniteScroll">
+    <div
+        *ngSwitchCase="true"
+        [class]="style"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        [infiniteScrollDisabled]="!hasMore"
+        (scrolled)="onScroll()"
+    >
+        <ng-container *ngTemplateOutlet="list"></ng-container>
+    </div>
+    <div *ngSwitchCase="false" [class]="style">
+        <ng-container *ngTemplateOutlet="list"></ng-container>
+    </div>
+</ng-container>
+
+<ng-template #list>
     <ng-content></ng-content>
-</div>
+</ng-template>
 
 <app-loader *ngIf="loading"></app-loader>

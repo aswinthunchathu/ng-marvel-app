@@ -1,4 +1,10 @@
-<app-list [hasMore]="hasMore" [isFetching]="loading" grid-style="grid" (onScroll)="onScroll()">
+<app-list
+    [isInfiniteScroll]="true"
+    [hasMore]="hasMore"
+    [isFetching]="loading"
+    grid-style="grid"
+    (onScroll)="onScroll()"
+>
     <a class="grid--txt-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of characters | async">
         <app-card
             [image-src]="item.image"
