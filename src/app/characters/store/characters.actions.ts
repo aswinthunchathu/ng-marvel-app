@@ -1,7 +1,8 @@
 import { Action } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
-import { Character } from '../../shared/model/shared.interface'
-import { Pagination } from 'src/app/shared/model/pagination.model'
+
+import { Pagination } from '../../shared/model/pagination.model'
+import { CharacterModel } from '../character.model'
 
 export const FETCH_CHARACTERS_INIT = '[CHARACTERS] Fetch Init'
 export const FETCH_CHARACTERS_NEXT_PAGE = '[CHARACTERS] Fetch Next Page'
@@ -20,7 +21,7 @@ export class FetchCharactersNextPage implements Action {
 export class FetchCharactersSuccess implements Action {
     readonly type = FETCH_CHARACTERS_SUCCESS
 
-    constructor(public payload: Character[], public pagination: Pagination) {}
+    constructor(public payload: CharacterModel[], public pagination: Pagination) {}
 }
 
 export class FetchCharactersError implements Action {

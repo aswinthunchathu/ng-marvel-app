@@ -8,7 +8,8 @@ import { Store } from '@ngrx/store'
 import * as fromCharacterActions from './character.actions'
 import * as fromCharactersReducer from '../../store/characters.reducer'
 import { AppState } from '../../../store/app.reducer'
-import { CharacterResults } from 'src/app/shared/model/shared.interface'
+import { CharacterResults } from '../../../shared/model/shared.interface'
+import { CharacterModel } from '../../character.model'
 
 @Injectable()
 export class CharacterEffects {
@@ -28,7 +29,19 @@ export class CharacterEffects {
                     map(res =>
                         res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null
                     ),
-                    map(res => new fromCharacterActions.FetchCharacterSuccess(res))
+                    map(
+                        res =>
+                            new fromCharacterActions.FetchCharacterSuccess(
+                                new CharacterModel(
+                                    res.id,
+                                    res.name,
+                                    res.description,
+                                    res.thumbnail,
+                                    res.series,
+                                    res.comics
+                                )
+                            )
+                    )
                 )
             }
         ),

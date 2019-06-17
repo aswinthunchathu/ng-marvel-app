@@ -1,0 +1,12 @@
+<div
+    class="grid"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [infiniteScrollDisabled]="!hasMore"
+    (scrolled)="onScroll()"
+>
+    <ng-content></ng-content>
+</div>
+
+<app-loader *ngIf="loading"></app-loader>

@@ -3,10 +3,9 @@ import { Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 import { map, tap } from 'rxjs/operators'
 
-import { Character, Image } from '../shared/model/shared.interface'
 import { AppState } from '../store/app.reducer'
 import * as fromCharactersAction from './store/characters.actions'
-import { ImageGenerator, types } from '../shared/model/image-generator.model'
+import { CharacterModel } from './character.model'
 
 @Component({
     selector: 'app-characters',
@@ -14,7 +13,7 @@ import { ImageGenerator, types } from '../shared/model/image-generator.model'
     styleUrls: ['./characters.component.scss'],
 })
 export class CharactersComponent implements OnInit {
-    characters: Observable<Character[]>
+    characters: Observable<CharacterModel[]>
     hasMore: boolean = true
     loading: boolean = true
 
@@ -32,10 +31,6 @@ export class CharactersComponent implements OnInit {
             map(res => res.data)
         )
     }
-
-    getImage = (image: Image, placeholder: boolean = false) =>
-        new ImageGenerator(image.path, image.extension, placeholder ? types.standard_small : types.standard_fantastic)
-            .image
 
     onScroll() {
         this.store.dispatch(new fromCharactersAction.FetchCharactersNextPage())

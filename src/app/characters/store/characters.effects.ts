@@ -11,6 +11,7 @@ import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { State } from './characters.reducer'
 import { FETCHED_FROM_STORE } from 'src/app/shared/constants'
+import { CharacterModel } from '../character.model'
 
 @Injectable()
 export class CharactersEffects {
@@ -38,7 +39,17 @@ export class CharactersEffects {
                         map(
                             res =>
                                 new fromCharactersActions.FetchCharactersSuccess(
-                                    res.results,
+                                    res.results.map(
+                                        item =>
+                                            new CharacterModel(
+                                                item.id,
+                                                item.name,
+                                                item.description,
+                                                item.thumbnail,
+                                                item.series,
+                                                item.comics
+                                            )
+                                    ),
                                     new Pagination(res.offset, res.limit, res.total, res.count)
                                 )
                         )

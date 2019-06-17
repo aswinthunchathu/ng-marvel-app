@@ -1,24 +1,11 @@
-<div
-    class="grid"
-    infiniteScroll
-    [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50"
-    (scrolled)="onScroll()"
-    [infiniteScrollDisabled]="!hasMore"
->
-    <a
-        class="grid--txt-decoration"
-        [routerLink]="['/character', character.id]"
-        *ngFor="let character of characters | async"
-    >
+<app-list [hasMore]="hasMore" [isFetching]="loading" grid-style="grid" (onScroll)="onScroll()">
+    <a class="grid--txt-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of characters | async">
         <app-card
-            [image-src]="getImage(character.thumbnail)"
-            [placeholder-image-src]="getImage(character.thumbnail, true)"
-            [title]="character.name"
+            [image-src]="item.image"
+            [placeholder-image-src]="item.placeholder"
+            [title]="item.title"
             [animated-card]="true"
             [floating-label]="true"
         ></app-card>
     </a>
-</div>
-
-<app-loader *ngIf="loading"></app-loader>
+</app-list>
