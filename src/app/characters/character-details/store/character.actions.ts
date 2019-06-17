@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
-import { Character } from '../../../shared/model/shared.interface'
+import { CharacterModel } from '../../character.model'
 
 export const FETCH_CHARACTER_START = '[CHARACTER] Fetch Start'
 export const FETCH_CHARACTER_SUCCESS = '[CHARACTER] Fetch Success'
@@ -15,7 +15,7 @@ export class FetchCharacterStart implements Action {
 export class FetchCharacterSuccess implements Action {
     readonly type = FETCH_CHARACTER_SUCCESS
 
-    constructor(public payload: Character) {}
+    constructor(public payload: CharacterModel) {}
 }
 
 export class FetchCharacterError implements Action {

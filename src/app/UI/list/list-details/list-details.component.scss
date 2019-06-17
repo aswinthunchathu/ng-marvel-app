@@ -1,0 +1,99 @@
+@import '../../../shared/styles/variables';
+@import '../../../shared//styles/mixins';
+
+@mixin base {
+    height: 100%;
+
+    .container-grid--main {
+        display: grid;
+    }
+
+    .container-grid--title {
+        @include rem-fallback(font-size, 35px);
+
+        @media (min-width: $breakpoint-lg) {
+            @include rem-fallback(font-size, 50px);
+        }
+    }
+
+    .container-grid--description {
+        @include rem-fallback(font-size, 18px);
+        display: flex;
+        align-items: center;
+        text-align: justify;
+
+        @media (min-width: $breakpoint-lg) {
+            @include rem-fallback(font-size, 20px);
+        }
+    }
+
+    .container-grid--title,
+    .container-grid--description {
+        color: $offWhite;
+    }
+}
+
+.container {
+    @include base();
+    @include rem-fallback(padding, 15px);
+
+    .container-grid--main {
+        @include rem-fallback(grid-gap, 10px);
+
+        @media (min-width: $breakpoint-sm) {
+            grid-template-columns: 1.5fr 3.5fr;
+            grid-template-areas: 'image description';
+        }
+
+        @media (min-width: $breakpoint-md) {
+            @include rem-fallback(grid-gap, 20px);
+        }
+
+        @media (min-width: $breakpoint-lg) {
+            grid-template-columns: 1fr 4fr;
+        }
+    }
+
+    .container-grid-image {
+        max-width: 100%;
+        display: flex;
+        align-self: center;
+        justify-self: center;
+        order: 2;
+        @include rem-fallback(margin, 0, 0, 15px, 0);
+
+        @media (min-width: $breakpoint-sm) {
+            order: 1;
+            margin: 0;
+            grid-area: image;
+        }
+    }
+
+    .container-grid--title {
+        margin: 0;
+        order: 1;
+
+        @media (min-width: $breakpoint-sm) {
+            order: 2;
+            grid-area: description;
+        }
+    }
+
+    .container-grid--description {
+        order: 3;
+
+        @media (min-width: $breakpoint-sm) {
+            grid-area: description;
+        }
+    }
+}
+
+.container--with-bg {
+    @include base();
+    @include rem-fallback(padding, 0, 15px);
+    background-color: $black-75;
+
+    .container-grid--title {
+        @include rem-fallback(margin, 20px, 0);
+    }
+}

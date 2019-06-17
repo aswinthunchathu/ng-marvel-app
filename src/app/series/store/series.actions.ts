@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
-import { Series } from '../../shared/model/shared.interface'
-import { Pagination } from 'src/app/shared/model/pagination.model'
+import { Pagination } from '../../shared/model/pagination.model'
+import { SeriesModel } from '../series.model'
 
 export const FETCH_SERIES_INIT = '[SERIES] Fetch Init'
 export const FETCH_SERIES_NEXT_PAGE = '[SERIES] Fetch Next Page'
@@ -20,7 +20,7 @@ export class FetchSeriesNextPage implements Action {
 export class FetchSeriesSuccess implements Action {
     readonly type = FETCH_SERIES_SUCCESS
 
-    constructor(public payload: Series[], public pagination: Pagination) {}
+    constructor(public payload: SeriesModel[], public pagination: Pagination) {}
 }
 
 export class FetchSeriesError implements Action {

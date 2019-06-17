@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
-import { Character } from '../../../shared/model/shared.interface'
 import * as fromCharacterActions from './character.actions'
+import { CharacterModel } from '../../character.model'
 
 export interface State {
     fetching: boolean
-    data: Character
+    data: CharacterModel
     error: HttpErrorResponse
 }
 

@@ -3,10 +3,9 @@ import { Subscription } from 'rxjs'
 import { Store } from '@ngrx/store'
 import { ActivatedRoute, Params } from '@angular/router'
 
-import { AppState } from 'src/app/store/app.reducer'
-import { ImageGenerator, types } from 'src/app/shared/model/image-generator.model'
-import { Series, Image } from 'src/app/shared/model/shared.interface'
+import { AppState } from '../../store/app.reducer'
 import * as fromSeriesDetailsActions from './store/series-details.actions'
+import { ListDetailsModel } from '../../UI/list/list-details/list-details.model'
 
 @Component({
     selector: 'app-series-details',
@@ -15,9 +14,9 @@ import * as fromSeriesDetailsActions from './store/series-details.actions'
 })
 export class SeriesDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription
-    private comicSub: Subscription
+    private seriesSub: Subscription
     loading: boolean = true
-    series: Series = null
+    series: ListDetailsModel = null
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -26,24 +25,21 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
             this.store.dispatch(new fromSeriesDetailsActions.FetchSeriesDetailsStart(+params['id']))
         })
 
-        this.comicSub = this.store.select('seriesDetails').subscribe(res => {
+        this.seriesSub = this.store.select('seriesDetails').subscribe(res => {
             this.loading = res.fetching
             if (res.data) {
-                this.series = res.data
+                this.series = new ListDetailsModel(
+                    res.data.title,
+                    res.data.image,
+                    res.data.placeholder,
+                    res.data.description
+                )
             }
         })
     }
 
-    getImage(image: Image, placeHolder: boolean) {
-        return new ImageGenerator(
-            image.path,
-            image.extension,
-            placeHolder ? types.portrait_small : types.portrait_incredible
-        ).image
-    }
-
     ngOnDestroy() {
         this.routeSub.unsubscribe()
-        this.comicSub.unsubscribe()
+        this.seriesSub.unsubscribe()
     }
 }

@@ -3,10 +3,12 @@ import { Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 import { tap, map } from 'rxjs/operators'
 
-import { Comic, Image } from '../shared/model/shared.interface'
+import { Image } from '../shared/model/shared.interface'
 import { AppState } from '../store/app.reducer'
 import * as fromComicsAction from './store/comics.actions'
 import { ImageGenerator, types } from '../shared/model/image-generator.model'
+import { Style } from '../UI/list/list.component'
+import { ComicModel } from './comic.model'
 
 @Component({
     selector: 'app-comics',
@@ -14,9 +16,10 @@ import { ImageGenerator, types } from '../shared/model/image-generator.model'
     styleUrls: ['./comics.component.scss'],
 })
 export class ComicsComponent implements OnInit {
-    comics: Observable<Comic[]>
+    comics: Observable<ComicModel[]>
     hasMore: boolean = true
     loading: boolean = true
+    gridStyle = Style.gridSpaced
 
     constructor(private store: Store<AppState>) {}
 
@@ -32,10 +35,6 @@ export class ComicsComponent implements OnInit {
             map(res => res.data)
         )
     }
-
-    getImage = (image: Image, placeholder: boolean = false) =>
-        new ImageGenerator(image.path, image.extension, placeholder ? types.portrait_small : types.portrait_incredible)
-            .image
 
     onScroll() {
         this.store.dispatch(new fromComicsAction.FetchComicsNextPage())

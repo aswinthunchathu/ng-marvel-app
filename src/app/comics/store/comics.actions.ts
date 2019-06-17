@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
-import { Comic } from '../../shared/model/shared.interface'
 import { Pagination } from 'src/app/shared/model/pagination.model'
+import { ComicModel } from '../comic.model'
 
 export const FETCH_COMICS_INIT = '[COMICS] Fetch Init'
 export const FETCH_COMICS_NEXT_PAGE = '[COMICS] Fetch Next Page'
@@ -20,7 +20,7 @@ export class FetchComicsNextPage implements Action {
 export class FetchComicsSuccess implements Action {
     readonly type = FETCH_COMICS_SUCCESS
 
-    constructor(public payload: Comic[], public pagination: Pagination) {}
+    constructor(public payload: ComicModel[], public pagination: Pagination) {}
 }
 
 export class FetchComicsError implements Action {

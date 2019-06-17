@@ -4,9 +4,11 @@ import { Store } from '@ngrx/store'
 import { tap, map } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
-import { Series, Image } from '../shared/model/shared.interface'
+import { Image } from '../shared/model/shared.interface'
 import { ImageGenerator, types } from '../shared/model/image-generator.model'
 import * as fromSeriesActions from './store/series.actions'
+import { Style } from '../UI/list/list.component'
+import { SeriesModel } from './series.model'
 
 @Component({
     selector: 'app-series',
@@ -14,9 +16,10 @@ import * as fromSeriesActions from './store/series.actions'
     styleUrls: ['./series.component.scss'],
 })
 export class SeriesComponent implements OnInit {
-    seriesList: Observable<Series[]>
+    seriesList: Observable<SeriesModel[]>
     hasMore: boolean = true
     loading: boolean = true
+    gridStyle = Style.gridSpaced
 
     constructor(private store: Store<AppState>) {}
 
@@ -32,10 +35,6 @@ export class SeriesComponent implements OnInit {
             map(res => res.data)
         )
     }
-
-    getImage = (image: Image, placeholder: boolean = false) =>
-        new ImageGenerator(image.path, image.extension, placeholder ? types.portrait_small : types.portrait_incredible)
-            .image
 
     onScroll() {
         this.store.dispatch(new fromSeriesActions.FetchSeriesNextPage())

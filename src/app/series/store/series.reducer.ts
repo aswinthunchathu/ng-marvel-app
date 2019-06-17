@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
-import { Series } from '../../shared/model/shared.interface'
 import * as fromSeriesActions from './series.actions'
-import { PAGE_LIMIT } from 'src/app/shared/constants'
+import { PAGE_LIMIT } from '../../shared/constants'
 import { Pagination } from '../../shared/model/pagination.model'
+import { SeriesModel } from '../series.model'
 
 export interface State {
     fetching: boolean
-    data: Series[]
+    data: SeriesModel[]
     pagination: Pagination
     error: HttpErrorResponse
 }

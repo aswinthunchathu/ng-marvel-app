@@ -1,12 +1,1 @@
-<div class="container">
-    <div class="container-grid--main" *ngIf="character; else loader">
-        <h1 class="container-grid--title">{{ character.name }}</h1>
-        <div class="container-grid--description">
-            {{ character.description ? character.description : 'No description available.' }}
-        </div>
-    </div>
-</div>
-
-<ng-template #loader>
-    <app-loader></app-loader>
-</ng-template>
+<app-list-details [item]="character" [withBgImage]="true" [loading]="loading"></app-list-details>

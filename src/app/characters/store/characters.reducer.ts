@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
-import { Character } from '../../shared/model/shared.interface'
 import * as fromCharacterActions from './characters.actions'
-import { PAGE_LIMIT } from 'src/app/shared/constants'
+import { PAGE_LIMIT } from '../../shared/constants'
 import { Pagination } from '../../shared/model/pagination.model'
+import { CharacterModel } from '../character.model'
 
 export interface State {
     fetching: boolean
-    data: Character[]
+    data: CharacterModel[]
     pagination: Pagination
     error: HttpErrorResponse
 }

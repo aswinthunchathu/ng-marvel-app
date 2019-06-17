@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
-import { Comic } from '../../../shared/model/shared.interface'
 import * as fromComicActions from './comic.actions'
+import { ComicModel } from '../../comic.model'
 
 export interface State {
     fetching: boolean
-    data: Comic
+    data: ComicModel
     error: HttpErrorResponse
 }
 
