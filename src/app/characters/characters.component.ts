@@ -6,6 +6,7 @@ import { map, tap } from 'rxjs/operators'
 import { AppState } from '../store/app.reducer'
 import * as fromCharactersAction from './store/characters.actions'
 import { CharacterModel } from './character.model'
+import { Style } from '../UI/list/list.component'
 
 @Component({
     selector: 'app-characters',
@@ -16,6 +17,7 @@ export class CharactersComponent implements OnInit {
     characters: Observable<CharacterModel[]>
     hasMore: boolean = true
     loading: boolean = true
+    gridStyle = Style.grid
 
     constructor(private store: Store<AppState>) {}
 

@@ -7,6 +7,7 @@ import { AppState } from '../store/app.reducer'
 import { Series, Image } from '../shared/model/shared.interface'
 import { ImageGenerator, types } from '../shared/model/image-generator.model'
 import * as fromSeriesActions from './store/series.actions'
+import { Style } from '../UI/list/list.component'
 
 @Component({
     selector: 'app-series',
@@ -17,6 +18,7 @@ export class SeriesComponent implements OnInit {
     seriesList: Observable<Series[]>
     hasMore: boolean = true
     loading: boolean = true
+    gridStyle = Style.gridSpaced
 
     constructor(private store: Store<AppState>) {}
 

@@ -2,10 +2,10 @@
     [isInfiniteScroll]="true"
     [hasMore]="hasMore"
     [isFetching]="loading"
-    grid-style="grid"
+    [grid-style]="gridStyle"
     (onScroll)="onScroll()"
 >
-    <a class="grid--txt-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of characters | async">
+    <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of characters | async">
         <app-card
             [image-src]="item.image"
             [placeholder-image-src]="item.placeholder"

@@ -12,7 +12,7 @@ export enum Style {
 })
 export class ListComponent implements OnInit {
     @Input('isInfiniteScroll') isInfiniteScroll: boolean = false
-    @Input('grid-style') style: Style = Style.grid
+    @Input('grid-style') gridStyle = 'grid'
     @Input('isFetching') loading: boolean
     @Input('hasMore') hasMore: boolean
 

@@ -1,14 +1,11 @@
-<div
-    class="grid"
-    infiniteScroll
-    [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50"
-    (scrolled)="onScroll()"
-    [infiniteScrollDisabled]="!hasMore"
-    [fromRoot]="true"
-    infiniteScrollContainer=".layout-main"
+<app-list
+    [isInfiniteScroll]="true"
+    [hasMore]="hasMore"
+    [isFetching]="loading"
+    [grid-style]="gridStyle"
+    (onScroll)="onScroll()"
 >
-    <a class="grid--txt-decoration" [routerLink]="['/series', series.id]" *ngFor="let series of seriesList | async">
+    <a class="no-decoration" [routerLink]="['/series', series.id]" *ngFor="let series of seriesList | async">
         <app-card
             [image-src]="getImage(series.thumbnail)"
             [placeholder-image-src]="getImage(series.thumbnail, true)"
@@ -17,6 +14,4 @@
             [floating-label]="false"
         ></app-card>
     </a>
-</div>
-
-<app-loader *ngIf="loading"></app-loader>
+</app-list>

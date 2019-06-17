@@ -7,6 +7,7 @@ import { Comic, Image } from '../shared/model/shared.interface'
 import { AppState } from '../store/app.reducer'
 import * as fromComicsAction from './store/comics.actions'
 import { ImageGenerator, types } from '../shared/model/image-generator.model'
+import { Style } from '../UI/list/list.component'
 
 @Component({
     selector: 'app-comics',
@@ -17,6 +18,7 @@ export class ComicsComponent implements OnInit {
     comics: Observable<Comic[]>
     hasMore: boolean = true
     loading: boolean = true
+    gridStyle = Style.gridSpaced
 
     constructor(private store: Store<AppState>) {}
 

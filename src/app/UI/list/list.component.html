@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="isInfiniteScroll">
     <div
         *ngSwitchCase="true"
-        [class]="style"
+        [class]="gridStyle"
         infiniteScroll
         [infiniteScrollDistance]="2"
         [infiniteScrollThrottle]="50"
@@ -10,7 +10,7 @@
     >
         <ng-container *ngTemplateOutlet="list"></ng-container>
     </div>
-    <div *ngSwitchCase="false" [class]="style">
+    <div *ngSwitchCase="false" [class]="gridStyle">
         <ng-container *ngTemplateOutlet="list"></ng-container>
     </div>
 </ng-container>
