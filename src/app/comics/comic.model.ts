@@ -7,7 +7,7 @@ export class ComicModel {
         public title: string,
         public description: string,
         public thumbnail: Image,
-        public comics: Collections,
+        public characters: Collections,
         public series: Collections
     ) {}
 

@@ -39,7 +39,7 @@ export interface Comic {
     thumbnail: Image
     characters: Collections
     series: Collections
-    prices: Price[]
+    // prices: Price[]
 }
 
 export interface ComicsResults {

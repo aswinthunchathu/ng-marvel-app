@@ -5,10 +5,10 @@
     [grid-style]="gridStyle"
     (onScroll)="onScroll()"
 >
-    <a class="no-decoration" [routerLink]="['/comic', comic.id]" *ngFor="let comic of comics | async">
+    <a class="no-decoration" [routerLink]="comic.linkToDetails" *ngFor="let comic of comics | async">
         <app-card
-            [image-src]="getImage(comic.thumbnail)"
-            [placeholder-image-src]="getImage(comic.thumbnail, true)"
+            [image-src]="comic.image"
+            [placeholder-image-src]="comic.placeholder"
             [title]="comic.title"
         ></app-card>
     </a>
