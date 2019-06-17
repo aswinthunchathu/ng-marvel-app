@@ -27,7 +27,8 @@ import { SeriesComponent } from './series/series.component'
 import { SeriesEffects } from './series/store/series.effects'
 import { SeriesDetailsComponent } from './series/series-details/series-details.component'
 import { SeriesDetailsEffects } from './series/series-details/store/series-details.effects';
-import { ListComponent } from './UI/list/list.component'
+import { ListComponent } from './UI/list/list.component';
+import { ListDetailsComponent } from './UI/list/list-details/list-details.component'
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { ListComponent } from './UI/list/list.component'
         SeriesComponent,
         SeriesDetailsComponent,
         ListComponent,
+        ListDetailsComponent,
     ],
     imports: [
         BrowserModule,
