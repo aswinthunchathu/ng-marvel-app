@@ -5,8 +5,9 @@ import { ActivatedRoute, Params } from '@angular/router'
 
 import { AppState } from 'src/app/store/app.reducer'
 import { ImageGenerator, types } from 'src/app/shared/model/image-generator.model'
-import { Series, Image } from 'src/app/shared/model/shared.interface'
+import { Image } from 'src/app/shared/model/shared.interface'
 import * as fromSeriesDetailsActions from './store/series-details.actions'
+import { SeriesModel } from '../series.model'
 
 @Component({
     selector: 'app-series-details',
@@ -17,7 +18,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription
     private comicSub: Subscription
     loading: boolean = true
-    series: Series = null
+    series: SeriesModel = null
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 

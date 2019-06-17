@@ -9,6 +9,7 @@ import * as fromSeriesDetailsActions from './series-details.actions'
 import * as fromSeriesReducer from '../../store/series.reducer'
 import { AppState } from '../../../store/app.reducer'
 import { SeriesResults } from '../../../shared/model/shared.interface'
+import { SeriesModel } from '../../series.model'
 
 @Injectable()
 export class SeriesDetailsEffects {
@@ -28,7 +29,19 @@ export class SeriesDetailsEffects {
                     map(res =>
                         res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null
                     ),
-                    map(res => new fromSeriesDetailsActions.FetchSeriesDetailsSuccess(res))
+                    map(
+                        res =>
+                            new fromSeriesDetailsActions.FetchSeriesDetailsSuccess(
+                                new SeriesModel(
+                                    res.id,
+                                    res.title,
+                                    res.description,
+                                    res.thumbnail,
+                                    res.comics,
+                                    res.characters
+                                )
+                            )
+                    )
                 )
             }
         ),

@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
-import { Series } from '../../../shared/model/shared.interface'
 import * as fromSeriesDetailsActions from './series-details.actions'
+import { SeriesModel } from '../../series.model'
 
 export interface State {
     fetching: boolean
-    data: Series
+    data: SeriesModel
     error: HttpErrorResponse
 }
 

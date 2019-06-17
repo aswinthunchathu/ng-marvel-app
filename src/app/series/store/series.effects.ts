@@ -11,6 +11,7 @@ import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { State } from './series.reducer'
 import { FETCHED_FROM_STORE } from 'src/app/shared/constants'
+import { SeriesModel } from '../series.model'
 
 @Injectable()
 export class SeriesEffects {
@@ -38,7 +39,17 @@ export class SeriesEffects {
                         map(
                             res =>
                                 new fromSeriesActions.FetchSeriesSuccess(
-                                    res.results,
+                                    res.results.map(
+                                        item =>
+                                            new SeriesModel(
+                                                item.id,
+                                                item.title,
+                                                item.description,
+                                                item.thumbnail,
+                                                item.comics,
+                                                item.characters
+                                            )
+                                    ),
                                     new Pagination(res.offset, res.limit, res.total, res.count)
                                 )
                         )

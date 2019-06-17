@@ -58,7 +58,6 @@ export interface Series {
     thumbnail: Image
     characters: Collections
     comics: Collections
-    prices: Price[]
 }
 
 export interface SeriesResults {
