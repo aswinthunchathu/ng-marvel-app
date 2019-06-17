@@ -33,9 +33,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
             this.loading = res.fetching
             if (res.data) {
                 this.character = res.data
-                this.bgService.setBgImage(
-                    new ImageGenerator(res.data.thumbnail.path, res.data.thumbnail.extension).image
-                )
+                this.bgService.setBgImage(res.data.bgImage)
             }
         })
     }

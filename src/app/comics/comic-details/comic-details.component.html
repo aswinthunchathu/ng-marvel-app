@@ -3,8 +3,8 @@
         <img
             class="container-grid-image"
             [alt]="comic.description"
-            [appProgressiveImageLoading]="getImage(comic.thumbnail)"
-            [appProgressiveImageLoading-placeholder]="getImage(comic.thumbnail, true)"
+            [appProgressiveImageLoading]="comic.image"
+            [appProgressiveImageLoading-placeholder]="comic.placeholder"
         />
         <h1 class="container-grid--title">{{ comic.title }}</h1>
         <div class="container-grid--description">

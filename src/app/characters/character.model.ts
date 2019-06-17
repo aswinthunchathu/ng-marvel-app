@@ -11,6 +11,10 @@ export class CharacterModel {
         public series: Collections
     ) {}
 
+    get bgImage() {
+        return new ImageGenerator(this.thumbnail.path, this.thumbnail.extension, types.default).image
+    }
+
     get image() {
         return new ImageGenerator(this.thumbnail.path, this.thumbnail.extension, types.standard_fantastic).image
     }

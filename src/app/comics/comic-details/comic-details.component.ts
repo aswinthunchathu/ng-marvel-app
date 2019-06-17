@@ -34,14 +34,6 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getImage(image: Image, placeHolder: boolean) {
-        return new ImageGenerator(
-            image.path,
-            image.extension,
-            placeHolder ? types.portrait_small : types.portrait_incredible
-        ).image
-    }
-
     ngOnDestroy() {
         this.routeSub.unsubscribe()
         this.comicSub.unsubscribe()

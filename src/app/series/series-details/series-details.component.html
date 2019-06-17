@@ -3,8 +3,8 @@
         <img
             class="container-grid-image"
             [alt]="series.description"
-            [appProgressiveImageLoading]="getImage(series.thumbnail)"
-            [appProgressiveImageLoading-placeholder]="getImage(series.thumbnail, true)"
+            [appProgressiveImageLoading]="series.image"
+            [appProgressiveImageLoading-placeholder]="series.placeholder"
         />
         <h1 class="container-grid--title">{{ series.title }}</h1>
         <div class="container-grid--description">
