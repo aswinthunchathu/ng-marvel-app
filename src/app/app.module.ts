@@ -19,16 +19,18 @@ import { ProgressiveImageLoadingDirective } from './shared/directives/progressiv
 import { LoaderComponent } from './UI/loader/loader.component'
 import { CharacterEffects } from './characters/character-details/store/character.effects'
 import { ComicsEffects } from './comics/store/comics.effects'
-import { SidebarComponent } from './sidebar/sidebar.component'
+import { SidebarComponent } from './UI/header/sidebar/sidebar.component'
 import { ComicsComponent } from './comics/comics.component'
 import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
 import { ComicEffects } from './comics/comic-details/store/comic.effects'
 import { SeriesComponent } from './series/series.component'
 import { SeriesEffects } from './series/store/series.effects'
 import { SeriesDetailsComponent } from './series/series-details/series-details.component'
-import { SeriesDetailsEffects } from './series/series-details/store/series-details.effects';
-import { ListComponent } from './UI/list/list.component';
+import { SeriesDetailsEffects } from './series/series-details/store/series-details.effects'
+import { ListComponent } from './UI/list/list.component'
 import { ListDetailsComponent } from './UI/list/list-details/list-details.component'
+import { HeaderComponent } from './UI/header/header.component'
+import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component'
 
 @NgModule({
     declarations: [
@@ -45,6 +47,8 @@ import { ListDetailsComponent } from './UI/list/list-details/list-details.compon
         SeriesDetailsComponent,
         ListComponent,
         ListDetailsComponent,
+        HeaderComponent,
+        NavLinkComponent,
     ],
     imports: [
         BrowserModule,

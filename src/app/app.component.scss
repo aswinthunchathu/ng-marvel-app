@@ -1,14 +1,13 @@
 @import './shared/styles/variables';
+@import './shared/styles/mixins';
 
 .layout {
-    padding-left: 300px;
     height: 100%;
+    padding-top: 90px;
 
-    .layout-sidebar {
-        position: fixed;
-        width: 300px;
-        top: 0;
-        left: 0;
+    @media (min-width: $breakpoint-lg) {
+        padding-top: 0;
+        padding-left: 300px;
     }
 
     .layout-main {

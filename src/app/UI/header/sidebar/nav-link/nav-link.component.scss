@@ -1,0 +1,37 @@
+@import '../../../../shared//styles/variables';
+@import '../../../../shared//styles/mixins';
+
+.nav-link {
+    display: block;
+    @include rem-fallback(font-size, 40px);
+    text-decoration: none !important;
+    color: $offWhite;
+    text-align: center;
+    @include rem-fallback(padding, 10px, 15px);
+    position: relative;
+
+    &:hover {
+        color: $primary-color;
+    }
+
+    &.active {
+        color: $primary-color;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        @include rem-fallback(padding, 15px);
+
+        &.active {
+            &:after {
+                content: '';
+                width: 80%;
+                height: 5px;
+                background-color: $primary-color;
+                position: absolute;
+                left: 50%;
+                bottom: 10px;
+                transform: translateX(-50%);
+            }
+        }
+    }
+}
