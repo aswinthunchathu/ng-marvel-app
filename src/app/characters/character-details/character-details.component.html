@@ -1,10 +1,14 @@
 <app-list-details [item]="character" [withBgImage]="true" [loading]="loading">
-    <app-tabs default-tab="Comics">
-        <app-tab name="Comics">
-            this is comics
-        </app-tab>
-        <app-tab name="Series">
-            this is series
-        </app-tab>
-    </app-tabs>
+    <mat-tab-group>
+        <mat-tab label="One">
+            <ng-template matTabContent>
+                <app-comics></app-comics>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="Two">
+            <ng-template matTabContent>
+                <app-series></app-series>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
 </app-list-details>

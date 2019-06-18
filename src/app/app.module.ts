@@ -1,10 +1,11 @@
-import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
+import { MatTab } from '@angular/material'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -30,9 +31,8 @@ import { SeriesDetailsEffects } from './series/series-details/store/series-detai
 import { ListComponent } from './UI/list/list.component'
 import { ListDetailsComponent } from './UI/list/list-details/list-details.component'
 import { HeaderComponent } from './UI/header/header.component'
-import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component';
-import { TabsComponent } from './UI/tabs/tabs.component';
-import { TabComponent } from './UI/tabs/tab/tab.component'
+import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component'
+import { MaterialComponentsModule } from './shared/material-components.module'
 
 @NgModule({
     declarations: [
@@ -51,11 +51,10 @@ import { TabComponent } from './UI/tabs/tab/tab.component'
         ListDetailsComponent,
         HeaderComponent,
         NavLinkComponent,
-        TabsComponent,
-        TabComponent,
     ],
     imports: [
-        BrowserModule,
+        BrowserAnimationsModule,
+        MaterialComponentsModule,
         HttpClientModule,
         AppRoutingModule,
         InfiniteScrollModule,
