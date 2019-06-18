@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, Input } from '@angular/core'
 
 @Component({
     selector: 'app-nav-link',
@@ -9,10 +9,8 @@ import { Component, OnInit, Input } from '@angular/core'
     `,
     styleUrls: ['./nav-link.component.scss'],
 })
-export class NavLinkComponent implements OnInit {
+export class NavLinkComponent {
     @Input() link: string
 
     constructor() {}
-
-    ngOnInit() {}
 }

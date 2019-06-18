@@ -29,7 +29,7 @@ import { SeriesDetailsComponent } from './series/series-details/series-details.c
 import { SeriesDetailsEffects } from './series/series-details/store/series-details.effects'
 import { ListComponent } from './UI/list/list.component'
 import { ListDetailsComponent } from './UI/list/list-details/list-details.component'
-import { HeaderComponent } from './UI/header/header.component';
+import { HeaderComponent } from './UI/header/header.component'
 import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component'
 
 @NgModule({
