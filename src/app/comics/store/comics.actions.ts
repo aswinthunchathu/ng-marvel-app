@@ -11,6 +11,9 @@ export const FETCH_COMICS_NEXT_PAGE = '[COMICS] Fetch Next Page'
 export const FETCH_COMICS_BY_CHARACTER_ID_START = '[COMICS] Fetch By Character Id Start'
 export const FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE = '[COMICS] Fetch By Character Id Next Page'
 
+export const FETCH_COMICS_BY_SERIES_ID_START = '[COMICS] Fetch By Series Id Start'
+export const FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE = '[COMICS] Fetch By Series Id Next Page'
+
 export const FETCH_COMICS_SUCCESS = '[COMICS] Fetch Success'
 export const FETCH_COMICS_ERROR = '[COMICS] Fetch Error'
 export const NO_MORE_COMICS = '[COMICS] No More'
@@ -39,6 +42,18 @@ export class FetchComicsByCharacterIdNextPage implements Action {
     constructor(public payload: number) {}
 }
 
+export class FetchComicsBySeriesIdStart implements Action {
+    readonly type = FETCH_COMICS_BY_SERIES_ID_START
+
+    constructor(public payload: number) {}
+}
+
+export class FetchComicsBySeriesIdNextPage implements Action {
+    readonly type = FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE
+
+    constructor(public payload: number) {}
+}
+
 export class FetchComicsSuccess implements Action {
     readonly type = FETCH_COMICS_SUCCESS
 
@@ -59,3 +74,5 @@ export type type =
     | ResetComics
     | FetchComicsByCharacterIdStart
     | FetchComicsByCharacterIdNextPage
+    | FetchComicsBySeriesIdStart
+    | FetchComicsBySeriesIdNextPage

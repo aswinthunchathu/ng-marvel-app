@@ -39,6 +39,7 @@ export class ComicsComponent implements OnInit, OnDestroy {
             if (this.filter.type === 'character') {
                 this.store.dispatch(new fromComicsAction.FetchComicsByCharacterIdStart(this.filter.id))
             } else {
+                this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdStart(this.filter.id))
             }
         } else {
             this.store.dispatch(new fromComicsAction.FetchComicsStart())
@@ -62,6 +63,7 @@ export class ComicsComponent implements OnInit, OnDestroy {
             if (this.filter.type === 'character') {
                 this.store.dispatch(new fromComicsAction.FetchComicsByCharacterIdNextPage(this.filter.id))
             } else {
+                this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdNextPage(this.filter.id))
             }
         } else {
             this.store.dispatch(new fromComicsAction.FetchComicsNextPage())
