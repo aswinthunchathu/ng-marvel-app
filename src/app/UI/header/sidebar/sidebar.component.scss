@@ -66,8 +66,8 @@
     span {
         position: relative;
         display: block;
-        @include rem-fallback(width, 50px);
-        @include rem-fallback(height, 5px);
+        @include rem-fallback(width, 40px);
+        @include rem-fallback(height, 2px);
         @include rem-fallback(margin-bottom, 8px);
         background: $white;
         @include rem-fallback(border-radius, 5px);
@@ -80,21 +80,27 @@
             transform-origin: 0% 0%;
         }
 
-        &:nth-last-child(2) {
+        &:nth-last-child(3) {
             transform-origin: 0% 100%;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 
     &.active span {
         opacity: 1;
-        transform: rotate(-45deg) translate(-5px, 3px);
+        transform: rotate(-45deg) translate(5px, -7px);
+        background-color: $primary-color;
 
-        &:nth-last-child(3) {
+        &:first-child,
+        &:nth-last-child(2) {
             opacity: 0;
             transform: rotate(0deg) scale(0.2, 0.2);
         }
 
-        &:nth-last-child(2) {
+        &:nth-last-child(3) {
             transform: rotate(45deg) translate(-10px, -10px);
         }
     }
