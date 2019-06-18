@@ -8,6 +8,7 @@ import { AppState } from '../../store/app.reducer'
 import * as fromCharacterActions from './store/character.actions'
 import { BgService } from '../../shared/services/bg.service'
 import { ListDetailsModel } from '../../UI/list/list-details/list-details.model'
+import { FilterType } from 'src/app/comics/comics.component'
 
 @Component({
     selector: 'app-character-details',
@@ -20,12 +21,18 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     loading: boolean = true
     character: ListDetailsModel = null
     bgImage: string = ''
+    filter: FilterType = null
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute, private bgService: BgService) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
-            this.store.dispatch(new fromCharacterActions.FetchCharacterStart(+params['id']))
+            const id = +params['id']
+            this.filter = {
+                type: 'character',
+                id,
+            }
+            this.store.dispatch(new fromCharacterActions.FetchCharacterStart(id))
         })
 
         this.characterSub = this.store.select('character').subscribe(res => {

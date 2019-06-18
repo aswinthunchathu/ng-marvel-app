@@ -2,7 +2,7 @@
     <mat-tab-group>
         <mat-tab label="One">
             <ng-template matTabContent>
-                <app-comics></app-comics>
+                <app-comics [filter]="filter"></app-comics>
             </ng-template>
         </mat-tab>
         <mat-tab label="Two">
