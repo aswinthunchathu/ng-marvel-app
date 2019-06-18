@@ -1,0 +1,13 @@
+<div class="tabs">
+    {{ tabs.length }}
+    <div
+        class="tab"
+        *ngFor="let tab of tabs; index as i"
+        [ngClass]="{ active: activeTab === tab }"
+        (click)="onTabChange(tab)"
+    >
+        {{ tab }}
+    </div>
+</div>
+
+<ng-content></ng-content>

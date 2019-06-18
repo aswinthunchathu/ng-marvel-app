@@ -30,7 +30,9 @@ import { SeriesDetailsEffects } from './series/series-details/store/series-detai
 import { ListComponent } from './UI/list/list.component'
 import { ListDetailsComponent } from './UI/list/list-details/list-details.component'
 import { HeaderComponent } from './UI/header/header.component'
-import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component'
+import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component';
+import { TabsComponent } from './UI/tabs/tabs.component';
+import { TabComponent } from './UI/tabs/tab/tab.component'
 
 @NgModule({
     declarations: [
@@ -49,6 +51,8 @@ import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.componen
         ListDetailsComponent,
         HeaderComponent,
         NavLinkComponent,
+        TabsComponent,
+        TabComponent,
     ],
     imports: [
         BrowserModule,

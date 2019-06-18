@@ -1,1 +1,10 @@
-<app-list-details [item]="character" [withBgImage]="true" [loading]="loading"></app-list-details>
+<app-list-details [item]="character" [withBgImage]="true" [loading]="loading">
+    <app-tabs default-tab="Comics">
+        <app-tab name="Comics">
+            this is comics
+        </app-tab>
+        <app-tab name="Series">
+            this is series
+        </app-tab>
+    </app-tabs>
+</app-list-details>

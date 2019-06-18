@@ -1,0 +1,34 @@
+@import '../../shared/styles/mixins';
+@import '../../shared/styles/variables';
+
+.tabs {
+    display: flex;
+
+    .tab {
+        color: $white;
+        font-size: 30px;
+        @include rem-fallback(padding, 0, 15px);
+        margin-left: -15px;
+        cursor: pointer;
+        transition: all 0.5s ease-in-out;
+
+        &.active {
+            color: $primary-color;
+        }
+    }
+}
+
+.tab {
+    color: $white;
+    font-size: 30px;
+    @include rem-fallback(padding, 0, 15px);
+    margin-left: -15px;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+
+    &.active {
+        .tab-header {
+            color: $primary-color;
+        }
+    }
+}
