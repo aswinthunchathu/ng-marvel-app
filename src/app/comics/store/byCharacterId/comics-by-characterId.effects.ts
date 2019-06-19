@@ -95,7 +95,7 @@ export class ComicsByCharacterIdEffects {
         switch (true) {
             case action.type === fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_START:
             case action.type === fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
-                return `/characters/${action['payload']}/comics?orderBy=-modified`
+                return `characters/${action['payload']}/comics?orderBy=-modified`
             default:
                 return 'comics?orderBy=-modified'
         }

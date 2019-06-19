@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Subscription } from 'rxjs'
-import { tap, map } from 'rxjs/operators'
 import { ActivatedRoute, Params } from '@angular/router'
 
 import { AppState } from '../../store/app.reducer'
 import * as fromCharacterActions from './store/character.actions'
 import { BgService } from '../../shared/services/bg.service'
 import { ListDetailsModel } from '../../UI/list/list-details/list-details.model'
-import { FilterType } from 'src/app/comics/comics.component'
+import { FilterType as ComicsFilterType } from '../../comics/comics.component'
+import { FilterType as SeriesFilterType } from '../../series/series.component'
 
 @Component({
     selector: 'app-character-details',
@@ -18,14 +18,19 @@ import { FilterType } from 'src/app/comics/comics.component'
 export class CharacterDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription
     private characterSub: Subscription
-    loading: boolean = true
+    loading: boolean
     character: ListDetailsModel = null
     bgImage: string = ''
-    filter: FilterType = null
+    filter: ComicsFilterType | SeriesFilterType = null
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute, private bgService: BgService) {}
 
     ngOnInit() {
+        this.queryOnStore()
+        this.subscribeToStore()
+    }
+
+    queryOnStore() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
             const id = +params['id']
             this.filter = {
@@ -34,7 +39,9 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
             }
             this.store.dispatch(new fromCharacterActions.FetchCharacterStart(id))
         })
+    }
 
+    subscribeToStore() {
         this.characterSub = this.store.select('character').subscribe(res => {
             this.loading = res.fetching
             if (res.data) {

@@ -35,6 +35,7 @@ import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.componen
 import { MaterialComponentsModule } from './shared/material-components.module'
 import { ComicsByCharacterIdEffects } from './comics/store/byCharacterId/comics-by-characterId.effects'
 import { ComicsBySeriesIdEffects } from './comics/store/bySeriesId/comics-by-seriesId.effects'
+import { SeriesByCharacterIdEffects } from './series/store/byCharacterId/series-by-characterId.effects'
 
 @NgModule({
     declarations: [
@@ -70,6 +71,7 @@ import { ComicsBySeriesIdEffects } from './comics/store/bySeriesId/comics-by-ser
             SeriesDetailsEffects,
             ComicsByCharacterIdEffects,
             ComicsBySeriesIdEffects,
+            SeriesByCharacterIdEffects,
         ]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,
