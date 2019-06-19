@@ -5,45 +5,45 @@ import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of, Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 
-import * as fromComicsByCharacterIDActions from './comics-by-characterId.actions'
+import * as fromComicsBySeriesIdActions from './comics-by-seriesId.actions'
 import { ComicsResults } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
-import { State } from './comics-by-characterId.reducer'
+import { State } from './comics-by-seriesId.reducer'
 import { FETCHED_FROM_STORE } from '../../../shared/constants'
 import { ComicModel } from '../../comic.model'
 
 @Injectable()
-export class ComicsByCharacterIdEffects {
+export class ComicsBySeriesIdEffects {
     /*
-     * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_START action is fired
+     * This effect is fired when FETCH_COMICS_BY_SERIES_ID_START action is fired
      */
     @Effect() fetchComicsInit = this.actions$.pipe(
-        ofType(fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_START),
-        withLatestFrom(this.store.select('comicByCharacterId')),
-        switchMap(([action, comicsState]: [fromComicsByCharacterIDActions.FetchComicsByCharacterIdStart, State]) => {
+        ofType(fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_START),
+        withLatestFrom(this.store.select('comicBySeriesId')),
+        switchMap(([action, comicsState]: [fromComicsBySeriesIdActions.FetchComicsBySeriesIdStart, State]) => {
             if (comicsState.previousFilterId === comicsState.filterId && comicsState.data.length > 0) {
                 return of({ type: FETCHED_FROM_STORE })
             }
             return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
         }),
-        catchError(err => of(new fromComicsByCharacterIDActions.FetchComicsByCharacterIdError(err)))
+        catchError(err => of(new fromComicsBySeriesIdActions.FetchComicsBySeriesIdError(err)))
     )
 
     /*
-     * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE action is fired
+     * This effect is fired when FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE action is fired
      */
     @Effect() fetchComicsNextPage = this.actions$.pipe(
-        ofType(fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE),
-        withLatestFrom(this.store.select('comicByCharacterId')),
-        switchMap(([action, comicsState]: [fromComicsByCharacterIDActions.FetchComicsByCharacterIdNextPage, State]) => {
+        ofType(fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE),
+        withLatestFrom(this.store.select('comicBySeriesId')),
+        switchMap(([action, comicsState]: [fromComicsBySeriesIdActions.FetchComicsBySeriesIdNextPage, State]) => {
             if (!comicsState.pagination.hasMore) {
-                return of({ type: fromComicsByCharacterIDActions.NO_MORE_COMICS_BY_CHARACTER_ID })
+                return of({ type: fromComicsBySeriesIdActions.NO_MORE_COMICS_BY_SERIES_ID })
             } else {
                 return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
         }),
-        catchError(err => of(new fromComicsByCharacterIDActions.FetchComicsByCharacterIdError(err)))
+        catchError(err => of(new fromComicsBySeriesIdActions.FetchComicsBySeriesIdError(err)))
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -56,10 +56,10 @@ export class ComicsByCharacterIdEffects {
      * return : Observable<FetchComicsSuccess>
      */
     private _fetchComics(
-        action: fromComicsByCharacterIDActions.type,
+        action: fromComicsBySeriesIdActions.type,
         limit: number,
         offset: number
-    ): Observable<fromComicsByCharacterIDActions.FetchComicsByCharacterIdSuccess> {
+    ): Observable<fromComicsBySeriesIdActions.FetchComicsBySeriesIdSuccess> {
         return this.http$
             .get<ComicsResults>(this._getURL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -68,7 +68,7 @@ export class ComicsByCharacterIdEffects {
                 map(res => res.data),
                 map(
                     res =>
-                        new fromComicsByCharacterIDActions.FetchComicsByCharacterIdSuccess(
+                        new fromComicsBySeriesIdActions.FetchComicsBySeriesIdSuccess(
                             res.results.map(
                                 item =>
                                     new ComicModel(
@@ -91,11 +91,11 @@ export class ComicsByCharacterIdEffects {
      * @param action : type of Comics Actions
      * return : string - URL
      */
-    private _getURL(action?: fromComicsByCharacterIDActions.type) {
+    private _getURL(action?: fromComicsBySeriesIdActions.type) {
         switch (true) {
-            case action.type === fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_START:
-            case action.type === fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
-                return `/characters/${action['payload']}/comics?orderBy=-modified`
+            case action.type === fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_START:
+            case action.type === fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
+                return `/series/${action['payload']}/comics?orderBy=-modified`
             default:
                 return 'comics?orderBy=-modified'
         }

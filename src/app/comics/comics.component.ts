@@ -6,6 +6,7 @@ import { tap, map } from 'rxjs/operators'
 import { AppState } from '../store/app.reducer'
 import * as fromComicsAction from './store/comics.actions'
 import * as fromComicsByCharacterIdAction from './store/byCharacterId/comics-by-characterId.actions'
+import * as fromComicsBySeriesIdAction from './store/bySeriesId/comics-by-seriesId.actions'
 import { Style } from '../UI/list/list.component'
 import { ComicModel } from './comic.model'
 
@@ -39,7 +40,7 @@ export class ComicsComponent implements OnInit {
             if (this.filter.type === 'character') {
                 this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdStart(this.filter.id))
             } else {
-                //this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdStart(this.filter.id))
+                this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdStart(this.filter.id))
             }
         } else {
             this.store.dispatch(new fromComicsAction.FetchComicsStart())
@@ -47,13 +48,20 @@ export class ComicsComponent implements OnInit {
     }
 
     subscribeToStore() {
-        const store = this.filter.type === 'character' ? 'comicByCharacterId' : 'comics'
+        let store = 'comics'
+
+        if (this.filter) {
+            if (this.filter.type === 'character') {
+                store = 'comicByCharacterId'
+            } else {
+                store = 'comicBySeriesId'
+            }
+        }
+
         this.comics = this.store.select(store).pipe(
             tap(res => {
                 this.loading = res.fetching
-                if (this.hasMore !== res.pagination.hasMore) {
-                    this.hasMore = res.pagination.hasMore
-                }
+                this.hasMore = res.pagination.hasMore
             }),
             map(res => res.data)
         )
@@ -64,7 +72,7 @@ export class ComicsComponent implements OnInit {
             if (this.filter.type === 'character') {
                 this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdNextPage(this.filter.id))
             } else {
-                //this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdNextPage(this.filter.id))
+                this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdNextPage(this.filter.id))
             }
         } else {
             this.store.dispatch(new fromComicsAction.FetchComicsNextPage())

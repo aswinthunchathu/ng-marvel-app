@@ -10,7 +10,7 @@ import { ComicsResults } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { State } from './comics.reducer'
-import { FETCHED_FROM_STORE } from 'src/app/shared/constants'
+import { FETCHED_FROM_STORE } from '../../shared/constants'
 import { ComicModel } from '../comic.model'
 
 @Injectable()
@@ -31,54 +31,18 @@ export class ComicsEffects {
     )
 
     /*
-     * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_START action is fired
-     */
-    // @Effect() fetchComicsByCharacterId = this.actions$.pipe(
-    //     ofType(fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START),
-    //     withLatestFrom(this.store.select('comics')),
-    //     switchMap(([action, comicsState]: [fromComicsActions.FetchComicsByCharacterIdStart, State]) => {
-    //         return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-    //     }),
-    //     catchError(err => of(new fromComicsActions.FetchComicsError(err)))
-    // )
-
-    /*
-     * This effect is fired when FETCH_COMICS_BY_SERIES_ID_START action is fired
-     */
-    // @Effect() fetchComicsBySeriesId = this.actions$.pipe(
-    //     ofType(fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START),
-    //     withLatestFrom(this.store.select('comics')),
-    //     switchMap(([action, comicsState]: [fromComicsActions.FetchComicsBySeriesIdStart, State]) => {
-    //         return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-    //     }),
-    //     catchError(err => of(new fromComicsActions.FetchComicsError(err)))
-    // )
-
-    /*
-     * This effect is fired when FETCH_COMICS_NEXT_PAGE or FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE 
-        or FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE action is fired
+     * This effect is fired when FETCH_COMICS_NEXT_PAGE action is fired
      */
     @Effect() fetchComicsNextPage = this.actions$.pipe(
-        ofType(
-            fromComicsActions.FETCH_COMICS_NEXT_PAGE
-            // fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE,
-            // fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE
-        ),
+        ofType(fromComicsActions.FETCH_COMICS_NEXT_PAGE),
         withLatestFrom(this.store.select('comics')),
-        switchMap(
-            ([action, comicsState]: [
-                fromComicsActions.FetchComicsNextPage,
-                // | fromComicsActions.FetchComicsByCharacterIdNextPage
-                // | fromComicsActions.FetchComicsBySeriesIdNextPage,
-                State
-            ]) => {
-                if (!comicsState.pagination.hasMore) {
-                    return of({ type: fromComicsActions.NO_MORE_COMICS })
-                } else {
-                    return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-                }
+        switchMap(([action, comicsState]: [fromComicsActions.FetchComicsNextPage, State]) => {
+            if (!comicsState.pagination.hasMore) {
+                return of({ type: fromComicsActions.NO_MORE_COMICS })
+            } else {
+                return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
-        ),
+        }),
         catchError(err => of(new fromComicsActions.FetchComicsError(err)))
     )
 
@@ -129,12 +93,6 @@ export class ComicsEffects {
      */
     private _getURL(action?: fromComicsActions.type) {
         switch (true) {
-            // case action.type === fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START:
-            // case action.type === fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
-            //     return `/characters/${action['payload']}/comics?orderBy=-modified`
-            // case action.type === fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START:
-            // case action.type === fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
-            //     return `/series/${action['payload']}/comics?orderBy=-modified`
             default:
                 return 'comics?orderBy=-modified'
         }

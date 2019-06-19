@@ -9,7 +9,7 @@ import { SeriesComponent } from './series/series.component'
 import { SeriesDetailsComponent } from './series/series-details/series-details.component'
 
 const routes: Routes = [
-    { path: 'series/:id', component: SeriesDetailsComponent },
+    { path: 'seriesDetails/:id', component: SeriesDetailsComponent },
     { path: 'series', component: SeriesComponent },
     { path: 'comic/:id', component: ComicDetailsComponent },
     { path: 'character/:id', component: CharacterDetailsComponent },
