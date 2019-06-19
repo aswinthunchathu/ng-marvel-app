@@ -1,4 +1,5 @@
 @import './app/shared/styles/variables';
+@import './app/shared/styles/mixins';
 @import url('https://fonts.googleapis.com/css?family=Teko');
 
 html {
@@ -43,4 +44,14 @@ body {
 
 .img-fluid {
     max-width: 100%;
+}
+
+.mat-tab-label {
+    font-family: 'Teko', sans-serif;
+    color: $white;
+    @include rem-fallback(font-size, 30px);
+}
+
+.mat-tab-body-wrapper {
+    @include rem-fallback(margin-top, 20px);
 }
