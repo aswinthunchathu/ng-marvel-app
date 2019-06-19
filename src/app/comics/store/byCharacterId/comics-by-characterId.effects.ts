@@ -15,6 +15,8 @@ import { ComicModel } from '../../comic.model'
 
 @Injectable()
 export class ComicsByCharacterIdEffects {
+    private _URL = (action: fromComicsByCharacterIDActions.type) =>
+        `characters/${action['payload']}/comics?orderBy=-modified`
     /*
      * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_START action is fired
      */
@@ -50,10 +52,10 @@ export class ComicsByCharacterIdEffects {
 
     /*
      * fetch comics from server
-     * @param action : type of Comics Actions
-     * limit: number - limit per page
-     * offset: number - page offset
-     * return : Observable<FetchComicsSuccess>
+     * @param action : type of Comics By Character Id Actions
+     * @params limit: number - limit per page
+     * @params offset: number - page offset
+     * return : Observable<fromComicsByCharacterIDActions.type>
      */
     private _fetchComics(
         action: fromComicsByCharacterIDActions.type,
@@ -61,7 +63,7 @@ export class ComicsByCharacterIdEffects {
         offset: number
     ): Observable<fromComicsByCharacterIDActions.FetchComicsByCharacterIdSuccess> {
         return this.http$
-            .get<ComicsResults>(this._getURL(action), {
+            .get<ComicsResults>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
@@ -84,20 +86,5 @@ export class ComicsByCharacterIdEffects {
                         )
                 )
             )
-    }
-
-    /*
-     * return API url based on given action
-     * @param action : type of Comics Actions
-     * return : string - URL
-     */
-    private _getURL(action?: fromComicsByCharacterIDActions.type) {
-        switch (true) {
-            case action.type === fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_START:
-            case action.type === fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
-                return `characters/${action['payload']}/comics?orderBy=-modified`
-            default:
-                return 'comics?orderBy=-modified'
-        }
     }
 }

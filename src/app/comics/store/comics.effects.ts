@@ -15,17 +15,18 @@ import { ComicModel } from '../comic.model'
 
 @Injectable()
 export class ComicsEffects {
+    private readonly _URL = 'comics?orderBy=-modified'
     /*
      * This effect is fired when FETCH_COMICS_START action is fired
      */
     @Effect() fetchComicsInit = this.actions$.pipe(
         ofType(fromComicsActions.FETCH_COMICS_START),
         withLatestFrom(this.store.select('comics')),
-        switchMap(([action, comicsState]) => {
+        switchMap(([__, comicsState]) => {
             if (comicsState.data.length > 0) {
                 return of({ type: FETCHED_FROM_STORE })
             }
-            return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
+            return this._fetchComics(comicsState.pagination.limit, comicsState.pagination.nextPage)
         }),
         catchError(err => of(new fromComicsActions.FetchComicsError(err)))
     )
@@ -36,11 +37,11 @@ export class ComicsEffects {
     @Effect() fetchComicsNextPage = this.actions$.pipe(
         ofType(fromComicsActions.FETCH_COMICS_NEXT_PAGE),
         withLatestFrom(this.store.select('comics')),
-        switchMap(([action, comicsState]: [fromComicsActions.FetchComicsNextPage, State]) => {
+        switchMap(([__, comicsState]: [fromComicsActions.FetchComicsNextPage, State]) => {
             if (!comicsState.pagination.hasMore) {
                 return of({ type: fromComicsActions.NO_MORE_COMICS })
             } else {
-                return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
+                return this._fetchComics(comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
         }),
         catchError(err => of(new fromComicsActions.FetchComicsError(err)))
@@ -50,18 +51,13 @@ export class ComicsEffects {
 
     /*
      * fetch comics from server
-     * @param action : type of Comics Actions
-     * limit: number - limit per page
-     * offset: number - page offset
+     * @param limit: number - limit per page
+     * @param offset: number - page offset
      * return : Observable<FetchComicsSuccess>
      */
-    private _fetchComics(
-        action: fromComicsActions.type,
-        limit: number,
-        offset: number
-    ): Observable<fromComicsActions.FetchComicsSuccess> {
+    private _fetchComics(limit: number, offset: number): Observable<fromComicsActions.FetchComicsSuccess> {
         return this.http$
-            .get<ComicsResults>(this._getURL(action), {
+            .get<ComicsResults>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
@@ -84,17 +80,5 @@ export class ComicsEffects {
                         )
                 )
             )
-    }
-
-    /*
-     * return API url based on given action
-     * @param action : type of Comics Actions
-     * return : string - URL
-     */
-    private _getURL(action?: fromComicsActions.type) {
-        switch (true) {
-            default:
-                return 'comics?orderBy=-modified'
-        }
     }
 }

@@ -15,6 +15,8 @@ import { SeriesModel } from '../../series.model'
 
 @Injectable()
 export class SeriesByCharacterIdEffects {
+    private _URL = (action: fromSeriesByCharacterIDActions.type) =>
+        `characters/${action['payload']}/series?orderBy=-modified`
     /*
      * This effect is fired when FETCH_SERIES_BY_CHARACTER_ID_START action is fired
      */
@@ -50,9 +52,9 @@ export class SeriesByCharacterIdEffects {
 
     /*
      * fetch Series from server
-     * @param action : type of Series Actions
-     * limit: number - limit per page
-     * offset: number - page offset
+     * @param action : type of series by character id Actions
+     * @params limit: number - limit per page
+     * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
     private _fetchSeries(
@@ -61,7 +63,7 @@ export class SeriesByCharacterIdEffects {
         offset: number
     ): Observable<fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdSuccess> {
         return this.http$
-            .get<SeriesResults>(this._getURL(action), {
+            .get<SeriesResults>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
@@ -84,20 +86,5 @@ export class SeriesByCharacterIdEffects {
                         )
                 )
             )
-    }
-
-    /*
-     * return API url based on given action
-     * @param action : type of Series Actions
-     * return : string - URL
-     */
-    private _getURL(action?: fromSeriesByCharacterIDActions.type) {
-        switch (true) {
-            case action.type === fromSeriesByCharacterIDActions.FETCH_SERIES_BY_CHARACTER_ID_START:
-            case action.type === fromSeriesByCharacterIDActions.FETCH_SERIES_BY_CHARACTER_ID_NEXT_PAGE:
-                return `characters/${action['payload']}/series?orderBy=-modified`
-            default:
-                return 'Series?orderBy=-modified'
-        }
     }
 }

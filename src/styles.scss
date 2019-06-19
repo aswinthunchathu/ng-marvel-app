@@ -24,7 +24,7 @@ body {
 
 body {
     @media (min-width: $website-max-width) {
-        width: calc($website-max-width - 20px);
+        width: $website-max-width - 20px;
         margin: auto;
     }
 }

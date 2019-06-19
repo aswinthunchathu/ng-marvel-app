@@ -7,7 +7,7 @@
 
     @media (min-width: $breakpoint-lg) {
         padding-top: 0;
-        padding-left: 300px;
+        @include rem-fallback(padding-left, 300px);
     }
 
     .layout-main {

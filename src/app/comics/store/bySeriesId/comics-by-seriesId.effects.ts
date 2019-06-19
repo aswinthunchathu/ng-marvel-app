@@ -15,6 +15,7 @@ import { ComicModel } from '../../comic.model'
 
 @Injectable()
 export class ComicsBySeriesIdEffects {
+    private _URL = (action: fromComicsBySeriesIdActions.type) => `series/${action['payload']}/comics?orderBy=-modified`
     /*
      * This effect is fired when FETCH_COMICS_BY_SERIES_ID_START action is fired
      */
@@ -50,10 +51,10 @@ export class ComicsBySeriesIdEffects {
 
     /*
      * fetch comics from server
-     * @param action : type of Comics Actions
-     * limit: number - limit per page
-     * offset: number - page offset
-     * return : Observable<FetchComicsSuccess>
+     * @param action : type of comics by series id Actions
+     * @params limit: number - limit per page
+     * @params offset: number - page offset
+     * return : Observable<FetchComicsBySeriesIdSuccess>
      */
     private _fetchComics(
         action: fromComicsBySeriesIdActions.type,
@@ -61,7 +62,7 @@ export class ComicsBySeriesIdEffects {
         offset: number
     ): Observable<fromComicsBySeriesIdActions.FetchComicsBySeriesIdSuccess> {
         return this.http$
-            .get<ComicsResults>(this._getURL(action), {
+            .get<ComicsResults>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
@@ -84,20 +85,5 @@ export class ComicsBySeriesIdEffects {
                         )
                 )
             )
-    }
-
-    /*
-     * return API url based on given action
-     * @param action : type of Comics Actions
-     * return : string - URL
-     */
-    private _getURL(action?: fromComicsBySeriesIdActions.type) {
-        switch (true) {
-            case action.type === fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_START:
-            case action.type === fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
-                return `series/${action['payload']}/comics?orderBy=-modified`
-            default:
-                return 'comics?orderBy=-modified'
-        }
     }
 }
