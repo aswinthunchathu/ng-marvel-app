@@ -22,7 +22,7 @@ export class ComicsBySeriesIdEffects {
         ofType(fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_START),
         withLatestFrom(this.store.select('comicBySeriesId')),
         switchMap(([action, comicsState]: [fromComicsBySeriesIdActions.FetchComicsBySeriesIdStart, State]) => {
-            if (comicsState.previousFilterId === comicsState.filterId && comicsState.data.length > 0) {
+            if (comicsState.data.length > 0) {
                 return of({ type: FETCHED_FROM_STORE })
             }
             return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)

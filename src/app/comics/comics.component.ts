@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core'
-import { Observable } from 'rxjs'
+import { Subscription } from 'rxjs'
 import { Store } from '@ngrx/store'
-import { tap, map } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
 import * as fromComicsAction from './store/comics.actions'
@@ -20,8 +19,9 @@ export interface FilterType {
     templateUrl: './comics.component.html',
     styleUrls: ['./comics.component.scss'],
 })
-export class ComicsComponent implements OnInit {
-    comics: Observable<ComicModel[]>
+export class ComicsComponent implements OnInit, OnDestroy {
+    storeSubscription: Subscription
+    comics: ComicModel[]
     hasMore: boolean = true
     loading: boolean = true
     gridStyle = Style.gridSpaced
@@ -58,13 +58,13 @@ export class ComicsComponent implements OnInit {
             }
         }
 
-        this.comics = this.store.select(store).pipe(
-            tap(res => {
-                this.loading = res.fetching
+        this.storeSubscription = this.store.select(store).subscribe(res => {
+            this.loading = res.fetching
+            this.comics = res.data
+            if (this.hasMore !== res.pagination.hasMore) {
                 this.hasMore = res.pagination.hasMore
-            }),
-            map(res => res.data)
-        )
+            }
+        })
     }
 
     onScroll() {
@@ -77,5 +77,9 @@ export class ComicsComponent implements OnInit {
         } else {
             this.store.dispatch(new fromComicsAction.FetchComicsNextPage())
         }
+    }
+
+    ngOnDestroy() {
+        this.storeSubscription.unsubscribe()
     }
 }

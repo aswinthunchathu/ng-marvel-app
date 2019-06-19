@@ -26,13 +26,19 @@ const initialState: State = {
 export const comicsByCharacterIdReducer = (state = initialState, action: fromComicsByCharacterIdActions.type) => {
     switch (action.type) {
         case fromComicsByCharacterIdActions.FETCH_COMICS_BY_CHARACTER_ID_START:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-                previousFilterId: state.filterId,
-                filterId: action.payload,
-                data: state.filterId === action.payload ? [...state.data] : [],
+            if (state.filterId === action.payload) {
+                return {
+                    ...state,
+                    fetching: true,
+                    error: null,
+                }
+            } else {
+                return {
+                    ...state,
+                    ...initialState,
+                    fetching: true,
+                    filterId: action.payload,
+                }
             }
         case fromComicsByCharacterIdActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
             return {

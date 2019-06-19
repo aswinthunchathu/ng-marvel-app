@@ -11,7 +11,6 @@ export interface State {
     pagination: Pagination
     error: HttpErrorResponse
     filterId: number
-    previousFilterId: number
 }
 
 const initialState: State = {
@@ -20,20 +19,24 @@ const initialState: State = {
     data: [],
     error: null,
     filterId: null,
-    previousFilterId: null,
 }
 
 export const comicsBySeriesIdReducer = (state = initialState, action: fromComicsBySeriesIdActions.type) => {
     switch (action.type) {
         case fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_START:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-                previousFilterId: state.filterId,
-                filterId: action.payload,
-                data: state.filterId === action.payload ? [...state.data] : [],
-                pagination: state.filterId === action.payload ? state.pagination : new Pagination(-1, PAGE_LIMIT, 0, 0),
+            if (state.filterId === action.payload) {
+                return {
+                    ...state,
+                    fetching: true,
+                    error: null,
+                }
+            } else {
+                return {
+                    ...state,
+                    ...initialState,
+                    fetching: true,
+                    filterId: action.payload,
+                }
             }
         case fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
             return {
