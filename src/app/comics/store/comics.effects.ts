@@ -15,6 +15,9 @@ import { ComicModel } from '../comic.model'
 
 @Injectable()
 export class ComicsEffects {
+    /*
+     * This effect is fired when FETCH_COMICS_START action is fired
+     */
     @Effect() fetchComicsInit = this.actions$.pipe(
         ofType(fromComicsActions.FETCH_COMICS_START),
         withLatestFrom(this.store.select('comics')),
@@ -27,37 +30,46 @@ export class ComicsEffects {
         catchError(err => of(new fromComicsActions.FetchComicsError(err)))
     )
 
-    @Effect() fetchComicsByCharacterId = this.actions$.pipe(
-        ofType(fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START),
-        withLatestFrom(this.store.select('comics')),
-        switchMap(([action, comicsState]: [fromComicsActions.FetchComicsByCharacterIdStart, State]) => {
-            return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromComicsActions.FetchComicsError(err)))
-    )
+    /*
+     * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_START action is fired
+     */
+    // @Effect() fetchComicsByCharacterId = this.actions$.pipe(
+    //     ofType(fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START),
+    //     withLatestFrom(this.store.select('comics')),
+    //     switchMap(([action, comicsState]: [fromComicsActions.FetchComicsByCharacterIdStart, State]) => {
+    //         return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
+    //     }),
+    //     catchError(err => of(new fromComicsActions.FetchComicsError(err)))
+    // )
 
-    @Effect() fetchComicsBySeriesId = this.actions$.pipe(
-        ofType(fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START),
-        withLatestFrom(this.store.select('comics')),
-        switchMap(([action, comicsState]: [fromComicsActions.FetchComicsBySeriesIdStart, State]) => {
-            return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromComicsActions.FetchComicsError(err)))
-    )
+    /*
+     * This effect is fired when FETCH_COMICS_BY_SERIES_ID_START action is fired
+     */
+    // @Effect() fetchComicsBySeriesId = this.actions$.pipe(
+    //     ofType(fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START),
+    //     withLatestFrom(this.store.select('comics')),
+    //     switchMap(([action, comicsState]: [fromComicsActions.FetchComicsBySeriesIdStart, State]) => {
+    //         return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
+    //     }),
+    //     catchError(err => of(new fromComicsActions.FetchComicsError(err)))
+    // )
 
+    /*
+     * This effect is fired when FETCH_COMICS_NEXT_PAGE or FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE 
+        or FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE action is fired
+     */
     @Effect() fetchComicsNextPage = this.actions$.pipe(
         ofType(
-            fromComicsActions.FETCH_COMICS_NEXT_PAGE,
-            fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE,
-            fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE
+            fromComicsActions.FETCH_COMICS_NEXT_PAGE
+            // fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE,
+            // fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE
         ),
         withLatestFrom(this.store.select('comics')),
         switchMap(
             ([action, comicsState]: [
-
-                    | fromComicsActions.FetchComicsNextPage
-                    | fromComicsActions.FetchComicsByCharacterIdNextPage
-                    | fromComicsActions.FetchComicsBySeriesIdNextPage,
+                fromComicsActions.FetchComicsNextPage,
+                // | fromComicsActions.FetchComicsByCharacterIdNextPage
+                // | fromComicsActions.FetchComicsBySeriesIdNextPage,
                 State
             ]) => {
                 if (!comicsState.pagination.hasMore) {
@@ -72,6 +84,13 @@ export class ComicsEffects {
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
 
+    /*
+     * fetch comics from server
+     * @param action : type of Comics Actions
+     * limit: number - limit per page
+     * offset: number - page offset
+     * return : Observable<FetchComicsSuccess>
+     */
     private _fetchComics(
         action: fromComicsActions.type,
         limit: number,
@@ -103,14 +122,19 @@ export class ComicsEffects {
             )
     }
 
+    /*
+     * return API url based on given action
+     * @param action : type of Comics Actions
+     * return : string - URL
+     */
     private _getURL(action?: fromComicsActions.type) {
         switch (true) {
-            case action.type === fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START:
-            case action.type === fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
-                return `/characters/${action['payload']}/comics?orderBy=-modified`
-            case action.type === fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START:
-            case action.type === fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
-                return `/series/${action['payload']}/comics?orderBy=-modified`
+            // case action.type === fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START:
+            // case action.type === fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
+            //     return `/characters/${action['payload']}/comics?orderBy=-modified`
+            // case action.type === fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START:
+            // case action.type === fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
+            //     return `/series/${action['payload']}/comics?orderBy=-modified`
             default:
                 return 'comics?orderBy=-modified'
         }

@@ -33,6 +33,7 @@ import { ListDetailsComponent } from './UI/list/list-details/list-details.compon
 import { HeaderComponent } from './UI/header/header.component'
 import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component'
 import { MaterialComponentsModule } from './shared/material-components.module'
+import { ComicsByCharacterIdEffects } from './comics/store/byCharacterId/comics-by-characterId.effects'
 
 @NgModule({
     declarations: [
@@ -66,6 +67,7 @@ import { MaterialComponentsModule } from './shared/material-components.module'
             ComicEffects,
             SeriesEffects,
             SeriesDetailsEffects,
+            ComicsByCharacterIdEffects,
         ]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,

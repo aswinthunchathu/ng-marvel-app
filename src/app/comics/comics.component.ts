@@ -5,6 +5,7 @@ import { tap, map } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
 import * as fromComicsAction from './store/comics.actions'
+import * as fromComicsByCharacterIdAction from './store/byCharacterId/comics-by-characterId.actions'
 import { Style } from '../UI/list/list.component'
 import { ComicModel } from './comic.model'
 
@@ -18,7 +19,7 @@ export interface FilterType {
     templateUrl: './comics.component.html',
     styleUrls: ['./comics.component.scss'],
 })
-export class ComicsComponent implements OnInit, OnDestroy {
+export class ComicsComponent implements OnInit {
     comics: Observable<ComicModel[]>
     hasMore: boolean = true
     loading: boolean = true
@@ -35,11 +36,10 @@ export class ComicsComponent implements OnInit, OnDestroy {
 
     queryOnStore() {
         if (this.filter) {
-            this.store.dispatch(new fromComicsAction.ResetComics())
             if (this.filter.type === 'character') {
-                this.store.dispatch(new fromComicsAction.FetchComicsByCharacterIdStart(this.filter.id))
+                this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdStart(this.filter.id))
             } else {
-                this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdStart(this.filter.id))
+                //this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdStart(this.filter.id))
             }
         } else {
             this.store.dispatch(new fromComicsAction.FetchComicsStart())
@@ -47,7 +47,8 @@ export class ComicsComponent implements OnInit, OnDestroy {
     }
 
     subscribeToStore() {
-        this.comics = this.store.select('comics').pipe(
+        const store = this.filter.type === 'character' ? 'comicByCharacterId' : 'comics'
+        this.comics = this.store.select(store).pipe(
             tap(res => {
                 this.loading = res.fetching
                 if (this.hasMore !== res.pagination.hasMore) {
@@ -61,18 +62,12 @@ export class ComicsComponent implements OnInit, OnDestroy {
     onScroll() {
         if (this.filter) {
             if (this.filter.type === 'character') {
-                this.store.dispatch(new fromComicsAction.FetchComicsByCharacterIdNextPage(this.filter.id))
+                this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdNextPage(this.filter.id))
             } else {
-                this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdNextPage(this.filter.id))
+                //this.store.dispatch(new fromComicsAction.FetchComicsBySeriesIdNextPage(this.filter.id))
             }
         } else {
             this.store.dispatch(new fromComicsAction.FetchComicsNextPage())
-        }
-    }
-
-    ngOnDestroy() {
-        if (this.filter) {
-            this.store.dispatch(new fromComicsAction.ResetComics())
         }
     }
 }

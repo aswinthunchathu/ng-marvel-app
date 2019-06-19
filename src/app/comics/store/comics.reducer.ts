@@ -19,16 +19,14 @@ const initialState: State = {
     error: null,
 }
 
-let previousState: State = null
-
 export const comicsReducer = (state = initialState, action: fromComicsActions.type) => {
     switch (action.type) {
         case fromComicsActions.FETCH_COMICS_START:
         case fromComicsActions.FETCH_COMICS_NEXT_PAGE:
-        case fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START:
-        case fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
-        case fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START:
-        case fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
+            // case fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START:
+            // case fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
+            // case fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START:
+            // case fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
             return {
                 ...state,
                 fetching: true,
@@ -48,11 +46,11 @@ export const comicsReducer = (state = initialState, action: fromComicsActions.ty
                 fetching: false,
                 error: action.payload,
             }
-        case fromComicsActions.RESET_COMICS:
-            return {
-                ...state,
-                ...initialState,
-            }
+        // case fromComicsActions.RESET_COMICS:
+        //     return {
+        //         ...state,
+        //         ...initialState,
+        //     }
 
         default:
             return {

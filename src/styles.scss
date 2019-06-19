@@ -46,12 +46,16 @@ body {
     max-width: 100%;
 }
 
-.mat-tab-label {
+.mat-tab-group {
     font-family: 'Teko', sans-serif;
-    color: $white;
-    @include rem-fallback(font-size, 30px);
-}
 
-.mat-tab-body-wrapper {
-    @include rem-fallback(margin-top, 20px);
+    .mat-tab-label {
+        color: $white;
+        @include rem-fallback(font-size, 30px);
+        font-family: 'Teko', sans-serif;
+    }
+
+    .mat-tab-body-wrapper {
+        @include rem-fallback(margin-top, 20px);
+    }
 }
