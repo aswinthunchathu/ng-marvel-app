@@ -18,11 +18,11 @@ export class SeriesEffects {
     private readonly _URL = 'series?orderBy=-modified'
 
     @Effect() fetchSeries = this.actions$.pipe(
-        ofType(fromSeriesActions.FETCH_SERIES_INIT),
+        ofType(fromSeriesActions.fetchStart),
         withLatestFrom(this.store.select('series')),
         switchMap(([__, seriesState]) => {
             if (seriesState.data.length > 0) {
-                return of(new fromSeriesActions.FetchedFromStore())
+                return of(fromSeriesActions.fetchedFromStore())
             }
 
             return this._fetchFromServer(seriesState.pagination.limit, seriesState.pagination.nextPage)
@@ -30,13 +30,13 @@ export class SeriesEffects {
     )
 
     @Effect() fetchSeriesNextPage = this.actions$.pipe(
-        ofType(fromSeriesActions.FETCH_SERIES_NEXT_PAGE),
+        ofType(fromSeriesActions.fetchNextPage),
         withLatestFrom(this.store.select('series')),
         switchMap(([__, seriesState]) => {
             const pagination: Pagination = seriesState.pagination
 
             if (!pagination.hasMore) {
-                return of(new fromSeriesActions.NoMoreToFetch())
+                return of(fromSeriesActions.noMoreToFetch())
             } else {
                 return this._fetchFromServer(pagination.limit, pagination.nextPage)
             }
@@ -51,34 +51,36 @@ export class SeriesEffects {
      * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
-    private _fetchFromServer(
-        limit: number,
-        offset: number
-    ): Observable<fromSeriesActions.FetchSeriesSuccess | fromSeriesActions.FetchSeriesError> {
+    private _fetchFromServer(limit: number, offset: number) {
         return this.http$
             .get<SeriesResults>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
                 map(res => res.data),
-                map(
-                    res =>
-                        new fromSeriesActions.FetchSeriesSuccess(
-                            res.results.map(
-                                item =>
-                                    new SeriesModel(
-                                        item.id,
-                                        item.title,
-                                        item.description,
-                                        item.thumbnail,
-                                        item.comics,
-                                        item.characters
-                                    )
-                            ),
-                            new Pagination(res.offset, res.limit, res.total, res.count)
-                        )
+                map(res =>
+                    fromSeriesActions.fetchSuccess({
+                        payload: res.results.map(
+                            item =>
+                                new SeriesModel(
+                                    item.id,
+                                    item.title,
+                                    item.description,
+                                    item.thumbnail,
+                                    item.comics,
+                                    item.characters
+                                )
+                        ),
+                        pagination: new Pagination(res.offset, res.limit, res.total, res.count),
+                    })
                 ),
-                catchError(err => of(new fromSeriesActions.FetchSeriesError(err)))
+                catchError(err =>
+                    of(
+                        fromSeriesActions.fetchError({
+                            payload: err,
+                        })
+                    )
+                )
             )
     }
 }

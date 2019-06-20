@@ -13,9 +13,9 @@ import * as fromCharactersBySeriesIdReducer from '../characters/store/bySeriesId
 export interface AppState {
     characters: fromCharactersReducer.State
     comics: fromComicsReducer.State
+    series: fromSeriesReducer.State
     character: fromCharacterReducer.State
     comic: fromComicReducer.State
-    series: fromSeriesReducer.State
     seriesDetails: fromSeriesDetailsReducer.State
     comicByCharacterId: fromComicsByCharacterIdReducer.State
     comicBySeriesId: fromComicsBySeriesIdReducer.State
@@ -27,4 +27,5 @@ export interface AppState {
 export const appReducer = {
     characters: fromCharactersReducer.reducer,
     comics: fromComicsReducer.reducer,
+    series: fromSeriesReducer.reducer,
 }

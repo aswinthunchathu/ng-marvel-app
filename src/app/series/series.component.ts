@@ -39,7 +39,7 @@ export class SeriesComponent implements OnInit {
         if (this.filter) {
             this.store.dispatch(new fromSeriesByCharacterIdActions.FetchSeriesByCharacterIdStart(this.filter.id))
         } else {
-            this.store.dispatch(new fromSeriesActions.FetchSeriesInit())
+            this.store.dispatch(fromSeriesActions.fetchStart())
         }
     }
 
@@ -66,7 +66,7 @@ export class SeriesComponent implements OnInit {
         if (this.filter) {
             this.store.dispatch(new fromSeriesByCharacterIdActions.FetchSeriesByCharacterIdNextPage(this.filter.id))
         } else {
-            this.store.dispatch(new fromSeriesActions.FetchSeriesNextPage())
+            this.store.dispatch(fromSeriesActions.fetchNextPage())
         }
     }
 
