@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of, Observable } from 'rxjs'
@@ -27,9 +27,9 @@ export class ComicsByCharacterIdEffects {
             if (comicsState.data.length > 0) {
                 return of({ type: FETCHED_FROM_STORE })
             }
+
             return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromComicsByCharacterIDActions.FetchComicsByCharacterIdError(err)))
+        })
     )
 
     /*
@@ -44,8 +44,7 @@ export class ComicsByCharacterIdEffects {
             } else {
                 return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
-        }),
-        catchError(err => of(new fromComicsByCharacterIDActions.FetchComicsByCharacterIdError(err)))
+        })
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -61,7 +60,10 @@ export class ComicsByCharacterIdEffects {
         action: fromComicsByCharacterIDActions.type,
         limit: number,
         offset: number
-    ): Observable<fromComicsByCharacterIDActions.FetchComicsByCharacterIdSuccess> {
+    ): Observable<
+        | fromComicsByCharacterIDActions.FetchComicsByCharacterIdSuccess
+        | fromComicsByCharacterIDActions.FetchComicsByCharacterIdError
+    > {
         return this.http$
             .get<ComicsResults>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -84,7 +86,8 @@ export class ComicsByCharacterIdEffects {
                             ),
                             new Pagination(res.offset, res.limit, res.total, res.count)
                         )
-                )
+                ),
+                catchError(err => of(new fromComicsByCharacterIDActions.FetchComicsByCharacterIdError(err)))
             )
     }
 }

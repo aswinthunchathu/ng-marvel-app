@@ -1,15 +1,17 @@
-<app-list
-    [isInfiniteScroll]="true"
-    [hasMore]="hasMore"
-    [isFetching]="loading"
-    [grid-style]="gridStyle"
-    (onScroll)="onScroll()"
->
-    <a class="no-decoration" [routerLink]="comic.linkToDetails" *ngFor="let comic of comics">
-        <app-card
-            [image-src]="comic.image"
-            [placeholder-image-src]="comic.placeholder"
-            [title]="comic.title"
-        ></app-card>
-    </a>
-</app-list>
+<app-error-handler [hasError]="hasError">
+    <app-list
+        [isInfiniteScroll]="true"
+        [hasMore]="hasMore"
+        [isFetching]="loading"
+        [grid-style]="gridStyle"
+        (onScroll)="onScroll()"
+    >
+        <a class="no-decoration" [routerLink]="comic.linkToDetails" *ngFor="let comic of comics">
+            <app-card
+                [image-src]="comic.image"
+                [placeholder-image-src]="comic.placeholder"
+                [title]="comic.title"
+            ></app-card>
+        </a>
+    </app-list>
+</app-error-handler>

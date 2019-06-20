@@ -1,0 +1,14 @@
+@import '../../shared//styles/variables';
+@import '../../shared//styles/mixins';
+
+.error {
+    color: $primary-color;
+    text-align: center;
+    @include rem-fallback(font-size, 30px);
+    @include rem-fallback(padding, 20px);
+    @include rem-fallback(margin, 50%, 0, 0, 0);
+
+    @media (min-width: $breakpoint-md) {
+        @include rem-fallback(font-size, 40px);
+    }
+}

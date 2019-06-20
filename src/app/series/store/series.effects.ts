@@ -26,8 +26,7 @@ export class SeriesEffects {
             }
 
             return this._fetchSeries(seriesState.pagination.limit, seriesState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromSeriesActions.FetchSeriesError(err)))
+        })
     )
 
     @Effect() fetchSeriesNextPage = this.actions$.pipe(
@@ -41,8 +40,7 @@ export class SeriesEffects {
             } else {
                 return this._fetchSeries(pagination.limit, pagination.nextPage)
             }
-        }),
-        catchError(err => of(new fromSeriesActions.FetchSeriesError(err)))
+        })
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -53,7 +51,10 @@ export class SeriesEffects {
      * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
-    private _fetchSeries(limit: number, offset: number): Observable<fromSeriesActions.FetchSeriesSuccess> {
+    private _fetchSeries(
+        limit: number,
+        offset: number
+    ): Observable<fromSeriesActions.FetchSeriesSuccess | fromSeriesActions.FetchSeriesError> {
         return this.http$
             .get<SeriesResults>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -76,7 +77,8 @@ export class SeriesEffects {
                             ),
                             new Pagination(res.offset, res.limit, res.total, res.count)
                         )
-                )
+                ),
+                catchError(err => of(new fromSeriesActions.FetchSeriesError(err)))
             )
     }
 }

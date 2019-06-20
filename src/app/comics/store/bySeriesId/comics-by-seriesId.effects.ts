@@ -27,8 +27,7 @@ export class ComicsBySeriesIdEffects {
                 return of({ type: FETCHED_FROM_STORE })
             }
             return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromComicsBySeriesIdActions.FetchComicsBySeriesIdError(err)))
+        })
     )
 
     /*
@@ -43,8 +42,7 @@ export class ComicsBySeriesIdEffects {
             } else {
                 return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
-        }),
-        catchError(err => of(new fromComicsBySeriesIdActions.FetchComicsBySeriesIdError(err)))
+        })
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -60,7 +58,10 @@ export class ComicsBySeriesIdEffects {
         action: fromComicsBySeriesIdActions.type,
         limit: number,
         offset: number
-    ): Observable<fromComicsBySeriesIdActions.FetchComicsBySeriesIdSuccess> {
+    ): Observable<
+        | fromComicsBySeriesIdActions.FetchComicsBySeriesIdSuccess
+        | fromComicsBySeriesIdActions.FetchComicsBySeriesIdError
+    > {
         return this.http$
             .get<ComicsResults>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -83,7 +84,8 @@ export class ComicsBySeriesIdEffects {
                             ),
                             new Pagination(res.offset, res.limit, res.total, res.count)
                         )
-                )
+                ),
+                catchError(err => of(new fromComicsBySeriesIdActions.FetchComicsBySeriesIdError(err)))
             )
     }
 }

@@ -28,8 +28,7 @@ export class SeriesByCharacterIdEffects {
                 return of({ type: FETCHED_FROM_STORE })
             }
             return this._fetchSeries(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError(err)))
+        })
     )
 
     /*
@@ -44,8 +43,7 @@ export class SeriesByCharacterIdEffects {
             } else {
                 return this._fetchSeries(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
             }
-        }),
-        catchError(err => of(new fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError(err)))
+        })
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -61,7 +59,10 @@ export class SeriesByCharacterIdEffects {
         action: fromSeriesByCharacterIDActions.type,
         limit: number,
         offset: number
-    ): Observable<fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdSuccess> {
+    ): Observable<
+        | fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdSuccess
+        | fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError
+    > {
         return this.http$
             .get<SeriesResults>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -84,7 +85,8 @@ export class SeriesByCharacterIdEffects {
                             ),
                             new Pagination(res.offset, res.limit, res.total, res.count)
                         )
-                )
+                ),
+                catchError(err => of(new fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError(err)))
             )
     }
 }

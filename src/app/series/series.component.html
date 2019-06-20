@@ -1,17 +1,19 @@
-<app-list
-    [isInfiniteScroll]="true"
-    [hasMore]="hasMore"
-    [isFetching]="loading"
-    [grid-style]="gridStyle"
-    (onScroll)="onScroll()"
->
-    <a class="no-decoration" [routerLink]="series.linkToDetails" *ngFor="let series of seriesList">
-        <app-card
-            [image-src]="series.image"
-            [placeholder-image-src]="series.placeholder"
-            [title]="series.title"
-            [animated-card]="false"
-            [floating-label]="false"
-        ></app-card>
-    </a>
-</app-list>
+<app-error-handler [hasError]="hasError">
+    <app-list
+        [isInfiniteScroll]="true"
+        [hasMore]="hasMore"
+        [isFetching]="loading"
+        [grid-style]="gridStyle"
+        (onScroll)="onScroll()"
+    >
+        <a class="no-decoration" [routerLink]="series.linkToDetails" *ngFor="let series of seriesList">
+            <app-card
+                [image-src]="series.image"
+                [placeholder-image-src]="series.placeholder"
+                [title]="series.title"
+                [animated-card]="false"
+                [floating-label]="false"
+            ></app-card>
+        </a>
+    </app-list>
+</app-error-handler>
