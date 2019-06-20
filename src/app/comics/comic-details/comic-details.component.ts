@@ -19,6 +19,7 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
     loading: boolean = true
     comic: ListDetailsModel = null
     filter: CharacterFilterType = null
+    hasError: boolean
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -48,6 +49,10 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
                     res.data.placeholder,
                     res.data.description
                 )
+            }
+
+            if (res.error) {
+                this.hasError = true
             }
         })
     }

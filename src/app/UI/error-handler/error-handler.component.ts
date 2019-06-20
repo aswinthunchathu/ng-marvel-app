@@ -7,6 +7,8 @@ import { Component, OnInit, Input } from '@angular/core'
 })
 export class ErrorHandlerComponent implements OnInit {
     @Input() hasError: boolean
+    @Input() message: string = ' Some error occurred. Please try later.'
+    @Input() type: 'error' | 'error-text-only' = 'error'
 
     constructor() {}
 

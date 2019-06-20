@@ -22,6 +22,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     character: ListDetailsModel = null
     bgImage: string = ''
     filter: ComicsFilterType | SeriesFilterType = null
+    hasError: boolean
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute, private bgService: BgService) {}
 
@@ -52,6 +53,10 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
                     res.data.description
                 )
                 this.bgService.setBgImage(res.data.bgImage)
+            }
+
+            if (res.error) {
+                this.hasError = true
             }
         })
     }

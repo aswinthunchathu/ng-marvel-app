@@ -1,19 +1,21 @@
 <div [class]="withBgImage ? 'container--with-bg' : 'container'">
-    <ng-container *ngIf="!loading; else loader">
-        <div class="container-grid--main" *ngIf="item">
-            <img
-                *ngIf="!withBgImage"
-                class="container-grid-image"
-                [alt]="item.description"
-                [appProgressiveImageLoading]="item.image"
-                [appProgressiveImageLoading-placeholder]="item.placeholder"
-            />
-            <h1 class="container-grid--title">{{ item.title }}</h1>
-            <div class="container-grid--description">
-                {{ item.description ? item.description : 'No description available.' }}
+    <app-error-handler [hasError]="hasError" message="No description available" type="error-text-only">
+        <ng-container *ngIf="!loading; else loader">
+            <div class="container-grid--main" *ngIf="item">
+                <img
+                    *ngIf="!withBgImage"
+                    class="container-grid-image"
+                    [alt]="item.description"
+                    [appProgressiveImageLoading]="item.image"
+                    [appProgressiveImageLoading-placeholder]="item.placeholder"
+                />
+                <h1 class="container-grid--title">{{ item.title }}</h1>
+                <div class="container-grid--description">
+                    {{ item.description ? item.description : 'No description available.' }}
+                </div>
             </div>
-        </div>
-    </ng-container>
+        </ng-container>
+    </app-error-handler>
 
     <ng-content></ng-content>
 </div>

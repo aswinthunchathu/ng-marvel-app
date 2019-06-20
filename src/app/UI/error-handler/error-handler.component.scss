@@ -12,3 +12,10 @@
         @include rem-fallback(font-size, 40px);
     }
 }
+
+.error-text-only {
+    @include rem-fallback(padding, 20px);
+    text-align: center;
+    color: $white;
+    @include rem-fallback(font-size, 20px);
+}

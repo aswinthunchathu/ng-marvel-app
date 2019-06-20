@@ -10,6 +10,7 @@ export class ListDetailsComponent implements OnInit, OnDestroy {
     @Input() item: ListDetailsModel
     @Input() withBgImage: boolean = false
     @Input() loading: boolean
+    @Input() hasError: boolean
 
     constructor() {}
 
