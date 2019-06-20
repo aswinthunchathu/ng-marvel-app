@@ -8,7 +8,7 @@ export const FETCH_CHARACTERS_BY_COMIC_ID_START = '[CHARACTERS BY COMIC ID] Fetc
 export const FETCH_CHARACTERS_BY_COMIC_ID_NEXT_PAGE = '[CHARACTERS BY COMIC ID] Fetch Next Page'
 export const FETCH_CHARACTERS_BY_COMIC_ID_SUCCESS = '[CHARACTERS BY COMIC ID] Fetch Success'
 export const FETCH_CHARACTERS_BY_COMIC_ID_ERROR = '[CHARACTERS BY COMIC ID] Fetch Error'
-export const NO_MORE_CHARACTERS_BY_COMIC_ID = '[CHARACTERS BY COMIC ID] No More'
+export const NO_MORE_TO_FETCH = '[CHARACTERS BY COMIC ID] No More'
 export const FETCHED_FROM_STORE = '[CHARACTERS BY COMIC ID] Fetched From Store'
 
 export class FetchCharactersByComicIdStart implements Action {
@@ -39,9 +39,14 @@ export class FetchedFromStore implements Action {
     readonly type = FETCHED_FROM_STORE
 }
 
+export class NoMoreToFetch implements Action {
+    readonly type = NO_MORE_TO_FETCH
+}
+
 export type type =
     | FetchCharactersByComicIdStart
     | FetchCharactersByComicIdSuccess
     | FetchCharactersByComicIdError
     | FetchCharactersByComicIdNextPage
     | FetchedFromStore
+    | NoMoreToFetch

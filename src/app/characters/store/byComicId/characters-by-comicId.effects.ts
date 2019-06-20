@@ -41,7 +41,7 @@ export class CharactersByComicIdEffects {
             const pagination: Pagination = characterState.pagination
 
             if (!pagination.hasMore) {
-                return of({ type: fromCharactersByComicIdActions.NO_MORE_CHARACTERS_BY_COMIC_ID })
+                return of(new fromCharactersByComicIdActions.NoMoreToFetch())
             } else {
                 return this._fetchFromServer(action, pagination.limit, pagination.nextPage)
             }

@@ -7,7 +7,7 @@ export const FETCH_COMICS_START = '[COMICS] Fetch Start'
 export const FETCH_COMICS_NEXT_PAGE = '[COMICS] Fetch Next Page'
 export const FETCH_COMICS_SUCCESS = '[COMICS] Fetch Success'
 export const FETCH_COMICS_ERROR = '[COMICS] Fetch Error'
-export const NO_MORE_COMICS = '[COMICS] No More'
+export const NO_MORE_TO_FETCH = '[COMICS] No More'
 export const FETCHED_FROM_STORE = '[COMICS] Fetched From Store'
 
 export class FetchComicsStart implements Action {
@@ -34,4 +34,14 @@ export class FetchedFromStore implements Action {
     readonly type = FETCHED_FROM_STORE
 }
 
-export type type = FetchComicsStart | FetchComicsNextPage | FetchComicsSuccess | FetchComicsError | FetchedFromStore
+export class NoMoreToFetch implements Action {
+    readonly type = NO_MORE_TO_FETCH
+}
+
+export type type =
+    | FetchComicsStart
+    | FetchComicsNextPage
+    | FetchComicsSuccess
+    | FetchComicsError
+    | FetchedFromStore
+    | NoMoreToFetch

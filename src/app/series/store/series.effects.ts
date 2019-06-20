@@ -36,7 +36,7 @@ export class SeriesEffects {
             const pagination: Pagination = seriesState.pagination
 
             if (!pagination.hasMore) {
-                return of({ type: fromSeriesActions.NO_MORE_SERIES })
+                return of(new fromSeriesActions.NoMoreToFetch())
             } else {
                 return this._fetchFromServer(pagination.limit, pagination.nextPage)
             }

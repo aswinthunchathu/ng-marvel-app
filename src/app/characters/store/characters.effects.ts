@@ -39,7 +39,7 @@ export class CharactersEffects {
             const pagination: Pagination = characterState.pagination
 
             if (!pagination.hasMore) {
-                return of({ type: fromCharactersActions.NO_MORE_CHARACTERS })
+                return of(new fromCharactersActions.NoMoreToFetch())
             } else {
                 return this._fetchFromServer(pagination.limit, pagination.nextPage)
             }

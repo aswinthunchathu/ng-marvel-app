@@ -40,7 +40,7 @@ export class ComicsByCharacterIdEffects {
         withLatestFrom(this.store.select('comicByCharacterId')),
         switchMap(([action, comicsState]: [fromComicsByCharacterIDActions.FetchComicsByCharacterIdNextPage, State]) => {
             if (!comicsState.pagination.hasMore) {
-                return of({ type: fromComicsByCharacterIDActions.NO_MORE_COMICS_BY_CHARACTER_ID })
+                return of(new fromComicsByCharacterIDActions.NoMoreToFetch())
             } else {
                 return this._fetchFromServer(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
             }

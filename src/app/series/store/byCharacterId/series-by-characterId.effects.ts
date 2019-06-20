@@ -39,7 +39,7 @@ export class SeriesByCharacterIdEffects {
         withLatestFrom(this.store.select('seriesByCharacterId')),
         switchMap(([action, SeriesState]: [fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdNextPage, State]) => {
             if (!SeriesState.pagination.hasMore) {
-                return of({ type: fromSeriesByCharacterIDActions.NO_MORE_SERIES_BY_CHARACTER_ID })
+                return of(new fromSeriesByCharacterIDActions.NoMoreToFetch())
             } else {
                 return this._fetchFromServer(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
             }
