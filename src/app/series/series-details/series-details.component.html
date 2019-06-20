@@ -1,9 +1,16 @@
 <app-list-details [item]="series" [loading]="loading">
-    <mat-tab-group>
-        <mat-tab label="One">
-            <ng-template matTabContent>
-                <app-comics [filter]="filter"></app-comics>
-            </ng-template>
-        </mat-tab>
-    </mat-tab-group>
+    <div class="tab--spacer">
+        <mat-tab-group>
+            <mat-tab label="Characters">
+                <ng-template matTabContent>
+                    <app-characters [filter]="filter"></app-characters>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Comics">
+                <ng-template matTabContent>
+                    <app-comics [filter]="filter"></app-comics>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
 </app-list-details>
