@@ -25,7 +25,7 @@ export class SeriesEffects {
                 return of({ type: FETCHED_FROM_STORE })
             }
 
-            return this._fetchSeries(seriesState.pagination.limit, seriesState.pagination.nextPage)
+            return this._fetchFromServer(seriesState.pagination.limit, seriesState.pagination.nextPage)
         })
     )
 
@@ -38,7 +38,7 @@ export class SeriesEffects {
             if (!pagination.hasMore) {
                 return of({ type: fromSeriesActions.NO_MORE_SERIES })
             } else {
-                return this._fetchSeries(pagination.limit, pagination.nextPage)
+                return this._fetchFromServer(pagination.limit, pagination.nextPage)
             }
         })
     )
@@ -51,7 +51,7 @@ export class SeriesEffects {
      * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
-    private _fetchSeries(
+    private _fetchFromServer(
         limit: number,
         offset: number
     ): Observable<fromSeriesActions.FetchSeriesSuccess | fromSeriesActions.FetchSeriesError> {

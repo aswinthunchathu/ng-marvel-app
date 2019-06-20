@@ -28,7 +28,7 @@ export class ComicsByCharacterIdEffects {
                 return of({ type: FETCHED_FROM_STORE })
             }
 
-            return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
+            return this._fetchFromServer(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
         })
     )
 
@@ -42,7 +42,7 @@ export class ComicsByCharacterIdEffects {
             if (!comicsState.pagination.hasMore) {
                 return of({ type: fromComicsByCharacterIDActions.NO_MORE_COMICS_BY_CHARACTER_ID })
             } else {
-                return this._fetchComics(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
+                return this._fetchFromServer(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
         })
     )
@@ -56,7 +56,7 @@ export class ComicsByCharacterIdEffects {
      * @params offset: number - page offset
      * return : Observable<fromComicsByCharacterIDActions.type>
      */
-    private _fetchComics(
+    private _fetchFromServer(
         action: fromComicsByCharacterIDActions.type,
         limit: number,
         offset: number

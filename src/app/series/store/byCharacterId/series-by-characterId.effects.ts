@@ -27,7 +27,7 @@ export class SeriesByCharacterIdEffects {
             if (SeriesState.data.length > 0) {
                 return of({ type: FETCHED_FROM_STORE })
             }
-            return this._fetchSeries(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
+            return this._fetchFromServer(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
         })
     )
 
@@ -41,7 +41,7 @@ export class SeriesByCharacterIdEffects {
             if (!SeriesState.pagination.hasMore) {
                 return of({ type: fromSeriesByCharacterIDActions.NO_MORE_SERIES_BY_CHARACTER_ID })
             } else {
-                return this._fetchSeries(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
+                return this._fetchFromServer(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
             }
         })
     )
@@ -55,7 +55,7 @@ export class SeriesByCharacterIdEffects {
      * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
-    private _fetchSeries(
+    private _fetchFromServer(
         action: fromSeriesByCharacterIDActions.type,
         limit: number,
         offset: number
