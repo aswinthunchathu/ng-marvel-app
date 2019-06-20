@@ -28,6 +28,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
     gridStyle = Style.grid
     isAnimated = true
     isFloatingLabel = true
+    hasError: boolean
 
     imageType = {
         image: 'image',
@@ -76,6 +77,9 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
         this.storeSubscription = this.store.select(store).subscribe(res => {
             this.loading = res.fetching
+            if (res.error) {
+                this.hasError = true
+            }
             this.characters = res.data
             if (this.hasMore !== res.pagination.hasMore) {
                 this.hasMore = res.pagination.hasMore

@@ -25,11 +25,10 @@ export class SeriesByCharacterIdEffects {
         withLatestFrom(this.store.select('seriesByCharacterId')),
         switchMap(([action, SeriesState]: [fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdStart, State]) => {
             if (SeriesState.data.length > 0) {
-                return of({ type: FETCHED_FROM_STORE })
+                return of(new fromSeriesByCharacterIDActions.FetchedFromStore())
             }
-            return this._fetchSeries(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError(err)))
+            return this._fetchFromServer(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
+        })
     )
 
     /*
@@ -40,12 +39,11 @@ export class SeriesByCharacterIdEffects {
         withLatestFrom(this.store.select('seriesByCharacterId')),
         switchMap(([action, SeriesState]: [fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdNextPage, State]) => {
             if (!SeriesState.pagination.hasMore) {
-                return of({ type: fromSeriesByCharacterIDActions.NO_MORE_SERIES_BY_CHARACTER_ID })
+                return of(new fromSeriesByCharacterIDActions.NoMoreToFetch())
             } else {
-                return this._fetchSeries(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
+                return this._fetchFromServer(action, SeriesState.pagination.limit, SeriesState.pagination.nextPage)
             }
-        }),
-        catchError(err => of(new fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError(err)))
+        })
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -57,11 +55,14 @@ export class SeriesByCharacterIdEffects {
      * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
-    private _fetchSeries(
+    private _fetchFromServer(
         action: fromSeriesByCharacterIDActions.type,
         limit: number,
         offset: number
-    ): Observable<fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdSuccess> {
+    ): Observable<
+        | fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdSuccess
+        | fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError
+    > {
         return this.http$
             .get<SeriesResults>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -84,7 +85,8 @@ export class SeriesByCharacterIdEffects {
                             ),
                             new Pagination(res.offset, res.limit, res.total, res.count)
                         )
-                )
+                ),
+                catchError(err => of(new fromSeriesByCharacterIDActions.FetchSeriesByCharacterIdError(err)))
             )
     }
 }

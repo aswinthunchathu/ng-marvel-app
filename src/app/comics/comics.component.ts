@@ -25,7 +25,7 @@ export class ComicsComponent implements OnInit, OnDestroy {
     hasMore: boolean = true
     loading: boolean = true
     gridStyle = Style.gridSpaced
-
+    hasError: boolean
     @Input('filter') filter: FilterType
 
     constructor(private store: Store<AppState>) {}
@@ -60,6 +60,9 @@ export class ComicsComponent implements OnInit, OnDestroy {
 
         this.storeSubscription = this.store.select(store).subscribe(res => {
             this.loading = res.fetching
+            if (res.error) {
+                this.hasError = true
+            }
             this.comics = res.data
             if (this.hasMore !== res.pagination.hasMore) {
                 this.hasMore = res.pagination.hasMore

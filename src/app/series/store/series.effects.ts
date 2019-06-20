@@ -22,12 +22,11 @@ export class SeriesEffects {
         withLatestFrom(this.store.select('series')),
         switchMap(([__, seriesState]) => {
             if (seriesState.data.length > 0) {
-                return of({ type: FETCHED_FROM_STORE })
+                return of(new fromSeriesActions.FetchedFromStore())
             }
 
-            return this._fetchSeries(seriesState.pagination.limit, seriesState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromSeriesActions.FetchSeriesError(err)))
+            return this._fetchFromServer(seriesState.pagination.limit, seriesState.pagination.nextPage)
+        })
     )
 
     @Effect() fetchSeriesNextPage = this.actions$.pipe(
@@ -37,12 +36,11 @@ export class SeriesEffects {
             const pagination: Pagination = seriesState.pagination
 
             if (!pagination.hasMore) {
-                return of({ type: fromSeriesActions.NO_MORE_SERIES })
+                return of(new fromSeriesActions.NoMoreToFetch())
             } else {
-                return this._fetchSeries(pagination.limit, pagination.nextPage)
+                return this._fetchFromServer(pagination.limit, pagination.nextPage)
             }
-        }),
-        catchError(err => of(new fromSeriesActions.FetchSeriesError(err)))
+        })
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -53,7 +51,10 @@ export class SeriesEffects {
      * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
-    private _fetchSeries(limit: number, offset: number): Observable<fromSeriesActions.FetchSeriesSuccess> {
+    private _fetchFromServer(
+        limit: number,
+        offset: number
+    ): Observable<fromSeriesActions.FetchSeriesSuccess | fromSeriesActions.FetchSeriesError> {
         return this.http$
             .get<SeriesResults>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -76,7 +77,8 @@ export class SeriesEffects {
                             ),
                             new Pagination(res.offset, res.limit, res.total, res.count)
                         )
-                )
+                ),
+                catchError(err => of(new fromSeriesActions.FetchSeriesError(err)))
             )
     }
 }

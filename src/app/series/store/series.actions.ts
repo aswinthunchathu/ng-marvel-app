@@ -7,7 +7,8 @@ export const FETCH_SERIES_INIT = '[SERIES] Fetch Init'
 export const FETCH_SERIES_NEXT_PAGE = '[SERIES] Fetch Next Page'
 export const FETCH_SERIES_SUCCESS = '[SERIES] Fetch Success'
 export const FETCH_SERIES_ERROR = '[SERIES] Fetch Error'
-export const NO_MORE_SERIES = '[SERIES] No More'
+export const NO_MORE_TO_FETCH = '[SERIES] No More'
+export const FETCHED_FROM_STORE = '[SERIES] Fetched From Store'
 
 export class FetchSeriesInit implements Action {
     readonly type = FETCH_SERIES_INIT
@@ -29,4 +30,18 @@ export class FetchSeriesError implements Action {
     constructor(public payload: HttpErrorResponse) {}
 }
 
-export type type = FetchSeriesInit | FetchSeriesNextPage | FetchSeriesSuccess | FetchSeriesError
+export class FetchedFromStore implements Action {
+    readonly type = FETCHED_FROM_STORE
+}
+
+export class NoMoreToFetch implements Action {
+    readonly type = NO_MORE_TO_FETCH
+}
+
+export type type =
+    | FetchSeriesInit
+    | FetchSeriesNextPage
+    | FetchSeriesSuccess
+    | FetchSeriesError
+    | FetchedFromStore
+    | NoMoreToFetch

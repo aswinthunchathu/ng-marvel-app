@@ -1,0 +1,5 @@
+<div [class]="type" *ngIf="hasError">
+    {{ message }}
+</div>
+
+<ng-content *ngIf="!hasError"></ng-content>

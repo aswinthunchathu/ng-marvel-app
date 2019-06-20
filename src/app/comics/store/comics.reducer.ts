@@ -23,10 +23,6 @@ export const comicsReducer = (state = initialState, action: fromComicsActions.ty
     switch (action.type) {
         case fromComicsActions.FETCH_COMICS_START:
         case fromComicsActions.FETCH_COMICS_NEXT_PAGE:
-            // case fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_START:
-            // case fromComicsActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE:
-            // case fromComicsActions.FETCH_COMICS_BY_SERIES_ID_START:
-            // case fromComicsActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
             return {
                 ...state,
                 fetching: true,
@@ -46,11 +42,12 @@ export const comicsReducer = (state = initialState, action: fromComicsActions.ty
                 fetching: false,
                 error: action.payload,
             }
-        // case fromComicsActions.RESET_COMICS:
-        //     return {
-        //         ...state,
-        //         ...initialState,
-        //     }
+        case fromComicsActions.NO_MORE_TO_FETCH:
+        case fromComicsActions.FETCHED_FROM_STORE:
+            return {
+                ...state,
+                fetching: false,
+            }
 
         default:
             return {

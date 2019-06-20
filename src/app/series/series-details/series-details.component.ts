@@ -20,6 +20,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
     loading: boolean = true
     series: ListDetailsModel = null
     filter: ComicFilterType | CharacterFilterType = null
+    hasError: boolean
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -49,6 +50,10 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
                     res.data.placeholder,
                     res.data.description
                 )
+            }
+
+            if (res.error) {
+                this.hasError = true
             }
         })
     }

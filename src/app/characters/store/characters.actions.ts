@@ -8,7 +8,8 @@ export const FETCH_CHARACTERS_INIT = '[CHARACTERS] Fetch Init'
 export const FETCH_CHARACTERS_NEXT_PAGE = '[CHARACTERS] Fetch Next Page'
 export const FETCH_CHARACTERS_SUCCESS = '[CHARACTERS] Fetch Success'
 export const FETCH_CHARACTERS_ERROR = '[CHARACTERS] Fetch Error'
-export const NO_MORE_CHARACTERS = '[CHARACTERS] No More'
+export const NO_MORE_TO_FETCH = '[CHARACTERS] No More'
+export const FETCHED_FROM_STORE = '[CHARACTERS] Fetched From Store'
 
 export class FetchCharactersInit implements Action {
     readonly type = FETCH_CHARACTERS_INIT
@@ -30,4 +31,18 @@ export class FetchCharactersError implements Action {
     constructor(public payload: HttpErrorResponse) {}
 }
 
-export type type = FetchCharactersInit | FetchCharactersSuccess | FetchCharactersError | FetchCharactersNextPage
+export class FetchedFromStore implements Action {
+    readonly type = FETCHED_FROM_STORE
+}
+
+export class NoMoreToFetch implements Action {
+    readonly type = NO_MORE_TO_FETCH
+}
+
+export type type =
+    | FetchCharactersInit
+    | FetchCharactersSuccess
+    | FetchCharactersError
+    | FetchCharactersNextPage
+    | FetchedFromStore
+    | NoMoreToFetch

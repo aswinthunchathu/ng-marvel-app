@@ -24,11 +24,10 @@ export class ComicsEffects {
         withLatestFrom(this.store.select('comics')),
         switchMap(([__, comicsState]) => {
             if (comicsState.data.length > 0) {
-                return of({ type: FETCHED_FROM_STORE })
+                return of(new fromComicsActions.FetchedFromStore())
             }
-            return this._fetchComics(comicsState.pagination.limit, comicsState.pagination.nextPage)
-        }),
-        catchError(err => of(new fromComicsActions.FetchComicsError(err)))
+            return this._fetchFromServer(comicsState.pagination.limit, comicsState.pagination.nextPage)
+        })
     )
 
     /*
@@ -39,12 +38,11 @@ export class ComicsEffects {
         withLatestFrom(this.store.select('comics')),
         switchMap(([__, comicsState]: [fromComicsActions.FetchComicsNextPage, State]) => {
             if (!comicsState.pagination.hasMore) {
-                return of({ type: fromComicsActions.NO_MORE_COMICS })
+                return of(new fromComicsActions.NoMoreToFetch())
             } else {
-                return this._fetchComics(comicsState.pagination.limit, comicsState.pagination.nextPage)
+                return this._fetchFromServer(comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
-        }),
-        catchError(err => of(new fromComicsActions.FetchComicsError(err)))
+        })
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -55,7 +53,10 @@ export class ComicsEffects {
      * @param offset: number - page offset
      * return : Observable<FetchComicsSuccess>
      */
-    private _fetchComics(limit: number, offset: number): Observable<fromComicsActions.FetchComicsSuccess> {
+    private _fetchFromServer(
+        limit: number,
+        offset: number
+    ): Observable<fromComicsActions.FetchComicsSuccess | fromComicsActions.FetchComicsError> {
         return this.http$
             .get<ComicsResults>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
@@ -78,7 +79,8 @@ export class ComicsEffects {
                             ),
                             new Pagination(res.offset, res.limit, res.total, res.count)
                         )
-                )
+                ),
+                catchError(err => of(new fromComicsActions.FetchComicsError(err)))
             )
     }
 }

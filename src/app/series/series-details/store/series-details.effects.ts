@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
-import { of } from 'rxjs'
+import { of, Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromSeriesDetailsActions from './series-details.actions'
@@ -13,6 +13,8 @@ import { SeriesModel } from '../../series.model'
 
 @Injectable()
 export class SeriesDetailsEffects {
+    private _URL = action => `series/${action.payload}`
+
     @Effect() fetchCharacters = this.actions$.pipe(
         ofType(fromSeriesDetailsActions.FETCH_SERIES_DETAILS_START),
         withLatestFrom(this.store.select('series')),
@@ -25,28 +27,32 @@ export class SeriesDetailsEffects {
                     }
                 }
 
-                return this.http$.get<SeriesResults>(`series/${action.payload}`).pipe(
-                    map(res =>
-                        res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null
-                    ),
-                    map(
-                        res =>
-                            new fromSeriesDetailsActions.FetchSeriesDetailsSuccess(
-                                new SeriesModel(
-                                    res.id,
-                                    res.title,
-                                    res.description,
-                                    res.thumbnail,
-                                    res.comics,
-                                    res.characters
-                                )
-                            )
-                    )
-                )
+                return this._fetchFromServer(action)
             }
-        ),
-        catchError(err => of(new fromSeriesDetailsActions.FetchSeriesDetailsError(err)))
+        )
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
+
+    /*
+     * fetch series from server
+     * @params action: action
+     * return : Observable<FetchComicSuccess | FetchComicError>
+     */
+    private _fetchFromServer(
+        action: fromSeriesDetailsActions.type
+    ): Observable<
+        fromSeriesDetailsActions.FetchSeriesDetailsSuccess | fromSeriesDetailsActions.FetchSeriesDetailsError
+    > {
+        return this.http$.get<SeriesResults>(this._URL(action)).pipe(
+            map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
+            map(
+                res =>
+                    new fromSeriesDetailsActions.FetchSeriesDetailsSuccess(
+                        new SeriesModel(res.id, res.title, res.description, res.thumbnail, res.comics, res.characters)
+                    )
+            ),
+            catchError(err => of(new fromSeriesDetailsActions.FetchSeriesDetailsError(err)))
+        )
+    }
 }

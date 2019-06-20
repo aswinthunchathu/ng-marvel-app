@@ -60,6 +60,12 @@ export const comicsByCharacterIdReducer = (state = initialState, action: fromCom
                 fetching: false,
                 error: action.payload,
             }
+        case fromComicsByCharacterIdActions.NO_MORE_TO_FETCH:
+        case fromComicsByCharacterIdActions.FETCHED_FROM_STORE:
+            return {
+                ...state,
+                fetching: false,
+            }
         default:
             return {
                 ...state,
