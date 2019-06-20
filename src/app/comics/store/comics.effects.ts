@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
-import { Actions, Effect, ofType, act } from '@ngrx/effects'
-import { of, Observable } from 'rxjs'
+import { Actions, Effect, ofType } from '@ngrx/effects'
+import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromComicsActions from './comics.actions'
@@ -20,11 +20,11 @@ export class ComicsEffects {
      * This effect is fired when FETCH_COMICS_START action is fired
      */
     @Effect() fetchComicsInit = this.actions$.pipe(
-        ofType(fromComicsActions.FETCH_COMICS_START),
+        ofType(fromComicsActions.fetchStart),
         withLatestFrom(this.store.select('comics')),
         switchMap(([__, comicsState]) => {
             if (comicsState.data.length > 0) {
-                return of(new fromComicsActions.FetchedFromStore())
+                return of(fromComicsActions.fetchedFromStore())
             }
             return this._fetchFromServer(comicsState.pagination.limit, comicsState.pagination.nextPage)
         })
@@ -34,11 +34,11 @@ export class ComicsEffects {
      * This effect is fired when FETCH_COMICS_NEXT_PAGE action is fired
      */
     @Effect() fetchComicsNextPage = this.actions$.pipe(
-        ofType(fromComicsActions.FETCH_COMICS_NEXT_PAGE),
+        ofType(fromComicsActions.fetchNextPage),
         withLatestFrom(this.store.select('comics')),
-        switchMap(([__, comicsState]: [fromComicsActions.FetchComicsNextPage, State]) => {
+        switchMap(([__, comicsState]) => {
             if (!comicsState.pagination.hasMore) {
-                return of(new fromComicsActions.NoMoreToFetch())
+                return of(fromComicsActions.noMoreToFetch())
             } else {
                 return this._fetchFromServer(comicsState.pagination.limit, comicsState.pagination.nextPage)
             }
@@ -53,34 +53,36 @@ export class ComicsEffects {
      * @param offset: number - page offset
      * return : Observable<FetchComicsSuccess>
      */
-    private _fetchFromServer(
-        limit: number,
-        offset: number
-    ): Observable<fromComicsActions.FetchComicsSuccess | fromComicsActions.FetchComicsError> {
+    private _fetchFromServer(limit: number, offset: number) {
         return this.http$
             .get<ComicsResults>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
                 map(res => res.data),
-                map(
-                    res =>
-                        new fromComicsActions.FetchComicsSuccess(
-                            res.results.map(
-                                item =>
-                                    new ComicModel(
-                                        item.id,
-                                        item.title,
-                                        item.description,
-                                        item.thumbnail,
-                                        item.characters,
-                                        item.series
-                                    )
-                            ),
-                            new Pagination(res.offset, res.limit, res.total, res.count)
-                        )
+                map(res =>
+                    fromComicsActions.fetchSuccess({
+                        payload: res.results.map(
+                            item =>
+                                new ComicModel(
+                                    item.id,
+                                    item.title,
+                                    item.description,
+                                    item.thumbnail,
+                                    item.characters,
+                                    item.series
+                                )
+                        ),
+                        pagination: new Pagination(res.offset, res.limit, res.total, res.count),
+                    })
                 ),
-                catchError(err => of(new fromComicsActions.FetchComicsError(err)))
+                catchError(err =>
+                    of(
+                        fromComicsActions.fetchError({
+                            payload: err,
+                        })
+                    )
+                )
             )
     }
 }

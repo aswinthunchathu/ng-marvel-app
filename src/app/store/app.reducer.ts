@@ -26,4 +26,5 @@ export interface AppState {
 
 export const appReducer = {
     characters: fromCharactersReducer.reducer,
+    comics: fromComicsReducer.reducer,
 }

@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromComicsActions from './comics.actions'
 import { PAGE_LIMIT } from '../../shared/constants'
@@ -19,39 +20,31 @@ const initialState: State = {
     error: null,
 }
 
-export const comicsReducer = (state = initialState, action: fromComicsActions.type) => {
-    switch (action.type) {
-        case fromComicsActions.FETCH_COMICS_START:
-        case fromComicsActions.FETCH_COMICS_NEXT_PAGE:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromComicsActions.FETCH_COMICS_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
-            }
-        case fromComicsActions.FETCH_COMICS_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromComicsActions.NO_MORE_TO_FETCH:
-        case fromComicsActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
+const comicsReducer = createReducer(
+    initialState,
+    on(fromComicsActions.fetchStart, fromComicsActions.fetchNextPage, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromComicsActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        pagination: action.pagination,
+        data: [...state.data, ...action.payload],
+    })),
+    on(fromComicsActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    })),
+    on(fromComicsActions.fetchedFromStore, fromComicsActions.noMoreToFetch, state => ({
+        ...state,
+        fetching: false,
+    }))
+)
 
-        default:
-            return {
-                ...state,
-            }
-    }
+export function reducer(state: State | undefined, action: Action) {
+    return comicsReducer(state, action)
 }

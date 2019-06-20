@@ -43,7 +43,7 @@ export class ComicsComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdStart(this.filter.id))
             }
         } else {
-            this.store.dispatch(new fromComicsAction.FetchComicsStart())
+            this.store.dispatch(fromComicsAction.fetchStart())
         }
     }
 
@@ -78,7 +78,7 @@ export class ComicsComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdNextPage(this.filter.id))
             }
         } else {
-            this.store.dispatch(new fromComicsAction.FetchComicsNextPage())
+            this.store.dispatch(fromComicsAction.fetchNextPage())
         }
     }
 
