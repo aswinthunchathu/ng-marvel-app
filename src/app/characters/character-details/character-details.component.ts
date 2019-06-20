@@ -38,7 +38,11 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
                 type: 'character',
                 id,
             }
-            this.store.dispatch(new fromCharacterActions.FetchCharacterStart(id))
+            this.store.dispatch(
+                fromCharacterActions.fetchStart({
+                    payload: id,
+                })
+            )
         })
     }
 
