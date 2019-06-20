@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { Pagination } from '../../shared/model/pagination.model'
 import { CharacterModel } from '../character.model'
 
-export const fetchStart = createAction('[CHARACTERS] Fetch Init')
+export const fetchStart = createAction('[CHARACTERS] Fetch Start')
 
 export const fetchNextPage = createAction('[CHARACTERS] Fetch Next Page')
 
