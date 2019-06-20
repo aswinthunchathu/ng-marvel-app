@@ -1,5 +1,3 @@
-import { ActionReducerMap } from '@ngrx/store'
-
 import * as fromCharactersReducer from '../characters/store/characters.reducer'
 import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
@@ -26,16 +24,6 @@ export interface AppState {
     charactersBySeriesId: fromCharactersBySeriesIdReducer.State
 }
 
-export const appReducer: ActionReducerMap<AppState> = {
-    characters: fromCharactersReducer.charactersReducer,
-    character: fromCharacterReducer.characterReducer,
-    series: fromSeriesReducer.seriesReducer,
-    seriesDetails: fromSeriesDetailsReducer.seriesDetailsReducer,
-    comics: fromComicsReducer.comicsReducer,
-    comic: fromComicReducer.comicReducer,
-    comicByCharacterId: fromComicsByCharacterIdReducer.comicsByCharacterIdReducer,
-    comicBySeriesId: fromComicsBySeriesIdReducer.comicsBySeriesIdReducer,
-    seriesByCharacterId: fromSeriesByCharacterIdReducer.seriesByCharacterIdReducer,
-    charactersByComicId: fromCharactersByComicIdReducer.charactersByComicIdReducer,
-    charactersBySeriesId: fromCharactersBySeriesIdReducer.charactersBySeriesIdReducer,
+export const appReducer = {
+    characters: fromCharactersReducer.reducer,
 }

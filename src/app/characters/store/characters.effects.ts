@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
-import { Actions, Effect, ofType } from '@ngrx/effects'
+import { Actions, Effect, ofType, createEffect } from '@ngrx/effects'
 import { of, Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 
@@ -18,32 +18,36 @@ export class CharactersEffects {
     /*
      * This effect is fired when FETCH_CHARACTERS_INIT action is fired
      */
-    @Effect() fetchCharacters = this.actions$.pipe(
-        ofType(fromCharactersActions.FETCH_CHARACTERS_INIT),
-        withLatestFrom(this.store.select('characters')),
-        switchMap(([__, characterState]) => {
-            if (characterState.data.length > 0) {
-                return of(new fromCharactersActions.FetchedFromStore())
-            }
-            return this._fetchFromServer(characterState.pagination.limit, characterState.pagination.nextPage)
-        })
+    fetchCharacters$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromCharactersActions.fetchStart),
+            withLatestFrom(this.store.select('characters')),
+            switchMap(([__, characterState]) => {
+                if (characterState.data.length > 0) {
+                    return of(fromCharactersActions.fetchedFromStore())
+                }
+                return this._fetchFromServer(characterState.pagination.limit, characterState.pagination.nextPage)
+            })
+        )
     )
 
     /*
      * This effect is fired when FETCH_CHARACTERS_NEXT_PAGE action is fired
      */
-    @Effect() fetchCharactersNextPage = this.actions$.pipe(
-        ofType(fromCharactersActions.FETCH_CHARACTERS_NEXT_PAGE),
-        withLatestFrom(this.store.select('characters')),
-        switchMap(([__, characterState]) => {
-            const pagination: Pagination = characterState.pagination
+    fetchCharactersNextPage$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromCharactersActions.fetchNextPage),
+            withLatestFrom(this.store.select('characters')),
+            switchMap(([__, characterState]) => {
+                const pagination: Pagination = characterState.pagination
 
-            if (!pagination.hasMore) {
-                return of(new fromCharactersActions.NoMoreToFetch())
-            } else {
-                return this._fetchFromServer(pagination.limit, pagination.nextPage)
-            }
-        })
+                if (!pagination.hasMore) {
+                    return of(fromCharactersActions.noMoreToFetch())
+                } else {
+                    return this._fetchFromServer(pagination.limit, pagination.nextPage)
+                }
+            })
+        )
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
@@ -54,34 +58,36 @@ export class CharactersEffects {
      * @params offset: number - page offset
      * return : Observable<FetchCharactersSuccess>
      */
-    private _fetchFromServer(
-        limit: number,
-        offset: number
-    ): Observable<fromCharactersActions.FetchCharactersSuccess | fromCharactersActions.FetchCharactersError> {
+    private _fetchFromServer(limit: number, offset: number) {
         return this.http$
             .get<CharacterResults>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
                 map(res => res.data),
-                map(
-                    res =>
-                        new fromCharactersActions.FetchCharactersSuccess(
-                            res.results.map(
-                                item =>
-                                    new CharacterModel(
-                                        item.id,
-                                        item.name,
-                                        item.description,
-                                        item.thumbnail,
-                                        item.series,
-                                        item.comics
-                                    )
-                            ),
-                            new Pagination(res.offset, res.limit, res.total, res.count)
-                        )
+                map(res =>
+                    fromCharactersActions.fetchSuccess({
+                        payload: res.results.map(
+                            item =>
+                                new CharacterModel(
+                                    item.id,
+                                    item.name,
+                                    item.description,
+                                    item.thumbnail,
+                                    item.series,
+                                    item.comics
+                                )
+                        ),
+                        pagination: new Pagination(res.offset, res.limit, res.total, res.count),
+                    })
                 ),
-                catchError(err => of(new fromCharactersActions.FetchCharactersError(err)))
+                catchError(err =>
+                    of(
+                        fromCharactersActions.fetchError({
+                            payload: err,
+                        })
+                    )
+                )
             )
     }
 }

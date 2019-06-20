@@ -60,7 +60,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new fromCharactersBySeriesIdAction.FetchCharactersBySeriesIdStart(this.filter.id))
             }
         } else {
-            this.store.dispatch(new fromCharactersAction.FetchCharactersInit())
+            this.store.dispatch(fromCharactersAction.fetchStart())
         }
     }
 
@@ -97,7 +97,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
                 )
             }
         } else {
-            this.store.dispatch(new fromCharactersAction.FetchCharactersNextPage())
+            this.store.dispatch(fromCharactersAction.fetchNextPage())
         }
     }
 
