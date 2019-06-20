@@ -61,7 +61,11 @@ export class CharactersComponent implements OnInit, OnDestroy {
                     })
                 )
             } else {
-                this.store.dispatch(new fromCharactersBySeriesIdAction.FetchCharactersBySeriesIdStart(this.filter.id))
+                this.store.dispatch(
+                    fromCharactersBySeriesIdAction.fetchStart({
+                        payload: this.filter.id,
+                    })
+                )
             }
         } else {
             this.store.dispatch(fromCharactersAction.fetchStart())
@@ -101,7 +105,9 @@ export class CharactersComponent implements OnInit, OnDestroy {
                 )
             } else {
                 this.store.dispatch(
-                    new fromCharactersBySeriesIdAction.FetchCharactersBySeriesIdNextPage(this.filter.id)
+                    fromCharactersBySeriesIdAction.fetchNextPage({
+                        payload: this.filter.id,
+                    })
                 )
             }
         } else {
