@@ -26,6 +26,13 @@ export class CharactersComponent implements OnInit, OnDestroy {
     hasMore: boolean = true
     loading: boolean = true
     gridStyle = Style.grid
+    isAnimated = true
+    isFloatingLabel = true
+
+    imageType = {
+        image: 'image',
+        placeholder: 'placeholder',
+    }
 
     @Input('filter') filter: FilterType
 
@@ -39,6 +46,13 @@ export class CharactersComponent implements OnInit, OnDestroy {
     queryOnStore() {
         if (this.filter) {
             this.gridStyle = Style.gridSpaced
+            this.isAnimated = false
+            this.isFloatingLabel = false
+            this.imageType = {
+                image: 'portraitImage',
+                placeholder: 'portraitPlaceholder',
+            }
+
             if (this.filter.type === 'comics') {
                 this.store.dispatch(new fromCharactersByComicIdAction.FetchCharactersByComicIdStart(this.filter.id))
             } else {

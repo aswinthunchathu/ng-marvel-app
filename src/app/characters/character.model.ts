@@ -23,6 +23,14 @@ export class CharacterModel {
         return new ImageGenerator(this.thumbnail.path, this.thumbnail.extension, types.standard_small).image
     }
 
+    get portraitImage() {
+        return new ImageGenerator(this.thumbnail.path, this.thumbnail.extension, types.portrait_incredible).image
+    }
+
+    get portraitPlaceholder() {
+        return new ImageGenerator(this.thumbnail.path, this.thumbnail.extension, types.portrait_small).image
+    }
+
     get linkToDetails() {
         return ['/character', this.id]
     }
