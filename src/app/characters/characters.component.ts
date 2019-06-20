@@ -1,40 +1,89 @@
-import { Component, OnInit } from '@angular/core'
-import { Observable } from 'rxjs'
+import { Component, OnInit, Input, OnDestroy } from '@angular/core'
+import { Observable, Subscription } from 'rxjs'
 import { Store } from '@ngrx/store'
 import { map, tap } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
-import * as fromCharactersAction from './store/characters.actions'
 import { CharacterModel } from './character.model'
 import { Style } from '../UI/list/list.component'
+import * as fromCharactersAction from './store/characters.actions'
+import * as fromCharactersByComicIdAction from './store/byComicId/characters-by-comicId.actions'
+import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-by-seriesId.actions'
+
+export interface FilterType {
+    type: 'comics' | 'series'
+    id: number
+}
 
 @Component({
     selector: 'app-characters',
     templateUrl: './characters.component.html',
     styleUrls: ['./characters.component.scss'],
 })
-export class CharactersComponent implements OnInit {
-    characters: Observable<CharacterModel[]>
+export class CharactersComponent implements OnInit, OnDestroy {
+    storeSubscription: Subscription
+    characters: CharacterModel[]
     hasMore: boolean = true
     loading: boolean = true
     gridStyle = Style.grid
 
+    @Input('filter') filter: FilterType
+
     constructor(private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.store.dispatch(new fromCharactersAction.FetchCharactersInit())
-        this.characters = this.store.select('characters').pipe(
-            tap(res => {
-                this.loading = res.fetching
-                if (this.hasMore !== res.pagination.hasMore) {
-                    this.hasMore = res.pagination.hasMore
-                }
-            }),
-            map(res => res.data)
-        )
+        this.queryOnStore()
+        this.subscribeToStore()
+    }
+
+    queryOnStore() {
+        if (this.filter) {
+            this.gridStyle = Style.gridSpaced
+            if (this.filter.type === 'comics') {
+                this.store.dispatch(new fromCharactersByComicIdAction.FetchCharactersByComicIdStart(this.filter.id))
+            } else {
+                this.store.dispatch(new fromCharactersBySeriesIdAction.FetchCharactersBySeriesIdStart(this.filter.id))
+            }
+        } else {
+            this.store.dispatch(new fromCharactersAction.FetchCharactersInit())
+        }
+    }
+
+    subscribeToStore() {
+        let store = 'characters'
+
+        if (this.filter) {
+            if (this.filter.type === 'comics') {
+                store = 'charactersByComicId'
+            } else {
+                store = 'charactersBySeriesId'
+            }
+        }
+
+        this.storeSubscription = this.store.select(store).subscribe(res => {
+            this.loading = res.fetching
+            this.characters = res.data
+            if (this.hasMore !== res.pagination.hasMore) {
+                this.hasMore = res.pagination.hasMore
+            }
+        })
     }
 
     onScroll() {
-        this.store.dispatch(new fromCharactersAction.FetchCharactersNextPage())
+        if (this.filter) {
+            if (this.filter.type === 'comics') {
+                this.store.dispatch(new fromCharactersByComicIdAction.FetchCharactersByComicIdNextPage(this.filter.id))
+            } else {
+                this.store.dispatch(
+                    new fromCharactersBySeriesIdAction.FetchCharactersBySeriesIdNextPage(this.filter.id)
+                )
+            }
+        } else {
+            this.store.dispatch(new fromCharactersAction.FetchCharactersNextPage())
+        }
+    }
+
+    ngOnDestroy() {
+        this.storeSubscription.unsubscribe()
     }
 }
