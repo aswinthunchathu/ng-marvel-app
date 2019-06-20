@@ -20,6 +20,6 @@ export class SeriesModel {
     }
 
     get linkToDetails() {
-        return ['/series', this.id]
+        return ['/seriesDetails', this.id]
     }
 }

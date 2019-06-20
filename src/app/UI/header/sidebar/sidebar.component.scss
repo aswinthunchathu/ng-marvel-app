@@ -12,6 +12,14 @@
     @include rem-fallback(padding, 0, 15px);
     @include rem-fallback(top, 90px);
 
+    &.sidebar--mobile {
+        display: block;
+    }
+
+    &.sidebar--desktop {
+        display: none;
+    }
+
     @media (max-width: $breakpoint-lg - 1) {
         -webkit-font-smoothing: antialiased;
         transform-origin: 0% 0%;
@@ -32,6 +40,14 @@
         @include rem-fallback(top, 130px);
         background-color: transparent;
         width: 100%;
+
+        &.sidebar--mobile {
+            display: none;
+        }
+
+        &.sidebar--desktop {
+            display: block;
+        }
     }
 }
 

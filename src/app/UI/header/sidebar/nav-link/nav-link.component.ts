@@ -5,6 +5,7 @@ import { Component, Input } from '@angular/core'
     template: `
         <a class="nav-link" routerLinkActive="active" [routerLink]="link">
             <ng-content></ng-content>
+            <span class="nav-link--styler"></span>
         </a>
     `,
     styleUrls: ['./nav-link.component.scss'],

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
-import { of } from 'rxjs'
+import { of, Observable } from 'rxjs'
 import { Store, Action } from '@ngrx/store'
 
 import * as fromCharactersActions from './characters.actions'
@@ -10,54 +10,78 @@ import { CharacterResults } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { State } from './characters.reducer'
-import { FETCHED_FROM_STORE } from 'src/app/shared/constants'
+import { FETCHED_FROM_STORE } from '../../shared/constants'
 import { CharacterModel } from '../character.model'
 
 @Injectable()
 export class CharactersEffects {
+    private readonly _URL = 'characters?orderBy=-modified'
+
+    /*
+     * This effect is fired when FETCH_CHARACTERS_INIT action is fired
+     */
     @Effect() fetchCharacters = this.actions$.pipe(
-        ofType(fromCharactersActions.FETCH_CHARACTERS_INIT, fromCharactersActions.FETCH_CHARACTERS_NEXT_PAGE),
+        ofType(fromCharactersActions.FETCH_CHARACTERS_INIT),
         withLatestFrom(this.store.select('characters')),
-        switchMap(([action, characterState]: [Action, State]) => {
-            if (action.type === fromCharactersActions.FETCH_CHARACTERS_INIT && characterState.data.length > 0) {
+        switchMap(([__, characterState]) => {
+            if (characterState.data.length > 0) {
                 return of({ type: FETCHED_FROM_STORE })
             }
+            return this._fetchComics(characterState.pagination.limit, characterState.pagination.nextPage)
+        }),
+        catchError(err => of(new fromCharactersActions.FetchCharactersError(err)))
+    )
 
+    /*
+     * This effect is fired when FETCH_CHARACTERS_NEXT_PAGE action is fired
+     */
+    @Effect() fetchCharactersNextPage = this.actions$.pipe(
+        ofType(fromCharactersActions.FETCH_CHARACTERS_NEXT_PAGE),
+        withLatestFrom(this.store.select('characters')),
+        switchMap(([__, characterState]) => {
             const pagination: Pagination = characterState.pagination
 
             if (!pagination.hasMore) {
                 return of({ type: fromCharactersActions.NO_MORE_CHARACTERS })
             } else {
-                return this.http$
-                    .get<CharacterResults>('characters?orderBy=-modified', {
-                        params: new HttpParams()
-                            .set('limit', String(pagination.limit))
-                            .set('offset', String(pagination.nextPage)),
-                    })
-                    .pipe(
-                        map(res => res.data),
-                        map(
-                            res =>
-                                new fromCharactersActions.FetchCharactersSuccess(
-                                    res.results.map(
-                                        item =>
-                                            new CharacterModel(
-                                                item.id,
-                                                item.name,
-                                                item.description,
-                                                item.thumbnail,
-                                                item.series,
-                                                item.comics
-                                            )
-                                    ),
-                                    new Pagination(res.offset, res.limit, res.total, res.count)
-                                )
-                        )
-                    )
+                return this._fetchComics(pagination.limit, pagination.nextPage)
             }
         }),
         catchError(err => of(new fromCharactersActions.FetchCharactersError(err)))
     )
 
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
+
+    /*
+     * fetch comics from server
+     * @params limit: number - limit per page
+     * @params offset: number - page offset
+     * return : Observable<FetchCharactersSuccess>
+     */
+    private _fetchComics(limit: number, offset: number): Observable<fromCharactersActions.FetchCharactersSuccess> {
+        return this.http$
+            .get<CharacterResults>(this._URL, {
+                params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
+            })
+            .pipe(
+                map(res => res.data),
+                map(
+                    res =>
+                        new fromCharactersActions.FetchCharactersSuccess(
+                            res.results.map(
+                                item =>
+                                    new CharacterModel(
+                                        item.id,
+                                        item.name,
+                                        item.description,
+                                        item.thumbnail,
+                                        item.series,
+                                        item.comics
+                                    )
+                            ),
+                            new Pagination(res.offset, res.limit, res.total, res.count)
+                        )
+                )
+            )
+    }
 }

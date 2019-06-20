@@ -1,0 +1,21 @@
+@import './app//shared/styles/mixins';
+@import './app//shared/styles/variables';
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$app-red: (
+    600: $primary-color,
+    contrast: (
+        600: $light-primary-text,
+    ),
+);
+
+$app-theme-primary: mat-palette($app-red, 600);
+$app-theme-accent: mat-palette($mat-grey, A200, A100, A400);
+
+$app-theme-warn: mat-palette($app-red, 600);
+
+$app-theme: mat-light-theme($app-theme-primary, $app-theme-accent, $app-theme-warn);
+
+@include angular-material-theme($app-theme);

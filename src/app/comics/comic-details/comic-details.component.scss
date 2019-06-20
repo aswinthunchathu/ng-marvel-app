@@ -1,0 +1,6 @@
+@import '../../shared/styles/mixins';
+@import '../../shared/styles/variables';
+
+.tab--spacer {
+    @include rem-fallback(margin-top, 40px);
+}

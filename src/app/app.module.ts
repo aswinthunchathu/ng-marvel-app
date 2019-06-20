@@ -1,10 +1,11 @@
-import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { StoreModule } from '@ngrx/store'
 import { EffectsModule } from '@ngrx/effects'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
+import { MatTab } from '@angular/material'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -31,6 +32,12 @@ import { ListComponent } from './UI/list/list.component'
 import { ListDetailsComponent } from './UI/list/list-details/list-details.component'
 import { HeaderComponent } from './UI/header/header.component'
 import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.component'
+import { MaterialComponentsModule } from './shared/material-components.module'
+import { ComicsByCharacterIdEffects } from './comics/store/byCharacterId/comics-by-characterId.effects'
+import { ComicsBySeriesIdEffects } from './comics/store/bySeriesId/comics-by-seriesId.effects'
+import { SeriesByCharacterIdEffects } from './series/store/byCharacterId/series-by-characterId.effects'
+import { CharactersByComicIdEffects } from './characters/store/byComicId/characters-by-comicId.effects'
+import { CharactersBySeriesIdEffects } from './characters/store/bySeriesId/characters-by-seriesId.effects'
 
 @NgModule({
     declarations: [
@@ -51,7 +58,8 @@ import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.componen
         NavLinkComponent,
     ],
     imports: [
-        BrowserModule,
+        BrowserAnimationsModule,
+        MaterialComponentsModule,
         HttpClientModule,
         AppRoutingModule,
         InfiniteScrollModule,
@@ -63,6 +71,11 @@ import { NavLinkComponent } from './UI/header/sidebar/nav-link/nav-link.componen
             ComicEffects,
             SeriesEffects,
             SeriesDetailsEffects,
+            ComicsByCharacterIdEffects,
+            ComicsBySeriesIdEffects,
+            SeriesByCharacterIdEffects,
+            CharactersByComicIdEffects,
+            CharactersBySeriesIdEffects,
         ]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,

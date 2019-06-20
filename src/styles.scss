@@ -1,4 +1,5 @@
 @import './app/shared/styles/variables';
+@import './app/shared/styles/mixins';
 @import url('https://fonts.googleapis.com/css?family=Teko');
 
 html {
@@ -23,7 +24,7 @@ body {
 
 body {
     @media (min-width: $website-max-width) {
-        width: calc($website-max-width - 20px);
+        width: $website-max-width - 20px;
         margin: auto;
     }
 }
@@ -43,4 +44,18 @@ body {
 
 .img-fluid {
     max-width: 100%;
+}
+
+.mat-tab-group {
+    font-family: 'Teko', sans-serif;
+
+    .mat-tab-label {
+        color: $white;
+        @include rem-fallback(font-size, 30px);
+        font-family: 'Teko', sans-serif;
+    }
+
+    .mat-tab-body-wrapper {
+        @include rem-fallback(margin-top, 20px);
+    }
 }
