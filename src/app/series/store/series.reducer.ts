@@ -42,6 +42,11 @@ export const seriesReducer = (state = initialState, action: fromSeriesActions.ty
                 fetching: false,
                 error: action.payload,
             }
+        case fromSeriesActions.FETCHED_FROM_STORE:
+            return {
+                ...state,
+                fetching: false,
+            }
         default:
             return {
                 ...state,

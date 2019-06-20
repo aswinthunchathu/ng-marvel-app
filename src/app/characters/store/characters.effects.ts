@@ -3,14 +3,12 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of, Observable } from 'rxjs'
-import { Store, Action } from '@ngrx/store'
+import { Store } from '@ngrx/store'
 
 import * as fromCharactersActions from './characters.actions'
 import { CharacterResults } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
-import { State } from './characters.reducer'
-import { FETCHED_FROM_STORE } from '../../shared/constants'
 import { CharacterModel } from '../character.model'
 
 @Injectable()
@@ -25,7 +23,7 @@ export class CharactersEffects {
         withLatestFrom(this.store.select('characters')),
         switchMap(([__, characterState]) => {
             if (characterState.data.length > 0) {
-                return of({ type: FETCHED_FROM_STORE })
+                return of(new fromCharactersActions.FetchedFromStore())
             }
             return this._fetchFromServer(characterState.pagination.limit, characterState.pagination.nextPage)
         })

@@ -25,7 +25,7 @@ export class ComicsByCharacterIdEffects {
         withLatestFrom(this.store.select('comicByCharacterId')),
         switchMap(([action, comicsState]: [fromComicsByCharacterIDActions.FetchComicsByCharacterIdStart, State]) => {
             if (comicsState.data.length > 0) {
-                return of({ type: FETCHED_FROM_STORE })
+                return of(new fromComicsByCharacterIDActions.FetchedFromStore())
             }
 
             return this._fetchFromServer(action, comicsState.pagination.limit, comicsState.pagination.nextPage)

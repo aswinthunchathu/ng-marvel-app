@@ -22,7 +22,7 @@ export class SeriesEffects {
         withLatestFrom(this.store.select('series')),
         switchMap(([__, seriesState]) => {
             if (seriesState.data.length > 0) {
-                return of({ type: FETCHED_FROM_STORE })
+                return of(new fromSeriesActions.FetchedFromStore())
             }
 
             return this._fetchFromServer(seriesState.pagination.limit, seriesState.pagination.nextPage)

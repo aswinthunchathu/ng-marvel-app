@@ -9,6 +9,7 @@ export const FETCH_CHARACTERS_BY_SERIES_ID_NEXT_PAGE = '[CHARACTERS BY SERIES ID
 export const FETCH_CHARACTERS_BY_SERIES_ID_SUCCESS = '[CHARACTERS BY SERIES ID] Fetch Success'
 export const FETCH_CHARACTERS_BY_SERIES_ID_ERROR = '[CHARACTERS BY SERIES ID] Fetch Error'
 export const NO_MORE_CHARACTERS_BY_SERIES_ID = '[CHARACTERS BY SERIES ID] No More'
+export const FETCHED_FROM_STORE = '[CHARACTERS BY SERIES ID] Fetched From Store'
 
 export class FetchCharactersBySeriesIdStart implements Action {
     readonly type = FETCH_CHARACTERS_BY_SERIES_ID_START
@@ -34,8 +35,13 @@ export class FetchCharactersBySeriesIdError implements Action {
     constructor(public payload: HttpErrorResponse) {}
 }
 
+export class FetchedFromStore implements Action {
+    readonly type = FETCHED_FROM_STORE
+}
+
 export type type =
     | FetchCharactersBySeriesIdStart
     | FetchCharactersBySeriesIdSuccess
     | FetchCharactersBySeriesIdError
     | FetchCharactersBySeriesIdNextPage
+    | FetchedFromStore

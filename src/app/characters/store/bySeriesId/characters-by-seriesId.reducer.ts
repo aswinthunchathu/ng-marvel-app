@@ -58,6 +58,11 @@ export const charactersBySeriesIdReducer = (state = initialState, action: fromCh
                 fetching: false,
                 error: action.payload,
             }
+        case fromCharactersByComicIdActions.FETCHED_FROM_STORE:
+            return {
+                ...state,
+                fetching: false,
+            }
         default:
             return {
                 ...state,

@@ -24,7 +24,7 @@ export class ComicsBySeriesIdEffects {
         withLatestFrom(this.store.select('comicBySeriesId')),
         switchMap(([action, comicsState]: [fromComicsBySeriesIdActions.FetchComicsBySeriesIdStart, State]) => {
             if (comicsState.data.length > 0) {
-                return of({ type: FETCHED_FROM_STORE })
+                return of(new fromComicsBySeriesIdActions.FetchedFromStore())
             }
             return this._fetchFromServer(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
         })

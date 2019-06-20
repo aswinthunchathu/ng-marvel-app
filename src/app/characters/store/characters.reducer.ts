@@ -42,6 +42,11 @@ export const charactersReducer = (state = initialState, action: fromCharacterAct
                 fetching: false,
                 error: action.payload,
             }
+        case fromCharacterActions.FETCHED_FROM_STORE:
+            return {
+                ...state,
+                fetching: false,
+            }
         default:
             return {
                 ...state,
