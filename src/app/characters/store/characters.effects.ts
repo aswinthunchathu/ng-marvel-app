@@ -51,7 +51,7 @@ export class CharactersEffects {
     constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
 
     /*
-     * fetch comics from server
+     * fetch characters from server
      * @params limit: number - limit per page
      * @params offset: number - page offset
      * return : Observable<FetchCharactersSuccess>
