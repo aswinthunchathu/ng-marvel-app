@@ -9,6 +9,8 @@ import * as fromCharacterReducer from '../characters/character-details/store/cha
 import * as fromSeriesReducer from '../series/store/series.reducer'
 import * as fromSeriesDetailsReducer from '../series/series-details/store/series-details.reducer'
 import * as fromSeriesByCharacterIdReducer from '../series/store/byCharacterId/series-by-characterId.reducer'
+import * as fromCharactersByComicIdReducer from '../characters/store/byComicId/characters-by-comicId.reducer'
+import * as fromCharactersBySeriesIdReducer from '../characters/store/bySeriesId/characters-by-seriesId.reducer'
 
 export interface AppState {
     characters: fromCharactersReducer.State
@@ -20,6 +22,8 @@ export interface AppState {
     comicByCharacterId: fromComicsByCharacterIdReducer.State
     comicBySeriesId: fromComicsBySeriesIdReducer.State
     seriesByCharacterId: fromSeriesByCharacterIdReducer.State
+    charactersByComicId: fromCharactersByComicIdReducer.State
+    charactersBySeriesId: fromCharactersBySeriesIdReducer.State
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -32,4 +36,6 @@ export const appReducer: ActionReducerMap<AppState> = {
     comicByCharacterId: fromComicsByCharacterIdReducer.comicsByCharacterIdReducer,
     comicBySeriesId: fromComicsBySeriesIdReducer.comicsBySeriesIdReducer,
     seriesByCharacterId: fromSeriesByCharacterIdReducer.seriesByCharacterIdReducer,
+    charactersByComicId: fromCharactersByComicIdReducer.charactersByComicIdReducer,
+    charactersBySeriesId: fromCharactersBySeriesIdReducer.charactersBySeriesIdReducer,
 }

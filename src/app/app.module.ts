@@ -36,6 +36,7 @@ import { MaterialComponentsModule } from './shared/material-components.module'
 import { ComicsByCharacterIdEffects } from './comics/store/byCharacterId/comics-by-characterId.effects'
 import { ComicsBySeriesIdEffects } from './comics/store/bySeriesId/comics-by-seriesId.effects'
 import { SeriesByCharacterIdEffects } from './series/store/byCharacterId/series-by-characterId.effects'
+import { CharactersByComicIdEffects } from './characters/store/byComicId/characters-by-comicId.effects'
 
 @NgModule({
     declarations: [
@@ -72,6 +73,7 @@ import { SeriesByCharacterIdEffects } from './series/store/byCharacterId/series-
             ComicsByCharacterIdEffects,
             ComicsBySeriesIdEffects,
             SeriesByCharacterIdEffects,
+            CharactersByComicIdEffects,
         ]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,
