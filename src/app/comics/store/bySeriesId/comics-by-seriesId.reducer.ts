@@ -58,6 +58,7 @@ export const comicsBySeriesIdReducer = (state = initialState, action: fromComics
                 fetching: false,
                 error: action.payload,
             }
+        case fromComicsBySeriesIdActions.NO_MORE_TO_FETCH:
         case fromComicsBySeriesIdActions.FETCHED_FROM_STORE:
             return {
                 ...state,

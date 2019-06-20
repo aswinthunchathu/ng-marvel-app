@@ -42,6 +42,7 @@ export const comicsReducer = (state = initialState, action: fromComicsActions.ty
                 fetching: false,
                 error: action.payload,
             }
+        case fromComicsActions.NO_MORE_TO_FETCH:
         case fromComicsActions.FETCHED_FROM_STORE:
             return {
                 ...state,

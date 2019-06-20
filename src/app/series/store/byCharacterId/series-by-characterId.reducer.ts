@@ -60,6 +60,7 @@ export const seriesByCharacterIdReducer = (state = initialState, action: fromSer
                 fetching: false,
                 error: action.payload,
             }
+        case fromSeriesByCharacterIdActions.NO_MORE_TO_FETCH:
         case fromSeriesByCharacterIdActions.FETCHED_FROM_STORE:
             return {
                 ...state,
