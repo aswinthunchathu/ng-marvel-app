@@ -4,6 +4,7 @@ import * as fromSeriesByCharacterIdActions from './series-by-characterId.actions
 import { PAGE_LIMIT } from '../../../shared/constants'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { SeriesModel } from '../../series.model'
+import { createReducer, on, Action } from '@ngrx/store'
 
 export interface State {
     fetching: boolean
@@ -23,52 +24,47 @@ const initialState: State = {
     previousFilterId: null,
 }
 
-export const seriesByCharacterIdReducer = (state = initialState, action: fromSeriesByCharacterIdActions.type) => {
-    switch (action.type) {
-        case fromSeriesByCharacterIdActions.FETCH_SERIES_BY_CHARACTER_ID_START:
-            if (state.filterId === action.payload) {
-                return {
-                    ...state,
-                    fetching: true,
-                    error: null,
-                }
-            } else {
-                return {
-                    ...state,
-                    ...initialState,
-                    fetching: true,
-                    filterId: action.payload,
-                }
-            }
-        case fromSeriesByCharacterIdActions.FETCH_SERIES_BY_CHARACTER_ID_NEXT_PAGE:
+const seriesByCharacterIdReducer = createReducer(
+    initialState,
+    on(fromSeriesByCharacterIdActions.fetchStart, (state, action) => {
+        if (state.filterId === action.payload) {
             return {
                 ...state,
                 fetching: true,
                 error: null,
             }
-        case fromSeriesByCharacterIdActions.FETCH_SERIES_BY_CHARACTER_ID_SUCCESS:
+        } else {
             return {
                 ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
+                ...initialState,
+                fetching: true,
+                filterId: action.payload,
             }
-        case fromSeriesByCharacterIdActions.FETCH_SERIES_BY_CHARACTER_ID_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromSeriesByCharacterIdActions.NO_MORE_TO_FETCH:
-        case fromSeriesByCharacterIdActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
+        }
+    }),
+    on(fromSeriesByCharacterIdActions.fetchNextPage, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromSeriesByCharacterIdActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        pagination: action.pagination,
+        data: [...state.data, ...action.payload],
+    })),
+    on(fromSeriesByCharacterIdActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    })),
+    on(fromSeriesByCharacterIdActions.fetchedFromStore, fromSeriesByCharacterIdActions.noMoreToFetch, state => ({
+        ...state,
+        fetching: false,
+    }))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return seriesByCharacterIdReducer(state, action)
 }

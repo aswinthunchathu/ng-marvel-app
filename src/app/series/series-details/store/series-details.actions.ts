@@ -1,27 +1,11 @@
-import { Action } from '@ngrx/store'
+import { createAction, props } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
 import { SeriesModel } from '../../series.model'
 
-export const FETCH_SERIES_DETAILS_START = '[SERIES DETAILS] Fetch Start'
-export const FETCH_SERIES_DETAILS_SUCCESS = '[SERIES DETAILS] Fetch Success'
-export const FETCH_SERIES_DETAILS_ERROR = '[SERIES DETAILS] Fetch Error'
+const TAG = '[SERIES DETAILS]'
 
-export class FetchSeriesDetailsStart implements Action {
-    readonly type = FETCH_SERIES_DETAILS_START
+export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
 
-    constructor(public payload: number) {}
-}
+export const fetchSuccess = createAction(`${TAG} Fetch Success`, props<{ payload: SeriesModel }>())
 
-export class FetchSeriesDetailsSuccess implements Action {
-    readonly type = FETCH_SERIES_DETAILS_SUCCESS
-
-    constructor(public payload: SeriesModel) {}
-}
-
-export class FetchSeriesDetailsError implements Action {
-    readonly type = FETCH_SERIES_DETAILS_ERROR
-
-    constructor(public payload: HttpErrorResponse) {}
-}
-
-export type type = FetchSeriesDetailsStart | FetchSeriesDetailsSuccess | FetchSeriesDetailsError
+export const fetchError = createAction(`${TAG} Fetch Error`, props<{ payload: HttpErrorResponse }>())

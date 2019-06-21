@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromSeriesDetailsActions from './series-details.actions'
 import { SeriesModel } from '../../series.model'
@@ -15,30 +16,26 @@ const initialState: State = {
     error: null,
 }
 
-export const seriesDetailsReducer = (state = initialState, action: fromSeriesDetailsActions.type) => {
-    switch (action.type) {
-        case fromSeriesDetailsActions.FETCH_SERIES_DETAILS_START:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromSeriesDetailsActions.FETCH_SERIES_DETAILS_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                data: action.payload,
-            }
-        case fromSeriesDetailsActions.FETCH_SERIES_DETAILS_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
+const seriesDetailsReducer = createReducer(
+    initialState,
+    on(fromSeriesDetailsActions.fetchStart, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromSeriesDetailsActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        data: action.payload,
+    })),
+    on(fromSeriesDetailsActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    }))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return seriesDetailsReducer(state, action)
 }

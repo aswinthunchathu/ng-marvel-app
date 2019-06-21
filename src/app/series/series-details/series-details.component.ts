@@ -36,7 +36,11 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
                 type: 'series',
                 id,
             }
-            this.store.dispatch(new fromSeriesDetailsActions.FetchSeriesDetailsStart(id))
+            this.store.dispatch(
+                fromSeriesDetailsActions.fetchStart({
+                    payload: id,
+                })
+            )
         })
     }
 
