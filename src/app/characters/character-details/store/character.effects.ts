@@ -44,14 +44,7 @@ export class CharacterEffects {
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromCharacterActions.fetchSuccess({
-                    payload: new CharacterModel(
-                        res.id,
-                        res.name,
-                        res.description,
-                        res.thumbnail,
-                        res.series,
-                        res.comics
-                    ),
+                    payload: new CharacterModel(res.id, res.name, res.description, res.thumbnail),
                 })
             ),
             catchError(err =>

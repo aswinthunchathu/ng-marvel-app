@@ -45,14 +45,7 @@ export class ComicEffects {
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromComicActions.fetchSuccess({
-                    payload: new ComicModel(
-                        res.id,
-                        res.title,
-                        res.description,
-                        res.thumbnail,
-                        res.characters,
-                        res.series
-                    ),
+                    payload: new ComicModel(res.id, res.title, res.description, res.thumbnail),
                 })
             ),
             catchError(err =>
