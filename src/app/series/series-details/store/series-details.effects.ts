@@ -45,14 +45,7 @@ export class SeriesDetailsEffects {
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromSeriesDetailsActions.fetchSuccess({
-                    payload: new SeriesModel(
-                        res.id,
-                        res.title,
-                        res.description,
-                        res.thumbnail,
-                        res.comics,
-                        res.characters
-                    ),
+                    payload: new SeriesModel(res.id, res.title, res.description, res.thumbnail),
                 })
             ),
             catchError(err =>

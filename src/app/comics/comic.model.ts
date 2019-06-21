@@ -2,14 +2,7 @@ import { Collections, Image } from '../shared/model/shared.interface'
 import { ImageGenerator, types } from '../shared/model/image-generator.model'
 
 export class ComicModel {
-    constructor(
-        public id: number,
-        public title: string,
-        public description: string,
-        public thumbnail: Image,
-        public characters: Collections,
-        public series: Collections
-    ) {}
+    constructor(public id: number, public title: string, public description: string, public thumbnail: Image) {}
 
     get image() {
         return new ImageGenerator(this.thumbnail.path, this.thumbnail.extension, types.portrait_incredible).image

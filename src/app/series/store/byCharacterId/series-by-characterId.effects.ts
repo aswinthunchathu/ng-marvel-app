@@ -62,15 +62,7 @@ export class SeriesByCharacterIdEffects {
                 map(res =>
                     fromSeriesByCharacterIDActions.fetchSuccess({
                         payload: res.results.map(
-                            item =>
-                                new SeriesModel(
-                                    item.id,
-                                    item.title,
-                                    item.description,
-                                    item.thumbnail,
-                                    item.characters,
-                                    item.comics
-                                )
+                            item => new SeriesModel(item.id, item.title, item.description, item.thumbnail)
                         ),
                         pagination: new Pagination(res.offset, res.limit, res.total, res.count),
                     })

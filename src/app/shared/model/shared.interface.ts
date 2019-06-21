@@ -18,8 +18,6 @@ export interface Character {
     name: string
     description: string
     thumbnail: Image
-    comics: Collections
-    series: Collections
 }
 
 export interface CharacterResults {
@@ -37,9 +35,6 @@ export interface Comic {
     title: string
     description: string
     thumbnail: Image
-    characters: Collections
-    series: Collections
-    // prices: Price[]
 }
 
 export interface ComicsResults {
@@ -56,8 +51,6 @@ export interface Series {
     title: string
     description: string
     thumbnail: Image
-    characters: Collections
-    comics: Collections
 }
 
 export interface SeriesResults {
