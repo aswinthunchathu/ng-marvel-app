@@ -13,7 +13,7 @@ import { CharacterModel } from '../character.model'
 
 @Injectable()
 export class CharactersEffects {
-    private readonly _URL = 'characters?orderBy=-modified'
+    private readonly _URL = 'characters'
 
     /*
      * This effect is fired when FETCH_CHARACTERS_INIT action is fired

@@ -9,13 +9,11 @@ import * as fromComicsActions from './comics.actions'
 import { ComicsResults } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
-import { State } from './comics.reducer'
-import { FETCHED_FROM_STORE } from '../../shared/constants'
 import { ComicModel } from '../comic.model'
 
 @Injectable()
 export class ComicsEffects {
-    private readonly _URL = 'comics?orderBy=-modified'
+    private readonly _URL = 'comics'
     /*
      * This effect is fired when FETCH_COMICS_START action is fired
      */

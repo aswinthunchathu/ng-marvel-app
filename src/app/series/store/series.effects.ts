@@ -15,7 +15,7 @@ import { SeriesModel } from '../series.model'
 
 @Injectable()
 export class SeriesEffects {
-    private readonly _URL = 'series?orderBy=-modified'
+    private readonly _URL = 'series'
 
     @Effect() fetchSeries = this.actions$.pipe(
         ofType(fromSeriesActions.fetchStart),

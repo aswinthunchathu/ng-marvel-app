@@ -13,7 +13,7 @@ import { CharacterModel } from '../../character.model'
 
 @Injectable()
 export class CharactersBySeriesIdEffects {
-    private _URL = action => `series/${action['payload']}/characters?orderBy=-modified`
+    private _URL = action => `series/${action['payload']}/characters`
 
     /*
      * This effect is fired when FETCH_CHARACTERS_BY_SERIES_ID_START action is fired

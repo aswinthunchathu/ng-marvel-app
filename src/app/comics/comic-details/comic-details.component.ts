@@ -16,8 +16,8 @@ import { FilterType as CharacterFilterType } from 'src/app/characters/characters
 export class ComicDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription
     private comicSub: Subscription
-    loading: boolean = true
-    comic: ListDetailsModel = null
+    loading: boolean
+    comic: ListDetailsModel
     filter: CharacterFilterType = null
     hasError: boolean
 

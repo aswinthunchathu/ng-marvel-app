@@ -22,8 +22,8 @@ export interface FilterType {
 export class ComicsComponent implements OnInit, OnDestroy {
     storeSubscription: Subscription
     comics: ComicModel[]
-    hasMore: boolean = true
-    loading: boolean = true
+    hasMore: boolean
+    loading: boolean
     gridStyle = Style.gridSpaced
     hasError: boolean
     @Input('filter') filter: FilterType

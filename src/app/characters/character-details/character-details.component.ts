@@ -19,7 +19,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription
     private characterSub: Subscription
     loading: boolean
-    character: ListDetailsModel = null
+    character: ListDetailsModel
     bgImage: string = ''
     filter: ComicsFilterType | SeriesFilterType = null
     hasError: boolean

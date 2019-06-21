@@ -23,8 +23,8 @@ export interface FilterType {
 export class CharactersComponent implements OnInit, OnDestroy {
     storeSubscription: Subscription
     characters: CharacterModel[]
-    hasMore: boolean = true
-    loading: boolean = true
+    hasMore: boolean
+    loading: boolean
     gridStyle = Style.grid
     isAnimated = true
     isFloatingLabel = true
