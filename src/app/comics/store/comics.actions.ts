@@ -3,17 +3,19 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { Pagination } from 'src/app/shared/model/pagination.model'
 import { ComicModel } from '../comic.model'
 
-export const fetchStart = createAction('[COMICS] Fetch Init')
+const TAG = '[COMICS]'
 
-export const fetchNextPage = createAction('[COMICS] Fetch Next Page')
+export const fetchStart = createAction(`${TAG} Fetch Init`)
+
+export const fetchNextPage = createAction(`${TAG} Fetch Next Page`)
 
 export const fetchSuccess = createAction(
-    '[COMICS] Fetch Success',
+    `${TAG} Fetch Success`,
     props<{ payload: ComicModel[]; pagination: Pagination }>()
 )
 
-export const fetchError = createAction('[COMICS] Fetch Error', props<{ payload: HttpErrorResponse }>())
+export const fetchError = createAction(`${TAG} Fetch Error`, props<{ payload: HttpErrorResponse }>())
 
-export const fetchedFromStore = createAction('[COMICS] No More')
+export const fetchedFromStore = createAction(`${TAG} No More`)
 
-export const noMoreToFetch = createAction('[COMICS] Fetched From Store')
+export const noMoreToFetch = createAction(`${TAG} Fetched From Store`)

@@ -10,6 +10,23 @@ export const FETCH_COMICS_BY_SERIES_ID_ERROR = '[COMICS BY SERIES ID] Fetch Erro
 export const NO_MORE_TO_FETCH = '[COMICS BY SERIES ID] No More'
 export const FETCHED_FROM_STORE = '[COMICS BY SERIES ID] Fetched From Store'
 
+// const TAG = 'COMICS BY SERIES ID'
+
+// export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
+
+// export const fetchNextPage = createAction(`${TAG} Fetch Next Page`, props<{ payload: number }>())
+
+// export const fetchSuccess = createAction(
+//     `${TAG} Fetch Success`,
+//     props<{ payload: ComicModel[]; pagination: Pagination }>()
+// )
+
+// export const fetchError = createAction(`${TAG} Fetch Error`, props<{ payload: HttpErrorResponse }>())
+
+// export const fetchedFromStore = createAction(`${TAG} No More`)
+
+// export const noMoreToFetch = createAction(`${TAG} Fetched From Store`)
+
 export class FetchComicsBySeriesIdStart implements Action {
     readonly type = FETCH_COMICS_BY_SERIES_ID_START
 
