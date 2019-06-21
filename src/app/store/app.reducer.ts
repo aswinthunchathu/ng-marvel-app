@@ -17,11 +17,11 @@ export interface AppState {
     charactersByComicId: fromCharactersByComicIdReducer.State
     charactersBySeriesId: fromCharactersBySeriesIdReducer.State
     character: fromCharacterReducer.State
+    comicBySeriesId: fromComicsBySeriesIdReducer.State
 
     comicByCharacterId: fromComicsByCharacterIdReducer.State
     comic: fromComicReducer.State
     seriesDetails: fromSeriesDetailsReducer.State
-    comicBySeriesId: fromComicsBySeriesIdReducer.State
     seriesByCharacterId: fromSeriesByCharacterIdReducer.State
 }
 
@@ -32,4 +32,5 @@ export const appReducer = {
     charactersByComicId: fromCharactersByComicIdReducer.reducer,
     charactersBySeriesId: fromCharactersBySeriesIdReducer.reducer,
     character: fromCharacterReducer.reducer,
+    comicBySeriesId: fromComicsBySeriesIdReducer.reducer,
 }
