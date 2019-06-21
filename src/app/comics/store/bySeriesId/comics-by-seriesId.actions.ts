@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { Pagination } from 'src/app/shared/model/pagination.model'
 import { ComicModel } from '../../comic.model'
 
-const TAG = 'COMICS BY SERIES ID'
+const TAG = '[COMICS BY SERIES ID]'
 
 export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
 

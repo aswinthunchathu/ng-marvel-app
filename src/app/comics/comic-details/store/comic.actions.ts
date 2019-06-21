@@ -1,4 +1,4 @@
-import { Action } from '@ngrx/store'
+import { createAction, props } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
 import { ComicModel } from '../../comic.model'
 
@@ -6,22 +6,10 @@ export const FETCH_COMIC_START = '[COMIC] Fetch Start'
 export const FETCH_COMIC_SUCCESS = '[COMIC] Fetch Success'
 export const FETCH_COMIC_ERROR = '[COMIC] Fetch Error'
 
-export class FetchComicStart implements Action {
-    readonly type = FETCH_COMIC_START
+const TAG = '[COMIC]'
 
-    constructor(public payload: number) {}
-}
+export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
 
-export class FetchComicSuccess implements Action {
-    readonly type = FETCH_COMIC_SUCCESS
+export const fetchSuccess = createAction(`${TAG} Fetch Success`, props<{ payload: ComicModel }>())
 
-    constructor(public payload: ComicModel) {}
-}
-
-export class FetchComicError implements Action {
-    readonly type = FETCH_COMIC_ERROR
-
-    constructor(public payload: HttpErrorResponse) {}
-}
-
-export type type = FetchComicStart | FetchComicSuccess | FetchComicError
+export const fetchError = createAction(`${TAG} Fetch Error`, props<{ payload: HttpErrorResponse }>())

@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
 import { CharacterModel } from '../../character.model'
 
-const TAG = '${TAG}'
+const TAG = '[CHARACTER]'
 
 export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
 

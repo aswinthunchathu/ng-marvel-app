@@ -35,7 +35,11 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
                 type: 'comics',
                 id,
             }
-            this.store.dispatch(new fromComicActions.FetchComicStart(id))
+            this.store.dispatch(
+                fromComicActions.fetchStart({
+                    payload: id,
+                })
+            )
         })
     }
 
