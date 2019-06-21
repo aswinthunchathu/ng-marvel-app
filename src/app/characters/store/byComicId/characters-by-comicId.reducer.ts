@@ -4,6 +4,7 @@ import * as fromCharactersByComicIdActions from './characters-by-comicId.actions
 import { PAGE_LIMIT } from '../../../shared/constants'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { CharacterModel } from '../../character.model'
+import { createReducer, on, Action } from '@ngrx/store'
 
 export interface State {
     fetching: boolean
@@ -21,52 +22,47 @@ const initialState: State = {
     filterId: null,
 }
 
-export const charactersByComicIdReducer = (state = initialState, action: fromCharactersByComicIdActions.type) => {
-    switch (action.type) {
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_START:
-            if (state.filterId === action.payload) {
-                return {
-                    ...state,
-                    fetching: true,
-                    error: null,
-                }
-            } else {
-                return {
-                    ...state,
-                    ...initialState,
-                    fetching: true,
-                    filterId: action.payload,
-                }
-            }
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_NEXT_PAGE:
+const charactersByComicIdReducer = createReducer(
+    initialState,
+    on(fromCharactersByComicIdActions.fetchStart, (state, action) => {
+        if (state.filterId === action.payload) {
             return {
                 ...state,
                 fetching: true,
                 error: null,
             }
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_SUCCESS:
+        } else {
             return {
                 ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
+                ...initialState,
+                fetching: true,
+                filterId: action.payload,
             }
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromCharactersByComicIdActions.NO_MORE_TO_FETCH:
-        case fromCharactersByComicIdActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
+        }
+    }),
+    on(fromCharactersByComicIdActions.fetchNextPage, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromCharactersByComicIdActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        pagination: action.pagination,
+        data: [...state.data, ...action.payload],
+    })),
+    on(fromCharactersByComicIdActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    })),
+    on(fromCharactersByComicIdActions.fetchedFromStore, fromCharactersByComicIdActions.noMoreToFetch, state => ({
+        ...state,
+        fetching: false,
+    }))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return charactersByComicIdReducer(state, action)
 }

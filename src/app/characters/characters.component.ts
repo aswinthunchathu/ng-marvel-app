@@ -23,8 +23,8 @@ export interface FilterType {
 export class CharactersComponent implements OnInit, OnDestroy {
     storeSubscription: Subscription
     characters: CharacterModel[]
-    hasMore: boolean = true
-    loading: boolean = true
+    hasMore: boolean
+    loading: boolean
     gridStyle = Style.grid
     isAnimated = true
     isFloatingLabel = true
@@ -55,12 +55,20 @@ export class CharactersComponent implements OnInit, OnDestroy {
             }
 
             if (this.filter.type === 'comics') {
-                this.store.dispatch(new fromCharactersByComicIdAction.FetchCharactersByComicIdStart(this.filter.id))
+                this.store.dispatch(
+                    fromCharactersByComicIdAction.fetchStart({
+                        payload: this.filter.id,
+                    })
+                )
             } else {
-                this.store.dispatch(new fromCharactersBySeriesIdAction.FetchCharactersBySeriesIdStart(this.filter.id))
+                this.store.dispatch(
+                    fromCharactersBySeriesIdAction.fetchStart({
+                        payload: this.filter.id,
+                    })
+                )
             }
         } else {
-            this.store.dispatch(new fromCharactersAction.FetchCharactersInit())
+            this.store.dispatch(fromCharactersAction.fetchStart())
         }
     }
 
@@ -90,14 +98,20 @@ export class CharactersComponent implements OnInit, OnDestroy {
     onScroll() {
         if (this.filter) {
             if (this.filter.type === 'comics') {
-                this.store.dispatch(new fromCharactersByComicIdAction.FetchCharactersByComicIdNextPage(this.filter.id))
+                this.store.dispatch(
+                    fromCharactersByComicIdAction.fetchNextPage({
+                        payload: this.filter.id,
+                    })
+                )
             } else {
                 this.store.dispatch(
-                    new fromCharactersBySeriesIdAction.FetchCharactersBySeriesIdNextPage(this.filter.id)
+                    fromCharactersBySeriesIdAction.fetchNextPage({
+                        payload: this.filter.id,
+                    })
                 )
             }
         } else {
-            this.store.dispatch(new fromCharactersAction.FetchCharactersNextPage())
+            this.store.dispatch(fromCharactersAction.fetchNextPage())
         }
     }
 

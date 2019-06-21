@@ -22,8 +22,8 @@ export interface FilterType {
 export class ComicsComponent implements OnInit, OnDestroy {
     storeSubscription: Subscription
     comics: ComicModel[]
-    hasMore: boolean = true
-    loading: boolean = true
+    hasMore: boolean
+    loading: boolean
     gridStyle = Style.gridSpaced
     hasError: boolean
     @Input('filter') filter: FilterType
@@ -38,12 +38,20 @@ export class ComicsComponent implements OnInit, OnDestroy {
     queryOnStore() {
         if (this.filter) {
             if (this.filter.type === 'character') {
-                this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdStart(this.filter.id))
+                this.store.dispatch(
+                    fromComicsByCharacterIdAction.fetchStart({
+                        payload: this.filter.id,
+                    })
+                )
             } else {
-                this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdStart(this.filter.id))
+                this.store.dispatch(
+                    fromComicsBySeriesIdAction.fetchStart({
+                        payload: this.filter.id,
+                    })
+                )
             }
         } else {
-            this.store.dispatch(new fromComicsAction.FetchComicsStart())
+            this.store.dispatch(fromComicsAction.fetchStart())
         }
     }
 
@@ -73,12 +81,20 @@ export class ComicsComponent implements OnInit, OnDestroy {
     onScroll() {
         if (this.filter) {
             if (this.filter.type === 'character') {
-                this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdNextPage(this.filter.id))
+                this.store.dispatch(
+                    fromComicsByCharacterIdAction.fetchNextPage({
+                        payload: this.filter.id,
+                    })
+                )
             } else {
-                this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdNextPage(this.filter.id))
+                this.store.dispatch(
+                    fromComicsBySeriesIdAction.fetchNextPage({
+                        payload: this.filter.id,
+                    })
+                )
             }
         } else {
-            this.store.dispatch(new fromComicsAction.FetchComicsNextPage())
+            this.store.dispatch(fromComicsAction.fetchNextPage())
         }
     }
 

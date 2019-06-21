@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromSeriesActions from './series.actions'
 import { PAGE_LIMIT } from '../../shared/constants'
@@ -19,38 +20,31 @@ const initialState: State = {
     error: null,
 }
 
-export const seriesReducer = (state = initialState, action: fromSeriesActions.type) => {
-    switch (action.type) {
-        case fromSeriesActions.FETCH_SERIES_NEXT_PAGE:
-        case fromSeriesActions.FETCH_SERIES_INIT:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromSeriesActions.FETCH_SERIES_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
-            }
-        case fromSeriesActions.FETCH_SERIES_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromSeriesActions.NO_MORE_TO_FETCH:
-        case fromSeriesActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
+const seriesReducer = createReducer(
+    initialState,
+    on(fromSeriesActions.fetchStart, fromSeriesActions.fetchNextPage, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromSeriesActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        pagination: action.pagination,
+        data: [...state.data, ...action.payload],
+    })),
+    on(fromSeriesActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    })),
+    on(fromSeriesActions.fetchedFromStore, fromSeriesActions.noMoreToFetch, state => ({
+        ...state,
+        fetching: false,
+    }))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return seriesReducer(state, action)
 }

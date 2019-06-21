@@ -16,13 +16,17 @@ export class ComicEffects {
     private _URL = action => `comics/${action.payload}`
 
     @Effect() fetchCharacters = this.actions$.pipe(
-        ofType(fromComicActions.FETCH_COMIC_START),
+        ofType(fromComicActions.fetchStart),
         withLatestFrom(this.store.select('comics')),
-        switchMap(([action, comicsState]: [fromComicActions.FetchComicStart, fromComicsReducer.State]) => {
+        switchMap(([action, comicsState]) => {
             if (comicsState.data.length > 0) {
                 const comic = comicsState.data.find(res => res.id === action.payload)
                 if (comic) {
-                    return of(new fromComicActions.FetchComicSuccess(comic))
+                    return of(
+                        fromComicActions.fetchSuccess({
+                            payload: comic,
+                        })
+                    )
                 }
             }
             return this._fetchFromServer(action)
@@ -36,18 +40,28 @@ export class ComicEffects {
      * @params action: action
      * return : Observable<FetchComicSuccess | FetchComicError>
      */
-    private _fetchFromServer(
-        action: fromComicActions.type
-    ): Observable<fromComicActions.FetchComicSuccess | fromComicActions.FetchComicError> {
+    private _fetchFromServer(action) {
         return this.http$.get<ComicsResults>(this._URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
-            map(
-                res =>
-                    new fromComicActions.FetchComicSuccess(
-                        new ComicModel(res.id, res.title, res.description, res.thumbnail, res.characters, res.series)
-                    )
+            map(res =>
+                fromComicActions.fetchSuccess({
+                    payload: new ComicModel(
+                        res.id,
+                        res.title,
+                        res.description,
+                        res.thumbnail,
+                        res.characters,
+                        res.series
+                    ),
+                })
             ),
-            catchError(err => of(new fromComicActions.FetchComicError(err)))
+            catchError(err =>
+                of(
+                    fromComicActions.fetchError({
+                        payload: err,
+                    })
+                )
+            )
         )
     }
 }

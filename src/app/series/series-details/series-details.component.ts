@@ -17,8 +17,8 @@ import { FilterType as CharacterFilterType } from '../../characters/characters.c
 export class SeriesDetailsComponent implements OnInit, OnDestroy {
     private routeSub: Subscription
     private seriesSub: Subscription
-    loading: boolean = true
-    series: ListDetailsModel = null
+    loading: boolean
+    series: ListDetailsModel
     filter: ComicFilterType | CharacterFilterType = null
     hasError: boolean
 
@@ -36,7 +36,11 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
                 type: 'series',
                 id,
             }
-            this.store.dispatch(new fromSeriesDetailsActions.FetchSeriesDetailsStart(id))
+            this.store.dispatch(
+                fromSeriesDetailsActions.fetchStart({
+                    payload: id,
+                })
+            )
         })
     }
 

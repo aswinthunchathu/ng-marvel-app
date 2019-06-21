@@ -1,47 +1,21 @@
-import { Action } from '@ngrx/store'
+import { createAction, props } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Pagination } from '../../shared/model/pagination.model'
 import { SeriesModel } from '../series.model'
 
-export const FETCH_SERIES_INIT = '[SERIES] Fetch Init'
-export const FETCH_SERIES_NEXT_PAGE = '[SERIES] Fetch Next Page'
-export const FETCH_SERIES_SUCCESS = '[SERIES] Fetch Success'
-export const FETCH_SERIES_ERROR = '[SERIES] Fetch Error'
-export const NO_MORE_TO_FETCH = '[SERIES] No More'
-export const FETCHED_FROM_STORE = '[SERIES] Fetched From Store'
+const TAG = '[SERIES]'
 
-export class FetchSeriesInit implements Action {
-    readonly type = FETCH_SERIES_INIT
-}
+export const fetchStart = createAction(`${TAG} Fetch Init`)
 
-export class FetchSeriesNextPage implements Action {
-    readonly type = FETCH_SERIES_NEXT_PAGE
-}
+export const fetchNextPage = createAction(`${TAG} Fetch Next Page`)
 
-export class FetchSeriesSuccess implements Action {
-    readonly type = FETCH_SERIES_SUCCESS
+export const fetchSuccess = createAction(
+    `${TAG} Fetch Success`,
+    props<{ payload: SeriesModel[]; pagination: Pagination }>()
+)
 
-    constructor(public payload: SeriesModel[], public pagination: Pagination) {}
-}
+export const fetchError = createAction(`${TAG} Fetch Error`, props<{ payload: HttpErrorResponse }>())
 
-export class FetchSeriesError implements Action {
-    readonly type = FETCH_SERIES_ERROR
+export const fetchedFromStore = createAction(`${TAG} No More`)
 
-    constructor(public payload: HttpErrorResponse) {}
-}
-
-export class FetchedFromStore implements Action {
-    readonly type = FETCHED_FROM_STORE
-}
-
-export class NoMoreToFetch implements Action {
-    readonly type = NO_MORE_TO_FETCH
-}
-
-export type type =
-    | FetchSeriesInit
-    | FetchSeriesNextPage
-    | FetchSeriesSuccess
-    | FetchSeriesError
-    | FetchedFromStore
-    | NoMoreToFetch
+export const noMoreToFetch = createAction(`${TAG} Fetched From Store`)

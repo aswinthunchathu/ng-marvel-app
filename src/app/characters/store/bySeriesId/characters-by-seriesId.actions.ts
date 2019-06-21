@@ -1,52 +1,22 @@
-import { Action } from '@ngrx/store'
+import { createAction, props } from '@ngrx/store'
 import { HttpErrorResponse } from '@angular/common/http'
 
 import { Pagination } from '../../../shared/model/pagination.model'
 import { CharacterModel } from '../../character.model'
 
-export const FETCH_CHARACTERS_BY_SERIES_ID_START = '[CHARACTERS BY SERIES ID] Fetch Start'
-export const FETCH_CHARACTERS_BY_SERIES_ID_NEXT_PAGE = '[CHARACTERS BY SERIES ID] Fetch Next Page'
-export const FETCH_CHARACTERS_BY_SERIES_ID_SUCCESS = '[CHARACTERS BY SERIES ID] Fetch Success'
-export const FETCH_CHARACTERS_BY_SERIES_ID_ERROR = '[CHARACTERS BY SERIES ID] Fetch Error'
-export const NO_MORE_TO_FETCH = '[CHARACTERS BY SERIES ID] No More'
-export const FETCHED_FROM_STORE = '[CHARACTERS BY SERIES ID] Fetched From Store'
+const TAG = '[CHARACTERS BY SERIES ID]'
 
-export class FetchCharactersBySeriesIdStart implements Action {
-    readonly type = FETCH_CHARACTERS_BY_SERIES_ID_START
+export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
 
-    constructor(public payload: number) {}
-}
+export const fetchNextPage = createAction(`${TAG} Fetch Next Page`, props<{ payload: number }>())
 
-export class FetchCharactersBySeriesIdNextPage implements Action {
-    readonly type = FETCH_CHARACTERS_BY_SERIES_ID_NEXT_PAGE
+export const fetchSuccess = createAction(
+    `${TAG} Fetch Success`,
+    props<{ payload: CharacterModel[]; pagination: Pagination }>()
+)
 
-    constructor(public payload: number) {}
-}
+export const fetchError = createAction(`${TAG} Fetch Error`, props<{ payload: HttpErrorResponse }>())
 
-export class FetchCharactersBySeriesIdSuccess implements Action {
-    readonly type = FETCH_CHARACTERS_BY_SERIES_ID_SUCCESS
+export const fetchedFromStore = createAction(`${TAG} No More`)
 
-    constructor(public payload: CharacterModel[], public pagination: Pagination) {}
-}
-
-export class FetchCharactersBySeriesIdError implements Action {
-    readonly type = FETCH_CHARACTERS_BY_SERIES_ID_ERROR
-
-    constructor(public payload: HttpErrorResponse) {}
-}
-
-export class FetchedFromStore implements Action {
-    readonly type = FETCHED_FROM_STORE
-}
-
-export class NoMoreToFetch implements Action {
-    readonly type = NO_MORE_TO_FETCH
-}
-
-export type type =
-    | FetchCharactersBySeriesIdStart
-    | FetchCharactersBySeriesIdSuccess
-    | FetchCharactersBySeriesIdError
-    | FetchCharactersBySeriesIdNextPage
-    | FetchedFromStore
-    | NoMoreToFetch
+export const noMoreToFetch = createAction(`${TAG} Fetched From Store`)

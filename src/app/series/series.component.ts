@@ -22,8 +22,8 @@ export interface FilterType {
 export class SeriesComponent implements OnInit {
     storeSubscription: Subscription
     seriesList: SeriesModel[]
-    hasMore: boolean = true
-    loading: boolean = true
+    hasMore: boolean
+    loading: boolean
     gridStyle = Style.gridSpaced
     hasError: boolean
     @Input('filter') filter: FilterType
@@ -37,9 +37,13 @@ export class SeriesComponent implements OnInit {
 
     queryOnStore() {
         if (this.filter) {
-            this.store.dispatch(new fromSeriesByCharacterIdActions.FetchSeriesByCharacterIdStart(this.filter.id))
+            this.store.dispatch(
+                fromSeriesByCharacterIdActions.fetchStart({
+                    payload: this.filter.id,
+                })
+            )
         } else {
-            this.store.dispatch(new fromSeriesActions.FetchSeriesInit())
+            this.store.dispatch(fromSeriesActions.fetchStart())
         }
     }
 
@@ -64,9 +68,13 @@ export class SeriesComponent implements OnInit {
 
     onScroll() {
         if (this.filter) {
-            this.store.dispatch(new fromSeriesByCharacterIdActions.FetchSeriesByCharacterIdNextPage(this.filter.id))
+            this.store.dispatch(
+                fromSeriesByCharacterIdActions.fetchNextPage({
+                    payload: this.filter.id,
+                })
+            )
         } else {
-            this.store.dispatch(new fromSeriesActions.FetchSeriesNextPage())
+            this.store.dispatch(fromSeriesActions.fetchNextPage())
         }
     }
 

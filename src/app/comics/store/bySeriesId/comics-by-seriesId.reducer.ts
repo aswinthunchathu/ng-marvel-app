@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromComicsBySeriesIdActions from './comics-by-seriesId.actions'
 import { PAGE_LIMIT } from '../../../shared/constants'
@@ -21,52 +22,47 @@ const initialState: State = {
     filterId: null,
 }
 
-export const comicsBySeriesIdReducer = (state = initialState, action: fromComicsBySeriesIdActions.type) => {
-    switch (action.type) {
-        case fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_START:
-            if (state.filterId === action.payload) {
-                return {
-                    ...state,
-                    fetching: true,
-                    error: null,
-                }
-            } else {
-                return {
-                    ...state,
-                    ...initialState,
-                    fetching: true,
-                    filterId: action.payload,
-                }
-            }
-        case fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE:
+const comicsBySeriesIdReducer = createReducer(
+    initialState,
+    on(fromComicsBySeriesIdActions.fetchStart, (state, action) => {
+        if (state.filterId === action.payload) {
             return {
                 ...state,
                 fetching: true,
                 error: null,
             }
-        case fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_SUCCESS:
+        } else {
             return {
                 ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
+                ...initialState,
+                fetching: true,
+                filterId: action.payload,
             }
-        case fromComicsBySeriesIdActions.FETCH_COMICS_BY_SERIES_ID_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromComicsBySeriesIdActions.NO_MORE_TO_FETCH:
-        case fromComicsBySeriesIdActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
+        }
+    }),
+    on(fromComicsBySeriesIdActions.fetchNextPage, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromComicsBySeriesIdActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        pagination: action.pagination,
+        data: [...state.data, ...action.payload],
+    })),
+    on(fromComicsBySeriesIdActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    })),
+    on(fromComicsBySeriesIdActions.fetchedFromStore, fromComicsBySeriesIdActions.noMoreToFetch, state => ({
+        ...state,
+        fetching: false,
+    }))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return comicsBySeriesIdReducer(state, action)
 }

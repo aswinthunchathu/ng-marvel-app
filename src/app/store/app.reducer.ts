@@ -1,5 +1,3 @@
-import { ActionReducerMap } from '@ngrx/store'
-
 import * as fromCharactersReducer from '../characters/store/characters.reducer'
 import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
@@ -15,27 +13,27 @@ import * as fromCharactersBySeriesIdReducer from '../characters/store/bySeriesId
 export interface AppState {
     characters: fromCharactersReducer.State
     comics: fromComicsReducer.State
-    character: fromCharacterReducer.State
-    comic: fromComicReducer.State
     series: fromSeriesReducer.State
-    seriesDetails: fromSeriesDetailsReducer.State
-    comicByCharacterId: fromComicsByCharacterIdReducer.State
-    comicBySeriesId: fromComicsBySeriesIdReducer.State
-    seriesByCharacterId: fromSeriesByCharacterIdReducer.State
     charactersByComicId: fromCharactersByComicIdReducer.State
     charactersBySeriesId: fromCharactersBySeriesIdReducer.State
+    character: fromCharacterReducer.State
+    comicBySeriesId: fromComicsBySeriesIdReducer.State
+    comicByCharacterId: fromComicsByCharacterIdReducer.State
+    comic: fromComicReducer.State
+    seriesDetails: fromSeriesDetailsReducer.State
+    seriesByCharacterId: fromSeriesByCharacterIdReducer.State
 }
 
-export const appReducer: ActionReducerMap<AppState> = {
-    characters: fromCharactersReducer.charactersReducer,
-    character: fromCharacterReducer.characterReducer,
-    series: fromSeriesReducer.seriesReducer,
-    seriesDetails: fromSeriesDetailsReducer.seriesDetailsReducer,
-    comics: fromComicsReducer.comicsReducer,
-    comic: fromComicReducer.comicReducer,
-    comicByCharacterId: fromComicsByCharacterIdReducer.comicsByCharacterIdReducer,
-    comicBySeriesId: fromComicsBySeriesIdReducer.comicsBySeriesIdReducer,
-    seriesByCharacterId: fromSeriesByCharacterIdReducer.seriesByCharacterIdReducer,
-    charactersByComicId: fromCharactersByComicIdReducer.charactersByComicIdReducer,
-    charactersBySeriesId: fromCharactersBySeriesIdReducer.charactersBySeriesIdReducer,
+export const appReducer = {
+    characters: fromCharactersReducer.reducer,
+    comics: fromComicsReducer.reducer,
+    series: fromSeriesReducer.reducer,
+    charactersByComicId: fromCharactersByComicIdReducer.reducer,
+    charactersBySeriesId: fromCharactersBySeriesIdReducer.reducer,
+    character: fromCharacterReducer.reducer,
+    comicBySeriesId: fromComicsBySeriesIdReducer.reducer,
+    comicByCharacterId: fromComicsByCharacterIdReducer.reducer,
+    comic: fromComicReducer.reducer,
+    seriesDetails: fromSeriesDetailsReducer.reducer,
+    seriesByCharacterId: fromSeriesByCharacterIdReducer.reducer,
 }

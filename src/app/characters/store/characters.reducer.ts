@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action, createSelector } from '@ngrx/store'
 
 import * as fromCharacterActions from './characters.actions'
 import { PAGE_LIMIT } from '../../shared/constants'
@@ -19,38 +20,31 @@ const initialState: State = {
     error: null,
 }
 
-export const charactersReducer = (state = initialState, action: fromCharacterActions.type) => {
-    switch (action.type) {
-        case fromCharacterActions.FETCH_CHARACTERS_NEXT_PAGE:
-        case fromCharacterActions.FETCH_CHARACTERS_INIT:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromCharacterActions.FETCH_CHARACTERS_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
-            }
-        case fromCharacterActions.FETCH_CHARACTERS_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromCharacterActions.NO_MORE_TO_FETCH:
-        case fromCharacterActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
+const charactersReducer = createReducer(
+    initialState,
+    on(fromCharacterActions.fetchStart, fromCharacterActions.fetchNextPage, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromCharacterActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        pagination: action.pagination,
+        data: [...state.data, ...action.payload],
+    })),
+    on(fromCharacterActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    })),
+    on(fromCharacterActions.fetchedFromStore, fromCharacterActions.noMoreToFetch, state => ({
+        ...state,
+        fetching: false,
+    }))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return charactersReducer(state, action)
 }

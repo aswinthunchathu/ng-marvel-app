@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromCharacterActions from './character.actions'
 import { CharacterModel } from '../../character.model'
@@ -15,30 +16,26 @@ const initialState: State = {
     error: null,
 }
 
-export const characterReducer = (state = initialState, action: fromCharacterActions.type) => {
-    switch (action.type) {
-        case fromCharacterActions.FETCH_CHARACTER_START:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromCharacterActions.FETCH_CHARACTER_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                data: action.payload,
-            }
-        case fromCharacterActions.FETCH_CHARACTER_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
+const characterReducer = createReducer(
+    initialState,
+    on(fromCharacterActions.fetchStart, state => ({
+        ...state,
+        fetching: true,
+        error: null,
+    })),
+    on(fromCharacterActions.fetchSuccess, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: null,
+        data: action.payload,
+    })),
+    on(fromCharacterActions.fetchError, (state, action) => ({
+        ...state,
+        fetching: false,
+        error: action.payload,
+    }))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return characterReducer(state, action)
 }
