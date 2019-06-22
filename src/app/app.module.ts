@@ -31,23 +31,16 @@ import { CharactersByComicIdEffects } from './characters/store/byComicId/charact
 import { CharactersBySeriesIdEffects } from './characters/store/bySeriesId/characters-by-seriesId.effects'
 
 import { SharedModule } from './shared/shared.module'
+import { CharactersModule } from './characters/characters.module'
+import { ComicsModule } from './comics/comics.module'
+import { SeriesModule } from './series/series.module'
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        CharactersComponent,
-        CharacterDetailsComponent,
-        ComicsComponent,
-        ComicDetailsComponent,
-        SeriesComponent,
-        SeriesDetailsComponent,
-    ],
+    declarations: [AppComponent, HeaderComponent],
     imports: [
         BrowserAnimationsModule,
         MaterialComponentsModule,
         HttpClientModule,
-        AppRoutingModule,
         StoreModule.forRoot(appReducer),
         EffectsModule.forRoot([
             CharactersEffects,
@@ -66,6 +59,9 @@ import { SharedModule } from './shared/shared.module'
             logOnly: environment.production,
         }),
         SharedModule,
+        CharactersModule,
+        ComicsModule,
+        SeriesModule,
     ],
     providers: [
         {

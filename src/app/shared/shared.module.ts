@@ -11,6 +11,7 @@ import { ListDetailsComponent } from '../UI/list/list-details/list-details.compo
 import { NavLinkComponent } from '../UI/header/sidebar/nav-link/nav-link.component'
 import { ErrorHandlerComponent } from '../UI/error-handler/error-handler.component'
 import { AppRoutingModule } from '../app-routing.module'
+import { MaterialComponentsModule } from './material-components.module'
 
 @NgModule({
     declarations: [
@@ -23,8 +24,10 @@ import { AppRoutingModule } from '../app-routing.module'
         NavLinkComponent,
         ErrorHandlerComponent,
     ],
-    imports: [CommonModule, InfiniteScrollModule, AppRoutingModule],
+    imports: [CommonModule, InfiniteScrollModule, AppRoutingModule, MaterialComponentsModule],
     exports: [
+        AppRoutingModule,
+        MaterialComponentsModule,
         SidebarComponent,
         LoaderComponent,
         ProgressiveImageLoadingDirective,
