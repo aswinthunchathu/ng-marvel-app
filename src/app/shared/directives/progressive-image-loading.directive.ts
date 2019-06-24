@@ -15,7 +15,7 @@ export class ProgressiveImageLoadingDirective implements OnInit {
 
     ngOnInit() {
         if (this.placeholder) {
-            this.newCssClass = `${this.cssClass} blur`
+            this.newCssClass = 'blur'
             this.bgImage = this.placeholder
         } else {
             this.newCssClass = `${this.cssClass} default-loader`
@@ -34,7 +34,9 @@ export class ProgressiveImageLoadingDirective implements OnInit {
         }
 
         actualImage.onerror = () => {
-            this.newCssClass = this.cssClass
+            if (this.placeholder) {
+                this.newCssClass = this.cssClass
+            }
             actualImage = null
         }
     }

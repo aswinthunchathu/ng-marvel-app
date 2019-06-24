@@ -50,8 +50,8 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
             if (res.data) {
                 this.series = new ListDetailsModel(
                     res.data.title,
-                    res.data.image,
-                    res.data.placeholder,
+                    res.data.image.portrait.actual,
+                    res.data.image.portrait.placeholder,
                     res.data.description
                 )
             }

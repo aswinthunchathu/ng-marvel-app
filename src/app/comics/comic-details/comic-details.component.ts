@@ -49,8 +49,8 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
             if (res.data) {
                 this.comic = new ListDetailsModel(
                     res.data.title,
-                    res.data.image,
-                    res.data.placeholder,
+                    res.data.image.portrait.actual,
+                    res.data.image.portrait.placeholder,
                     res.data.description
                 )
             }

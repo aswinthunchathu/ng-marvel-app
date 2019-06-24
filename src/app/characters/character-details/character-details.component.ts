@@ -52,11 +52,11 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
             if (res.data) {
                 this.character = new ListDetailsModel(
                     res.data.title,
-                    res.data.image,
-                    res.data.placeholder,
+                    res.data.image.portrait.actual,
+                    res.data.image.portrait.placeholder,
                     res.data.description
                 )
-                this.bgService.setBgImage(res.data.bgImage)
+                this.bgService.setBgImage(res.data.image.default.actual)
             }
 
             if (res.error) {
