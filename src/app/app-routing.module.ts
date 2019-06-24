@@ -12,8 +12,8 @@ const routes: Routes = [
     { path: 'seriesDetails/:id', component: SeriesDetailsComponent },
     { path: 'series', component: SeriesComponent },
     { path: 'comic/:id', component: ComicDetailsComponent },
-    { path: 'character/:id', component: CharacterDetailsComponent },
     { path: 'comics', component: ComicsComponent },
+    { path: 'character/:id', component: CharacterDetailsComponent },
     { path: 'characters', component: CharactersComponent },
     { path: '', redirectTo: '/characters', pathMatch: 'full' },
 ]

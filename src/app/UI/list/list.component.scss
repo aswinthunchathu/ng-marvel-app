@@ -1,4 +1,5 @@
-@import '../../shared/styles/mixins';
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
 
 @mixin column-template($width, $height) {
     grid-template-columns: repeat(auto-fill, minmax($width, 1fr));
