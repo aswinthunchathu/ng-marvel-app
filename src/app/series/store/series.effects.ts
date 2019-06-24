@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromSeriesActions from './series.actions'
-import { APIResponse, Series } from '../../shared/model/shared.interface'
+import { Series } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { SeriesModel } from '../series.model'
+import { APIService } from 'src/app/shared/services/api.service'
 
 @Injectable()
 export class SeriesEffects {
     private readonly _URL = 'series'
 
-    @Effect() fetchSeries = this.actions$.pipe(
+    @Effect() fetchSeries = this._actions$.pipe(
         ofType(fromSeriesActions.fetchStart),
-        withLatestFrom(this.store.select('series')),
+        withLatestFrom(this._store.select('series')),
         switchMap(([__, seriesState]) => {
             if (seriesState.data.length > 0) {
                 return of(fromSeriesActions.fetchedFromStore())
@@ -27,9 +27,9 @@ export class SeriesEffects {
         })
     )
 
-    @Effect() fetchSeriesNextPage = this.actions$.pipe(
+    @Effect() fetchSeriesNextPage = this._actions$.pipe(
         ofType(fromSeriesActions.fetchNextPage),
-        withLatestFrom(this.store.select('series')),
+        withLatestFrom(this._store.select('series')),
         switchMap(([__, seriesState]) => {
             const pagination: Pagination = seriesState.pagination
 
@@ -41,7 +41,7 @@ export class SeriesEffects {
         })
     )
 
-    constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
+    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
 
     /*
      * fetch Series from server
@@ -50,27 +50,23 @@ export class SeriesEffects {
      * return : Observable<FetchSeriesSuccess>
      */
     private _fetchFromServer(limit: number, offset: number) {
-        return this.http$
-            .get<APIResponse<Series>>(this._URL, {
-                params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
-            })
-            .pipe(
-                map(res => res.data),
-                map(res =>
-                    fromSeriesActions.fetchSuccess({
-                        payload: res.results.map(
-                            item => new SeriesModel(item.id, item.title, item.description, item.thumbnail)
-                        ),
-                        pagination: new Pagination(res.offset, res.limit, res.total, res.count),
+        return this._APIService.fetchFromServer<Series>(this._URL, limit, offset).pipe(
+            map(res => res.data),
+            map(res =>
+                fromSeriesActions.fetchSuccess({
+                    payload: res.results.map(
+                        item => new SeriesModel(item.id, item.title, item.description, item.thumbnail)
+                    ),
+                    pagination: new Pagination(res.offset, res.limit, res.total, res.count),
+                })
+            ),
+            catchError(err =>
+                of(
+                    fromSeriesActions.fetchError({
+                        payload: err,
                     })
-                ),
-                catchError(err =>
-                    of(
-                        fromSeriesActions.fetchError({
-                            payload: err,
-                        })
-                    )
                 )
             )
+        )
     }
 }

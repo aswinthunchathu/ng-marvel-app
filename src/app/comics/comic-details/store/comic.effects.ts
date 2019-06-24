@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
-import { of, Observable } from 'rxjs'
+import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromComicActions from './comic.actions'
-import * as fromComicsReducer from '../../store/comics.reducer'
 import { AppState } from '../../../store/app.reducer'
-import { Comic, APIResponse } from 'src/app/shared/model/shared.interface'
+import { Comic } from 'src/app/shared/model/shared.interface'
 import { ComicModel } from '../../comic.model'
+import { APIService } from 'src/app/shared/services/api.service'
 
 @Injectable()
 export class ComicEffects {
     private _URL = action => `comics/${action.payload}`
 
-    @Effect() fetchCharacters = this.actions$.pipe(
+    @Effect() fetchCharacters = this._actions$.pipe(
         ofType(fromComicActions.fetchStart),
-        withLatestFrom(this.store.select('comics')),
+        withLatestFrom(this._store.select('comics')),
         switchMap(([action, comicsState]) => {
             if (comicsState.data.length > 0) {
                 const comic = comicsState.data.find(res => res.id === action.payload)
@@ -33,7 +32,7 @@ export class ComicEffects {
         })
     )
 
-    constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
+    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
 
     /*
      * fetch comic from server
@@ -41,7 +40,7 @@ export class ComicEffects {
      * return : Observable<FetchComicSuccess | FetchComicError>
      */
     private _fetchFromServer(action) {
-        return this.http$.get<APIResponse<Comic>>(this._URL(action)).pipe(
+        return this._APIService.fetchFromServer<Comic>(this._URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromComicActions.fetchSuccess({

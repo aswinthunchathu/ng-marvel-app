@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromCharactersByComicIdActions from './characters-by-seriesId.actions'
-import { APIResponse, Character } from '../../../shared/model/shared.interface'
+import { Character } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
 import { CharacterModel } from '../../character.model'
+import { APIService } from 'src/app/shared/services/api.service'
 
 @Injectable()
 export class CharactersBySeriesIdEffects {
@@ -18,9 +18,9 @@ export class CharactersBySeriesIdEffects {
     /*
      * This effect is fired when FETCH_CHARACTERS_BY_SERIES_ID_START action is fired
      */
-    @Effect() fetchCharacters = this.actions$.pipe(
+    @Effect() fetchCharacters = this._actions$.pipe(
         ofType(fromCharactersByComicIdActions.fetchStart),
-        withLatestFrom(this.store.select('charactersBySeriesId')),
+        withLatestFrom(this._store.select('charactersBySeriesId')),
         switchMap(([action, characterState]) => {
             if (characterState.data.length > 0) {
                 return of(fromCharactersByComicIdActions.fetchedFromStore())
@@ -32,9 +32,9 @@ export class CharactersBySeriesIdEffects {
     /*
      * This effect is fired when FETCH_CHARACTERS_BY_SERIES_ID_NEXT_PAGE action is fired
      */
-    @Effect() fetchCharactersNextPage = this.actions$.pipe(
+    @Effect() fetchCharactersNextPage = this._actions$.pipe(
         ofType(fromCharactersByComicIdActions.fetchNextPage),
-        withLatestFrom(this.store.select('charactersBySeriesId')),
+        withLatestFrom(this._store.select('charactersBySeriesId')),
         switchMap(([action, characterState]) => {
             const pagination: Pagination = characterState.pagination
 
@@ -46,7 +46,7 @@ export class CharactersBySeriesIdEffects {
         })
     )
 
-    constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
+    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
 
     /*
      * fetch comics from server
@@ -56,27 +56,23 @@ export class CharactersBySeriesIdEffects {
      * return : Observable<FetchCharactersSuccess>
      */
     private _fetchFromServer(action, limit: number, offset: number) {
-        return this.http$
-            .get<APIResponse<Character>>(this._URL(action), {
-                params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
-            })
-            .pipe(
-                map(res => res.data),
-                map(res =>
-                    fromCharactersByComicIdActions.fetchSuccess({
-                        payload: res.results.map(
-                            item => new CharacterModel(item.id, item.name, item.description, item.thumbnail)
-                        ),
-                        pagination: new Pagination(res.offset, res.limit, res.total, res.count),
+        return this._APIService.fetchFromServer<Character>(this._URL(action), limit, offset).pipe(
+            map(res => res.data),
+            map(res =>
+                fromCharactersByComicIdActions.fetchSuccess({
+                    payload: res.results.map(
+                        item => new CharacterModel(item.id, item.name, item.description, item.thumbnail)
+                    ),
+                    pagination: new Pagination(res.offset, res.limit, res.total, res.count),
+                })
+            ),
+            catchError(err =>
+                of(
+                    fromCharactersByComicIdActions.fetchError({
+                        payload: err,
                     })
-                ),
-                catchError(err =>
-                    of(
-                        fromCharactersByComicIdActions.fetchError({
-                            payload: err,
-                        })
-                    )
                 )
             )
+        )
     }
 }

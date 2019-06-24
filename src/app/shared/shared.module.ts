@@ -10,7 +10,7 @@ import { ListComponent } from './components/list/list.component'
 import { ListDetailsComponent } from './components/list/list-details/list-details.component'
 import { ErrorHandlerComponent } from './components/error-handler/error-handler.component'
 import { MaterialComponentsModule } from './material-components.module'
-import { ApiInterceptor } from './services/api-interceptor.services'
+import { ApiInterceptor } from './services/api.service'
 
 @NgModule({
     declarations: [
