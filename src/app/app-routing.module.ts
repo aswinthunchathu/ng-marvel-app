@@ -1,27 +1,26 @@
 import { NgModule } from '@angular/core'
-import { Routes, RouterModule } from '@angular/router'
-
-import { CharactersComponent } from './characters/characters.component'
-import { ComicsComponent } from './comics/comics.component'
-import { CharacterDetailsComponent } from './characters/character-details/character-details.component'
-import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
-import { SeriesComponent } from './series/series.component'
-import { SeriesDetailsComponent } from './series/series-details/series-details.component'
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router'
 
 const routes: Routes = [
-    { path: 'seriesDetails/:id', component: SeriesDetailsComponent },
-    { path: 'series', component: SeriesComponent },
-    { path: 'comic/:id', component: ComicDetailsComponent },
-    { path: 'comics', component: ComicsComponent },
-    { path: 'character/:id', component: CharacterDetailsComponent },
-    { path: 'characters', component: CharactersComponent },
+    {
+        path: 'series',
+        loadChildren: () => import('./series/series.module').then(mod => mod.SeriesModule),
+    },
+    {
+        path: 'comics',
+        loadChildren: () => import('./comics/comics.module').then(mod => mod.ComicsModule),
+    },
+    {
+        path: 'characters',
+        loadChildren: () => import('./characters/characters.module').then(mod => mod.CharactersModule),
+    },
     { path: '', redirectTo: '/characters', pathMatch: 'full' },
 ]
 
 @NgModule({
     imports: [
         RouterModule.forRoot(routes, {
-            //scrollPositionRestoration: 'enabled',
+            preloadingStrategy: PreloadAllModules,
         }),
     ],
     exports: [RouterModule],

@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { Routes, RouterModule } from '@angular/router'
 
 import { CharactersComponent } from './characters.component'
 import { CharacterDetailsComponent } from './character-details/character-details.component'
-import { SharedModule } from '../shared/shared.module'
+
+const routes: Routes = [
+    { path: ':id', component: CharacterDetailsComponent },
+    { path: '', component: CharactersComponent },
+]
 
 @NgModule({
-    declarations: [CharactersComponent, CharacterDetailsComponent],
-    imports: [CommonModule, SharedModule],
-    exports: [CharactersComponent, CharacterDetailsComponent],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class CharactersRouteModule {}

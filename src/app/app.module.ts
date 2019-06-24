@@ -11,10 +11,19 @@ import { SharedModule } from './shared/shared.module'
 import { CharactersModule } from './characters/characters.module'
 import { ComicsModule } from './comics/comics.module'
 import { SeriesModule } from './series/series.module'
+import { AppRoutingModule } from './app-routing.module'
 
 @NgModule({
     declarations: [AppComponent, NavLinkComponent, SidebarComponent, HeaderComponent],
-    imports: [BrowserAnimationsModule, SharedModule, AppStoreModule, CharactersModule, ComicsModule, SeriesModule],
+    imports: [
+        BrowserAnimationsModule,
+        SharedModule,
+        AppStoreModule,
+        AppRoutingModule,
+        CharactersModule,
+        // ComicsModule,
+        //SeriesModule,
+    ],
     providers: [],
     bootstrap: [AppComponent],
 })

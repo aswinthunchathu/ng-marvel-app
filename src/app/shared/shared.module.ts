@@ -9,7 +9,6 @@ import { CardComponent } from './components/card/card.component'
 import { ListComponent } from './components/list/list.component'
 import { ListDetailsComponent } from './components/list/list-details/list-details.component'
 import { ErrorHandlerComponent } from './components/error-handler/error-handler.component'
-import { AppRoutingModule } from '../app-routing.module'
 import { MaterialComponentsModule } from './material-components.module'
 import { ApiInterceptor } from './services/api-interceptor.services'
 
@@ -22,10 +21,9 @@ import { ApiInterceptor } from './services/api-interceptor.services'
         ListDetailsComponent,
         ErrorHandlerComponent,
     ],
-    imports: [CommonModule, HttpClientModule, InfiniteScrollModule, AppRoutingModule, MaterialComponentsModule],
+    imports: [CommonModule, HttpClientModule, InfiniteScrollModule, MaterialComponentsModule],
     exports: [
         HttpClientModule,
-        AppRoutingModule,
         MaterialComponentsModule,
         LoaderComponent,
         ProgressiveImageLoadingDirective,
