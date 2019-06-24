@@ -13,18 +13,8 @@ import { ComicsModule } from './comics/comics.module'
 import { SeriesModule } from './series/series.module'
 
 @NgModule({
-    declarations: [AppComponent],
-    imports: [
-        BrowserAnimationsModule,
-        SharedModule,
-        AppStoreModule,
-        NavLinkComponent,
-        SidebarComponent,
-        HeaderComponent,
-        CharactersModule,
-        ComicsModule,
-        SeriesModule,
-    ],
+    declarations: [AppComponent, NavLinkComponent, SidebarComponent, HeaderComponent],
+    imports: [BrowserAnimationsModule, SharedModule, AppStoreModule, CharactersModule, ComicsModule, SeriesModule],
     providers: [],
     bootstrap: [AppComponent],
 })
