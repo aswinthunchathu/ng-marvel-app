@@ -5,7 +5,7 @@ import { ActivatedRoute, Params } from '@angular/router'
 
 import { AppState } from 'src/app/store/app.reducer'
 import * as fromComicActions from './store/comic.actions'
-import { ListDetailsModel } from '../../UI/list/list-details/list-details.model'
+import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
 import { FilterType as CharacterFilterType } from 'src/app/characters/characters.component'
 
 @Component({

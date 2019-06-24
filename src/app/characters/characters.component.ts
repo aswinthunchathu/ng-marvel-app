@@ -5,7 +5,7 @@ import { map, tap } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
 import { CharacterModel } from './character.model'
-import { Style } from '../UI/list/list.component'
+import { Style } from '../shared/components/list/list.component'
 import * as fromCharactersAction from './store/characters.actions'
 import * as fromCharactersByComicIdAction from './store/byComicId/characters-by-comicId.actions'
 import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-by-seriesId.actions'

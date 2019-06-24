@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store'
 import { tap, map } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
-import { Style } from '../UI/list/list.component'
+import { Style } from '../shared/components/list/list.component'
 import { SeriesModel } from './series.model'
 import * as fromSeriesActions from './store/series.actions'
 import * as fromSeriesByCharacterIdActions from './store/byCharacterId/series-by-characterId.actions'

@@ -6,7 +6,7 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { AppState } from '../../store/app.reducer'
 import * as fromCharacterActions from './store/character.actions'
 import { BgService } from '../../shared/services/bg.service'
-import { ListDetailsModel } from '../../UI/list/list-details/list-details.model'
+import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
 import { FilterType as ComicsFilterType } from '../../comics/comics.component'
 import { FilterType as SeriesFilterType } from '../../series/series.component'
 
