@@ -20,7 +20,7 @@ const initialState: State = {
     error: null,
 }
 
-const charactersReducer = createReducer(
+const charactersReducer = createReducer<State>(
     initialState,
     on(fromCharacterActions.fetchStart, fromCharacterActions.fetchNextPage, state => ({
         ...state,

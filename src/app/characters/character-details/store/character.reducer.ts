@@ -16,7 +16,7 @@ const initialState: State = {
     error: null,
 }
 
-const characterReducer = createReducer(
+const characterReducer = createReducer<State>(
     initialState,
     on(fromCharacterActions.fetchStart, state => ({
         ...state,

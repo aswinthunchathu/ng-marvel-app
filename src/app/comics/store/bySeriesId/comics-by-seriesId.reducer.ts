@@ -22,7 +22,7 @@ const initialState: State = {
     filterId: null,
 }
 
-const comicsBySeriesIdReducer = createReducer(
+const comicsBySeriesIdReducer = createReducer<State>(
     initialState,
     on(fromComicsBySeriesIdActions.fetchStart, (state, action) => {
         if (state.filterId === action.payload) {

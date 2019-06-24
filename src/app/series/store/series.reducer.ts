@@ -20,7 +20,7 @@ const initialState: State = {
     error: null,
 }
 
-const seriesReducer = createReducer(
+const seriesReducer = createReducer<State>(
     initialState,
     on(fromSeriesActions.fetchStart, fromSeriesActions.fetchNextPage, state => ({
         ...state,

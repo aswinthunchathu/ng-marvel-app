@@ -20,7 +20,7 @@ const initialState: State = {
     error: null,
 }
 
-const comicsReducer = createReducer(
+const comicsReducer = createReducer<State>(
     initialState,
     on(fromComicsActions.fetchStart, fromComicsActions.fetchNextPage, state => ({
         ...state,

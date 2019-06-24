@@ -16,7 +16,7 @@ const initialState: State = {
     error: null,
 }
 
-const seriesDetailsReducer = createReducer(
+const seriesDetailsReducer = createReducer<State>(
     initialState,
     on(fromSeriesDetailsActions.fetchStart, state => ({
         ...state,

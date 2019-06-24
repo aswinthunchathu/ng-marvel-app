@@ -24,7 +24,7 @@ const initialState: State = {
     previousFilterId: null,
 }
 
-const seriesByCharacterIdReducer = createReducer(
+const seriesByCharacterIdReducer = createReducer<State>(
     initialState,
     on(fromSeriesByCharacterIdActions.fetchStart, (state, action) => {
         if (state.filterId === action.payload) {
