@@ -2,15 +2,13 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
-import { of, Observable } from 'rxjs'
-import { Store, Action } from '@ngrx/store'
+import { of } from 'rxjs'
+import { Store } from '@ngrx/store'
 
 import * as fromSeriesActions from './series.actions'
 import { SeriesResults } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
-import { State } from './series.reducer'
-import { FETCHED_FROM_STORE } from 'src/app/shared/constants'
 import { SeriesModel } from '../series.model'
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http'
 
 import * as fromCharactersByComicIdActions from './characters-by-comicId.actions'
-import { PAGE_LIMIT } from '../../../shared/constants'
+import { PAGE_LIMIT } from '../../../constants'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { CharacterModel } from '../../character.model'
 import { createReducer, on, Action } from '@ngrx/store'

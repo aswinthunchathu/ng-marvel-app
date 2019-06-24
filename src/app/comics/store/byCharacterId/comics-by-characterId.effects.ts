@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
-import { of, Observable } from 'rxjs'
+import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromComicsByCharacterIDActions from './comics-by-characterId.actions'
 import { ComicsResults } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
-import { State } from './comics-by-characterId.reducer'
-import { FETCHED_FROM_STORE } from '../../../shared/constants'
 import { ComicModel } from '../../comic.model'
 
 @Injectable()
