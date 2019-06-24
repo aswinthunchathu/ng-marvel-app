@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store'
 
 import * as fromSeriesDetailsActions from './series-details.actions'
 import { AppState } from '../../../store/app.reducer'
-import { SeriesResults } from '../../../shared/model/shared.interface'
+import { Series, APIResponse } from '../../../shared/model/shared.interface'
 import { SeriesModel } from '../../series.model'
 
 @Injectable()
@@ -41,7 +41,7 @@ export class SeriesDetailsEffects {
      * return : Observable<FetchComicSuccess | FetchComicError>
      */
     private _fetchFromServer(action) {
-        return this.http$.get<SeriesResults>(this._URL(action)).pipe(
+        return this.http$.get<APIResponse<Series>>(this._URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromSeriesDetailsActions.fetchSuccess({

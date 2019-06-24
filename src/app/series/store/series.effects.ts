@@ -6,7 +6,7 @@ import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromSeriesActions from './series.actions'
-import { SeriesResults } from '../../shared/model/shared.interface'
+import { APIResponse, Series } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { SeriesModel } from '../series.model'
@@ -51,7 +51,7 @@ export class SeriesEffects {
      */
     private _fetchFromServer(limit: number, offset: number) {
         return this.http$
-            .get<SeriesResults>(this._URL, {
+            .get<APIResponse<Series>>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(

@@ -6,7 +6,7 @@ import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromSeriesByCharacterIDActions from './series-by-characterId.actions'
-import { SeriesResults } from '../../../shared/model/shared.interface'
+import { APIResponse, Series } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
 import { SeriesModel } from '../../series.model'
@@ -54,7 +54,7 @@ export class SeriesByCharacterIdEffects {
      */
     private _fetchFromServer(action, limit: number, offset: number) {
         return this.http$
-            .get<SeriesResults>(this._URL(action), {
+            .get<APIResponse<Series>>(this._URL(action), {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(

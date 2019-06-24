@@ -13,23 +13,6 @@ export interface Price {
     price: number
 }
 
-export interface Character {
-    id: number
-    name: string
-    description: string
-    thumbnail: Image
-}
-
-export interface CharacterResults {
-    data: {
-        offset: number
-        limit: number
-        total: number
-        count: number
-        results: Character[]
-    }
-}
-
 export interface Comic {
     id: number
     title: string
@@ -37,15 +20,6 @@ export interface Comic {
     thumbnail: Image
 }
 
-export interface ComicsResults {
-    data: {
-        offset: number
-        limit: number
-        total: number
-        count: number
-        results: Comic[]
-    }
-}
 export interface Series {
     id: number
     title: string
@@ -53,12 +27,19 @@ export interface Series {
     thumbnail: Image
 }
 
-export interface SeriesResults {
+export interface Character {
+    id: number
+    name: string
+    description: string
+    thumbnail: Image
+}
+
+export interface APIResponse<T> {
     data: {
         offset: number
         limit: number
         total: number
         count: number
-        results: Series[]
+        results: T[]
     }
 }

@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store'
 import * as fromComicActions from './comic.actions'
 import * as fromComicsReducer from '../../store/comics.reducer'
 import { AppState } from '../../../store/app.reducer'
-import { ComicsResults } from 'src/app/shared/model/shared.interface'
+import { Comic, APIResponse } from 'src/app/shared/model/shared.interface'
 import { ComicModel } from '../../comic.model'
 
 @Injectable()
@@ -41,7 +41,7 @@ export class ComicEffects {
      * return : Observable<FetchComicSuccess | FetchComicError>
      */
     private _fetchFromServer(action) {
-        return this.http$.get<ComicsResults>(this._URL(action)).pipe(
+        return this.http$.get<APIResponse<Comic>>(this._URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromComicActions.fetchSuccess({

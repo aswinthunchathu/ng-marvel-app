@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store'
 
 import * as fromCharacterActions from './character.actions'
 import { AppState } from '../../../store/app.reducer'
-import { CharacterResults } from '../../../shared/model/shared.interface'
+import { APIResponse, Character } from '../../../shared/model/shared.interface'
 import { CharacterModel } from '../../character.model'
 
 @Injectable()
@@ -40,7 +40,7 @@ export class CharacterEffects {
      * return : Observable<FetchCharactersSuccess | FetchCharacterError>
      */
     private _fetchFromServer(action) {
-        return this.http$.get<CharacterResults>(this._URL(action)).pipe(
+        return this.http$.get<APIResponse<Character>>(this._URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromCharacterActions.fetchSuccess({

@@ -6,7 +6,7 @@ import { of } from 'rxjs'
 import { Store } from '@ngrx/store'
 
 import * as fromComicsActions from './comics.actions'
-import { ComicsResults } from '../../shared/model/shared.interface'
+import { APIResponse, Comic } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { ComicModel } from '../comic.model'
@@ -53,7 +53,7 @@ export class ComicsEffects {
      */
     private _fetchFromServer(limit: number, offset: number) {
         return this.http$
-            .get<ComicsResults>(this._URL, {
+            .get<APIResponse<Comic>>(this._URL, {
                 params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
             })
             .pipe(
