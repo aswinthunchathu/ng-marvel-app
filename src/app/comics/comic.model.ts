@@ -13,6 +13,6 @@ export class ComicModel {
     }
 
     get linkToDetails() {
-        return ['/comic', this.id]
+        return ['/comics', this.id]
     }
 }

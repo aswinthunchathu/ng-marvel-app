@@ -25,6 +25,6 @@ export class CharacterModel {
     }
 
     get linkToDetails() {
-        return ['/character', this.id]
+        return ['/characters', this.id]
     }
 }
