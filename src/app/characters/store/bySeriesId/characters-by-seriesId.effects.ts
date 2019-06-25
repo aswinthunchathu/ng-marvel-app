@@ -31,34 +31,38 @@ export class CharactersBySeriesIdEffects {
     /*
      * This effect is fired when FETCH_CHARACTERS_BY_SERIES_ID_START action is fired
      */
-    @Effect() fetchCharacters = this._actions$.pipe(
-        ofType(fromCharactersBySeriesIdActions.fetchStart),
-        withLatestFrom(
-            this._store.pipe(select(fromRoot.selectTotalCharactersBySeriesId)),
-            this._store.pipe(select(fromRoot.charactersBySeriesIdState))
-        ),
-        switchMap(([action, count, { pagination }]) => {
-            this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.charactersBySeriesId)())
-            if (count > 0) {
-                return of(fromCharactersBySeriesIdActions.fetchedFromStore())
-            }
-            return this._fetchFromServer(this._URL(action.payload), pagination.limit, pagination.nextPage)
-        })
+    fetchStart$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromCharactersBySeriesIdActions.fetchStart),
+            withLatestFrom(
+                this._store.pipe(select(fromRoot.selectTotalCharactersBySeriesId)),
+                this._store.pipe(select(fromRoot.charactersBySeriesIdState))
+            ),
+            switchMap(([action, count, { pagination }]) => {
+                this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.charactersBySeriesId)())
+                if (count > 0) {
+                    return of(fromCharactersBySeriesIdActions.fetchedFromStore())
+                }
+                return this._fetchFromServer(this._URL(action.payload), pagination.limit, pagination.nextPage)
+            })
+        )
     )
 
     /*
      * This effect is fired when FETCH_CHARACTERS_BY_SERIES_ID_NEXT_PAGE action is fired
      */
-    @Effect() fetchCharactersNextPage = this._actions$.pipe(
-        ofType(fromCharactersBySeriesIdActions.fetchNextPage),
-        withLatestFrom(this._store.pipe(select(fromRoot.charactersBySeriesIdState))),
-        switchMap(([__, { pagination, filterId }]) => {
-            if (!pagination.hasMore) {
-                return of(fromCharactersBySeriesIdActions.noMoreToFetch())
-            } else {
-                return this._fetchFromServer(this._URL(filterId), pagination.limit, pagination.nextPage)
-            }
-        })
+    fetchNextPage$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromCharactersBySeriesIdActions.fetchNextPage),
+            withLatestFrom(this._store.pipe(select(fromRoot.charactersBySeriesIdState))),
+            switchMap(([__, { pagination, filterId }]) => {
+                if (!pagination.hasMore) {
+                    return of(fromCharactersBySeriesIdActions.noMoreToFetch())
+                } else {
+                    return this._fetchFromServer(this._URL(filterId), pagination.limit, pagination.nextPage)
+                }
+            })
+        )
     )
 
     hideSpinner$ = createEffect(() =>
