@@ -35,15 +35,15 @@ export class CharactersBySeriesIdEffects {
         this._actions$.pipe(
             ofType(fromCharactersBySeriesIdActions.fetchStart),
             withLatestFrom(
-                this._store.pipe(select(fromRoot.selectTotalCharactersBySeriesId)),
-                this._store.pipe(select(fromRoot.charactersBySeriesIdState))
+                this._store.pipe(select(fromRoot.selectCharactersBySeriesIdTotal)),
+                this._store.select('charactersBySeriesId')
             ),
             switchMap(([action, count, { pagination }]) => {
                 this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.charactersBySeriesId)())
                 if (count > 0) {
                     return of(fromCharactersBySeriesIdActions.fetchedFromStore())
                 }
-                return this._fetchFromServer(this._URL(action.payload), pagination.limit, pagination.nextPage)
+                return this._fetchFromServer(this._URL(action.payload), pagination.data.limit, pagination.data.nextPage)
             })
         )
     )
@@ -54,12 +54,15 @@ export class CharactersBySeriesIdEffects {
     fetchNextPage$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersBySeriesIdActions.fetchNextPage),
-            withLatestFrom(this._store.pipe(select(fromRoot.charactersBySeriesIdState))),
-            switchMap(([__, { pagination, filterId }]) => {
-                if (!pagination.hasMore) {
+            withLatestFrom(
+                this._store.pipe(select(fromRoot.selectFilterIdForCharactersBySeriesId)),
+                this._store.select('charactersBySeriesId')
+            ),
+            switchMap(([__, filterId, { pagination }]) => {
+                if (!pagination.data.hasMore) {
                     return of(fromCharactersBySeriesIdActions.noMoreToFetch())
                 } else {
-                    return this._fetchFromServer(this._URL(filterId), pagination.limit, pagination.nextPage)
+                    return this._fetchFromServer(this._URL(filterId), pagination.data.limit, pagination.data.nextPage)
                 }
             })
         )
