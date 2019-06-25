@@ -1,13 +1,11 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
-import { tap, switchMap } from 'rxjs/operators'
 
 import * as fromRoot from '../store/app.reducer'
 import { CharacterModel } from './character.model'
 import { Style } from '../shared/components/list/list.component'
 import { ImageType } from '../shared/model/image-generator.model'
-import * as fromUIAction from '../store/ui/ui.actions'
 import * as fromCharactersAction from './store/characters.actions'
 import * as fromCharactersByComicIdAction from './store/byComicId/characters-by-comicId.actions'
 import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-by-seriesId.actions'
@@ -23,16 +21,14 @@ const keyMap = {
         action: fromCharactersAction,
         state: fromRoot.charactersState,
     },
-    // [FILTER_TYPE.comics]: {
-    //     action: fromCharactersByComicIdAction,
-    //     state: fromRoot.selectCharactersByComicIdState,
-    //     list: fromRoot.selectAllCharactersByComicId,
-    // },
-    // [FILTER_TYPE.series]: {
-    //     action: fromCharactersBySeriesIdAction,
-    //     state: fromRoot.selectCharactersBySeriesIdState,
-    //     list: fromRoot.selectAllCharactersBySeriesId,
-    // },
+    [FILTER_TYPE.comics]: {
+        action: fromCharactersByComicIdAction,
+        state: fromRoot.charactersByComicIdState,
+    },
+    [FILTER_TYPE.series]: {
+        action: fromCharactersBySeriesIdAction,
+        state: fromRoot.charactersBySeriesIdState,
+    },
 }
 
 @Component({

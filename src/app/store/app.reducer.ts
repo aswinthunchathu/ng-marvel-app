@@ -18,12 +18,18 @@ import { ACTION_TAGS } from '../constants'
 export interface AppState {
     charactersUI: fromUIReducer.State
     charactersPagination: fromPaginationReducer.State
-
     characters: fromCharactersReducer.State
+
+    charactersByComicIdUI: fromUIReducer.State
+    charactersByComicIdPagination: fromPaginationReducer.State
+    charactersByComicId: fromCharactersByComicIdReducer.State
+
+    charactersBySeriesIdUI: fromUIReducer.State
+    charactersBySeriesIdPagination: fromPaginationReducer.State
+    charactersBySeriesId: fromCharactersBySeriesIdReducer.State
+
     comics: fromComicsReducer.State
     series: fromSeriesReducer.State
-    charactersByComicId: fromCharactersByComicIdReducer.State
-    charactersBySeriesId: fromCharactersBySeriesIdReducer.State
     character: fromCharacterReducer.State
     comicBySeriesId: fromComicsBySeriesIdReducer.State
     comicByCharacterId: fromComicsByCharacterIdReducer.State
@@ -35,12 +41,19 @@ export interface AppState {
 export const appReducer: ActionReducerMap<AppState> = {
     charactersUI: fromUIReducer.reducer(ACTION_TAGS.characters),
     charactersPagination: fromPaginationReducer.reducer(ACTION_TAGS.characters),
-
     characters: fromCharactersReducer.reducer,
+
+    charactersByComicIdUI: fromUIReducer.reducer(ACTION_TAGS.charactersByComicId),
+    charactersByComicIdPagination: fromPaginationReducer.reducer(ACTION_TAGS.charactersByComicId),
+    charactersByComicId: fromCharactersByComicIdReducer.reducer,
+
+    charactersBySeriesIdUI: fromUIReducer.reducer(ACTION_TAGS.charactersBySeriesId),
+    charactersBySeriesIdPagination: fromPaginationReducer.reducer(ACTION_TAGS.charactersBySeriesId),
+    charactersBySeriesId: fromCharactersBySeriesIdReducer.reducer,
+
     comics: fromComicsReducer.reducer,
     series: fromSeriesReducer.reducer,
-    charactersByComicId: fromCharactersByComicIdReducer.reducer,
-    charactersBySeriesId: fromCharactersBySeriesIdReducer.reducer,
+
     character: fromCharacterReducer.reducer,
     comicBySeriesId: fromComicsBySeriesIdReducer.reducer,
     comicByCharacterId: fromComicsByCharacterIdReducer.reducer,
@@ -67,13 +80,18 @@ export const selectTotalCharacters = createSelector(
     fromCharactersReducer.selectTotal
 )
 
-export const selectCharactersByComicIdState = createFeatureSelector<fromCharactersByComicIdReducer.State>(
-    'charactersByComicId'
-)
+const selectCharactersByComicIdState = (state: AppState) => state.charactersByComicId
 
-export const selectAllCharactersByComicId = createSelector(
+export const charactersByComicIdState = createSelector(
+    (state: AppState) => state.charactersByComicIdUI,
+    (state: AppState) => state.charactersByComicIdPagination,
     selectCharactersByComicIdState,
-    fromCharactersByComicIdReducer.selectAll
+    (ui, pagination, state) => ({
+        ui,
+        data: fromCharactersByComicIdReducer.selectAll(state),
+        pagination: pagination.data,
+        filterId: state.filterId,
+    })
 )
 
 export const selectTotalCharactersByComicId = createSelector(
@@ -81,15 +99,19 @@ export const selectTotalCharactersByComicId = createSelector(
     fromCharactersByComicIdReducer.selectTotal
 )
 
-export const selectCharactersBySeriesIdState = createFeatureSelector<fromCharactersBySeriesIdReducer.State>(
-    'charactersBySeriesId'
-)
+const selectCharactersBySeriesIdState = (state: AppState) => state.charactersBySeriesId
 
-export const selectAllCharactersBySeriesId = createSelector(
-    selectCharactersByComicIdState,
-    fromCharactersBySeriesIdReducer.selectAll
+export const charactersBySeriesIdState = createSelector(
+    (state: AppState) => state.charactersBySeriesIdUI,
+    (state: AppState) => state.charactersBySeriesIdPagination,
+    selectCharactersBySeriesIdState,
+    (ui, pagination, state) => ({
+        ui,
+        data: fromCharactersBySeriesIdReducer.selectAll(state),
+        pagination: pagination.data,
+        filterId: state.filterId,
+    })
 )
-
 export const selectTotalCharactersBySeriesId = createSelector(
     selectCharactersByComicIdState,
     fromCharactersBySeriesIdReducer.selectTotal

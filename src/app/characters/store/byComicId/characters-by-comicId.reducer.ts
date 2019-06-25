@@ -29,40 +29,16 @@ const charactersByComicIdReducer = createReducer<State>(
         if (state.filterId === action.payload) {
             return {
                 ...state,
-                fetching: true,
-                error: null,
             }
         } else {
             return {
                 ...state,
                 ...initialState,
-                fetching: true,
                 filterId: action.payload,
             }
         }
     }),
-    on(fromCharactersByComicIdActions.fetchNextPage, state => ({
-        ...state,
-        fetching: true,
-        error: null,
-    })),
-    on(fromCharactersByComicIdActions.fetchSuccess, (state, action) =>
-        adapter.addMany(action.payload, {
-            ...state,
-            fetching: false,
-            error: null,
-            pagination: action.pagination,
-        })
-    ),
-    on(fromCharactersByComicIdActions.fetchError, (state, action) => ({
-        ...state,
-        fetching: false,
-        error: action.payload,
-    })),
-    on(fromCharactersByComicIdActions.fetchedFromStore, fromCharactersByComicIdActions.noMoreToFetch, state => ({
-        ...state,
-        fetching: false,
-    }))
+    on(fromCharactersByComicIdActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
 )
 
 export function reducer(state: State | undefined, action: Action) {
