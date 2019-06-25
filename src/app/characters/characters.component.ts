@@ -7,6 +7,7 @@ import * as fromRoot from '../store/app.reducer'
 import { CharacterModel } from './character.model'
 import { Style } from '../shared/components/list/list.component'
 import { ImageType } from '../shared/model/image-generator.model'
+import * as fromUIAction from '../store/ui/ui.actions'
 import * as fromCharactersAction from './store/characters.actions'
 import * as fromCharactersByComicIdAction from './store/byComicId/characters-by-comicId.actions'
 import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-by-seriesId.actions'
@@ -20,19 +21,18 @@ export interface Filter {
 const keyMap = {
     [FILTER_TYPE.none]: {
         action: fromCharactersAction,
-        state: fromRoot.selectCharactersState,
-        list: fromRoot.selectAllCharacters,
+        state: fromRoot.charactersState,
     },
-    [FILTER_TYPE.comics]: {
-        action: fromCharactersByComicIdAction,
-        state: fromRoot.selectCharactersByComicIdState,
-        list: fromRoot.selectAllCharactersByComicId,
-    },
-    [FILTER_TYPE.series]: {
-        action: fromCharactersBySeriesIdAction,
-        state: fromRoot.selectCharactersBySeriesIdState,
-        list: fromRoot.selectAllCharactersBySeriesId,
-    },
+    // [FILTER_TYPE.comics]: {
+    //     action: fromCharactersByComicIdAction,
+    //     state: fromRoot.selectCharactersByComicIdState,
+    //     list: fromRoot.selectAllCharactersByComicId,
+    // },
+    // [FILTER_TYPE.series]: {
+    //     action: fromCharactersBySeriesIdAction,
+    //     state: fromRoot.selectCharactersBySeriesIdState,
+    //     list: fromRoot.selectAllCharactersBySeriesId,
+    // },
 }
 
 @Component({
@@ -79,21 +79,14 @@ export class CharactersComponent implements OnInit, OnDestroy {
     subscribeToStore() {
         const type = this.filter ? this.filter.type : FILTER_TYPE.none
 
-        this.storeSubscription = this.store
-            .pipe(
-                select(keyMap[type].state),
-                tap(res => {
-                    this.loading = res.fetching
-                    if (res.error) {
-                        this.hasError = true
-                    }
-                    if (this.hasMore !== res.pagination.hasMore) {
-                        this.hasMore = res.pagination.hasMore
-                    }
-                }),
-                switchMap(() => this.store.pipe(select(keyMap[type].list)))
-            )
-            .subscribe(res => (this.characters = res))
+        this.storeSubscription = this.store.pipe(select(keyMap[type].state)).subscribe(res => {
+            this.characters = res.data
+            this.loading = res.ui.fetching
+            this.hasError = !!res.ui.error
+            if (this.hasMore !== res.pagination.hasMore) {
+                this.hasMore = res.pagination.hasMore
+            }
+        })
     }
 
     onScroll() {

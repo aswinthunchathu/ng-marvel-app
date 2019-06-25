@@ -1,5 +1,7 @@
 import { createFeatureSelector, createSelector, ActionReducerMap } from '@ngrx/store'
 
+import * as fromUIReducer from './ui/ui.reducer'
+import * as fromPaginationReducer from './ui/pagination.reducer'
 import * as fromCharactersReducer from '../characters/store/characters.reducer'
 import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
@@ -11,8 +13,12 @@ import * as fromSeriesDetailsReducer from '../series/series-details/store/series
 import * as fromSeriesByCharacterIdReducer from '../series/store/byCharacterId/series-by-characterId.reducer'
 import * as fromCharactersByComicIdReducer from '../characters/store/byComicId/characters-by-comicId.reducer'
 import * as fromCharactersBySeriesIdReducer from '../characters/store/bySeriesId/characters-by-seriesId.reducer'
+import { ACTION_TAGS } from '../constants'
 
 export interface AppState {
+    charactersUI: fromUIReducer.State
+    charactersPagination: fromPaginationReducer.State
+
     characters: fromCharactersReducer.State
     comics: fromComicsReducer.State
     series: fromSeriesReducer.State
@@ -27,6 +33,9 @@ export interface AppState {
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
+    charactersUI: fromUIReducer.reducer(ACTION_TAGS.characters),
+    charactersPagination: fromPaginationReducer.reducer(ACTION_TAGS.characters),
+
     characters: fromCharactersReducer.reducer,
     comics: fromComicsReducer.reducer,
     series: fromSeriesReducer.reducer,
@@ -40,11 +49,17 @@ export const appReducer: ActionReducerMap<AppState> = {
     seriesByCharacterId: fromSeriesByCharacterIdReducer.reducer,
 }
 
-export const selectCharactersState = createFeatureSelector<fromCharactersReducer.State>('characters')
+export const selectCharactersState = (state: AppState) => state.characters
 
-export const selectAllCharacters = createSelector(
+export const charactersState = createSelector(
+    (state: AppState) => state.charactersUI,
+    (state: AppState) => state.charactersPagination,
     selectCharactersState,
-    fromCharactersReducer.selectAll
+    (ui, pagination, state) => ({
+        ui,
+        data: fromCharactersReducer.selectAll(state),
+        pagination: pagination.data,
+    })
 )
 
 export const selectTotalCharacters = createSelector(

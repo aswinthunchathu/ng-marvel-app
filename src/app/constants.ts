@@ -6,3 +6,7 @@ export enum FILTER_TYPE {
     series = 'series',
     character = 'character',
 }
+
+export enum ACTION_TAGS {
+    characters = '[CHARACTERS]',
+}
