@@ -17,7 +17,7 @@ export class CharacterEffects {
 
     @Effect() fetchCharacters = this._actions$.pipe(
         ofType(fromCharacterActions.fetchStart),
-        withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersState))),
+        withLatestFrom(this._store.select('characters')),
         switchMap(([action, charactersState]) => {
             if (charactersState.ids.length > 0) {
                 const character = charactersState[action.payload]

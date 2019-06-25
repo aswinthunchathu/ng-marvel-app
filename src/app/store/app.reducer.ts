@@ -49,7 +49,7 @@ export const appReducer: ActionReducerMap<AppState> = {
     seriesByCharacterId: fromSeriesByCharacterIdReducer.reducer,
 }
 
-export const selectCharactersState = (state: AppState) => state.characters
+const selectCharactersState = (state: AppState) => state.characters
 
 export const charactersState = createSelector(
     (state: AppState) => state.charactersUI,
