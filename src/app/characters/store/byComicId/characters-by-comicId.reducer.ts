@@ -1,25 +1,16 @@
-import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 
 import * as fromCharactersByComicIdActions from './characters-by-comicId.actions'
-import { PAGE_LIMIT } from '../../../constants'
-import { Pagination } from '../../../shared/model/pagination.model'
 import { CharacterModel } from '../../character.model'
-import { createReducer, on, Action } from '@ngrx/store'
 
 export interface State extends EntityState<CharacterModel> {
-    fetching: boolean
-    pagination: Pagination
-    error: HttpErrorResponse
     filterId: number
 }
 
 export const adapter: EntityAdapter<CharacterModel> = createEntityAdapter<CharacterModel>()
 
 const initialState = adapter.getInitialState({
-    fetching: false,
-    pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
-    error: null,
     filterId: null,
 })
 
