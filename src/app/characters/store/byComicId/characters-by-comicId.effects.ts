@@ -35,15 +35,15 @@ export class CharactersByComicIdEffects {
         this._actions$.pipe(
             ofType(fromCharactersByComicIdActions.fetchStart),
             withLatestFrom(
-                this._store.pipe(select(fromRoot.selectTotalCharactersByComicId)),
-                this._store.pipe(select(fromRoot.charactersByComicIdState))
+                this._store.pipe(select(fromRoot.selectCharactersByComicIdTotal)),
+                this._store.select('charactersByComicId')
             ),
             switchMap(([action, count, { pagination }]) => {
                 this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.charactersByComicId)())
                 if (count > 0) {
                     return of(fromCharactersByComicIdActions.fetchedFromStore())
                 }
-                return this._fetchFromServer(this._URL(action.payload), pagination.limit, pagination.nextPage)
+                return this._fetchFromServer(this._URL(action.payload), pagination.data.limit, pagination.data.nextPage)
             })
         )
     )
@@ -54,12 +54,15 @@ export class CharactersByComicIdEffects {
     fetchNextPage$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersByComicIdActions.fetchNextPage),
-            withLatestFrom(this._store.pipe(select(fromRoot.charactersByComicIdState))),
-            switchMap(([__, { pagination, filterId }]) => {
-                if (!pagination.hasMore) {
+            withLatestFrom(
+                this._store.pipe(select(fromRoot.selectFilterIdForCharactersByComicId)),
+                this._store.select('charactersByComicId')
+            ),
+            switchMap(([__, filterId, { pagination }]) => {
+                if (!pagination.data.hasMore) {
                     return of(fromCharactersByComicIdActions.noMoreToFetch())
                 } else {
-                    return this._fetchFromServer(this._URL(filterId), pagination.limit, pagination.nextPage)
+                    return this._fetchFromServer(this._URL(filterId), pagination.data.limit, pagination.data.nextPage)
                 }
             })
         )

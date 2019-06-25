@@ -34,17 +34,15 @@ export class CharactersEffects {
     fetchStart$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersActions.fetchStart),
-            withLatestFrom(
-                this._store.pipe(select(fromRoot.selectTotalCharacters)),
-                this._store.pipe(select(fromRoot.charactersState))
-            ),
-            switchMap(([__, count, { pagination }]) => {
+            withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersTotal)), this._store.select('characters')),
+            switchMap(([__, count, { pagination, data }]) => {
                 this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.characters)())
 
                 if (count > 0) {
                     return of(fromCharactersActions.fetchedFromStore())
                 }
-                return this._fetchFromServer(pagination.limit, pagination.nextPage)
+
+                return this._fetchFromServer(pagination.data.limit, pagination.data.nextPage)
             })
         )
     )
@@ -55,12 +53,12 @@ export class CharactersEffects {
     fetchNextPage$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersActions.fetchNextPage),
-            withLatestFrom(this._store.pipe(select(fromRoot.charactersState))),
+            withLatestFrom(this._store.select('characters')),
             switchMap(([__, { pagination }]) => {
-                if (!pagination.hasMore) {
+                if (!pagination.data.hasMore) {
                     return of(fromCharactersActions.noMoreToFetch())
                 } else {
-                    return this._fetchFromServer(pagination.limit, pagination.nextPage)
+                    return this._fetchFromServer(pagination.data.limit, pagination.data.nextPage)
                 }
             })
         )

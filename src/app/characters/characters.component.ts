@@ -10,6 +10,7 @@ import * as fromCharactersAction from './store/characters.actions'
 import * as fromCharactersByComicIdAction from './store/byComicId/characters-by-comicId.actions'
 import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-by-seriesId.actions'
 import { FILTER_TYPE } from '../constants'
+import { switchMap } from 'rxjs/operators'
 
 export interface Filter {
     type: FILTER_TYPE.comics | FILTER_TYPE.series
@@ -19,16 +20,18 @@ export interface Filter {
 const keyMap = {
     [FILTER_TYPE.none]: {
         action: fromCharactersAction,
-        state: fromRoot.charactersState,
+        state: 'characters',
+        list: fromRoot.selectAllCharacters,
     },
     [FILTER_TYPE.comics]: {
         action: fromCharactersByComicIdAction,
-        state: fromRoot.charactersByComicIdState,
+        state: 'charactersByComicId',
+        list: fromRoot.selectAllCharactersByComicId,
     },
-    [FILTER_TYPE.series]: {
-        action: fromCharactersBySeriesIdAction,
-        state: fromRoot.charactersBySeriesIdState,
-    },
+    // [FILTER_TYPE.series]: {
+    //     action: fromCharactersBySeriesIdAction,
+    //     state: fromRoot.charactersBySeriesIdState,
+    // },
 }
 
 @Component({
@@ -75,14 +78,20 @@ export class CharactersComponent implements OnInit, OnDestroy {
     subscribeToStore() {
         const type = this.filter ? this.filter.type : FILTER_TYPE.none
 
-        this.storeSubscription = this.store.pipe(select(keyMap[type].state)).subscribe(res => {
-            this.characters = res.data
-            this.loading = res.ui.fetching
-            this.hasError = !!res.ui.error
-            if (this.hasMore !== res.pagination.hasMore) {
-                this.hasMore = res.pagination.hasMore
-            }
-        })
+        this.storeSubscription = this.store
+            .select(keyMap[type].state)
+            .pipe(
+                switchMap(res => {
+                    this.loading = res.ui.fetching
+                    this.hasError = !!res.ui.error
+                    if (this.hasMore !== res.pagination.data.hasMore) {
+                        this.hasMore = res.pagination.data.hasMore
+                    }
+
+                    return this.store.pipe(select(keyMap[type].list))
+                })
+            )
+            .subscribe(res => (this.characters = res))
     }
 
     onScroll() {

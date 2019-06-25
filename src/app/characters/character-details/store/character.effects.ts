@@ -15,23 +15,23 @@ import { APIService } from 'src/app/shared/services/api.service'
 export class CharacterEffects {
     private _URL = action => `characters/${action.payload}`
 
-    @Effect() fetchCharacters = this._actions$.pipe(
-        ofType(fromCharacterActions.fetchStart),
-        withLatestFrom(this._store.select('characters')),
-        switchMap(([action, charactersState]) => {
-            if (charactersState.ids.length > 0) {
-                const character = charactersState[action.payload]
-                if (character) {
-                    return of(
-                        fromCharacterActions.fetchSuccess({
-                            payload: character,
-                        })
-                    )
-                }
-            }
-            return this._fetchFromServer(action)
-        })
-    )
+    // @Effect() fetchCharacters = this._actions$.pipe(
+    //     ofType(fromCharacterActions.fetchStart),
+    //     withLatestFrom(this._store.select('characters')),
+    //     switchMap(([action, charactersState]) => {
+    //         if (charactersState.ids.length > 0) {
+    //             const character = charactersState[action.payload]
+    //             if (character) {
+    //                 return of(
+    //                     fromCharacterActions.fetchSuccess({
+    //                         payload: character,
+    //                     })
+    //                 )
+    //             }
+    //         }
+    //         return this._fetchFromServer(action)
+    //     })
+    // )
 
     constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
 

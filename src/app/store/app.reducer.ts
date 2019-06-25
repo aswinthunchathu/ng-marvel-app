@@ -1,8 +1,14 @@
-import { createFeatureSelector, createSelector, ActionReducerMap } from '@ngrx/store'
+import { createSelector, ActionReducerMap } from '@ngrx/store'
+
+import { ACTION_TAGS } from '../constants'
 
 import * as fromUIReducer from './ui/ui.reducer'
 import * as fromPaginationReducer from './ui/pagination.reducer'
+import * as fromCharacters from '../characters/store'
+import * as fromCharactersByComicId from '../characters/store/byComicId'
 import * as fromCharactersReducer from '../characters/store/characters.reducer'
+import * as fromCharactersByComicIdReducer from '../characters/store/byComicId/characters-by-comicId.reducer'
+
 import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
 import * as fromComicsBySeriesIdReducer from '../comics/store/bySeriesId/comics-by-seriesId.reducer'
@@ -11,18 +17,11 @@ import * as fromCharacterReducer from '../characters/character-details/store/cha
 import * as fromSeriesReducer from '../series/store/series.reducer'
 import * as fromSeriesDetailsReducer from '../series/series-details/store/series-details.reducer'
 import * as fromSeriesByCharacterIdReducer from '../series/store/byCharacterId/series-by-characterId.reducer'
-import * as fromCharactersByComicIdReducer from '../characters/store/byComicId/characters-by-comicId.reducer'
 import * as fromCharactersBySeriesIdReducer from '../characters/store/bySeriesId/characters-by-seriesId.reducer'
-import { ACTION_TAGS } from '../constants'
 
 export interface AppState {
-    charactersUI: fromUIReducer.State
-    charactersPagination: fromPaginationReducer.State
-    characters: fromCharactersReducer.State
-
-    charactersByComicIdUI: fromUIReducer.State
-    charactersByComicIdPagination: fromPaginationReducer.State
-    charactersByComicId: fromCharactersByComicIdReducer.State
+    characters: fromCharacters.State
+    charactersByComicId: fromCharactersByComicId.State
 
     charactersBySeriesIdUI: fromUIReducer.State
     charactersBySeriesIdPagination: fromPaginationReducer.State
@@ -39,13 +38,8 @@ export interface AppState {
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
-    charactersUI: fromUIReducer.reducer(ACTION_TAGS.characters),
-    charactersPagination: fromPaginationReducer.reducer(ACTION_TAGS.characters),
-    characters: fromCharactersReducer.reducer,
-
-    charactersByComicIdUI: fromUIReducer.reducer(ACTION_TAGS.charactersByComicId),
-    charactersByComicIdPagination: fromPaginationReducer.reducer(ACTION_TAGS.charactersByComicId),
-    charactersByComicId: fromCharactersByComicIdReducer.reducer,
+    characters: fromCharacters.default,
+    charactersByComicId: fromCharactersByComicId.default,
 
     charactersBySeriesIdUI: fromUIReducer.reducer(ACTION_TAGS.charactersBySeriesId),
     charactersBySeriesIdPagination: fromPaginationReducer.reducer(ACTION_TAGS.charactersBySeriesId),
@@ -62,41 +56,31 @@ export const appReducer: ActionReducerMap<AppState> = {
     seriesByCharacterId: fromSeriesByCharacterIdReducer.reducer,
 }
 
-const selectCharactersState = (state: AppState) => state.characters
-
-export const charactersState = createSelector(
-    (state: AppState) => state.charactersUI,
-    (state: AppState) => state.charactersPagination,
-    selectCharactersState,
-    (ui, pagination, state) => ({
-        ui,
-        data: fromCharactersReducer.selectAll(state),
-        pagination: pagination.data,
-    })
+export const selectAllCharacters = createSelector(
+    (state: AppState) => state.characters.data,
+    fromCharactersReducer.selectAll
 )
 
-export const selectTotalCharacters = createSelector(
-    selectCharactersState,
+export const selectCharactersTotal = createSelector(
+    (state: AppState) => state.characters.data,
     fromCharactersReducer.selectTotal
 )
 
-const selectCharactersByComicIdState = (state: AppState) => state.charactersByComicId
-
-export const charactersByComicIdState = createSelector(
-    (state: AppState) => state.charactersByComicIdUI,
-    (state: AppState) => state.charactersByComicIdPagination,
-    selectCharactersByComicIdState,
-    (ui, pagination, state) => ({
-        ui,
-        data: fromCharactersByComicIdReducer.selectAll(state),
-        pagination: pagination.data,
-        filterId: state.filterId,
-    })
+export const selectAllCharactersByComicId = createSelector(
+    (state: AppState) => state.charactersByComicId.data,
+    fromCharactersByComicIdReducer.selectAll
 )
 
-export const selectTotalCharactersByComicId = createSelector(
-    selectCharactersByComicIdState,
+export const selectCharactersByComicIdTotal = createSelector(
+    (state: AppState) => state.charactersByComicId.data,
     fromCharactersByComicIdReducer.selectTotal
+)
+
+export const selectFilterIdForCharactersByComicId = createSelector(
+    (state: AppState) => state.charactersByComicId.data,
+    state => {
+        return state.filterId
+    }
 )
 
 const selectCharactersBySeriesIdState = (state: AppState) => state.charactersBySeriesId
@@ -113,6 +97,6 @@ export const charactersBySeriesIdState = createSelector(
     })
 )
 export const selectTotalCharactersBySeriesId = createSelector(
-    selectCharactersByComicIdState,
+    selectCharactersBySeriesIdState,
     fromCharactersBySeriesIdReducer.selectTotal
 )
