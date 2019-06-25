@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 
 import * as fromCharactersByComicIdActions from './characters-by-comicId.actions'
 import { PAGE_LIMIT } from '../../../constants'
@@ -6,21 +7,21 @@ import { Pagination } from '../../../shared/model/pagination.model'
 import { CharacterModel } from '../../character.model'
 import { createReducer, on, Action } from '@ngrx/store'
 
-export interface State {
+export interface State extends EntityState<CharacterModel> {
     fetching: boolean
-    data: CharacterModel[]
     pagination: Pagination
     error: HttpErrorResponse
     filterId: number
 }
 
-const initialState: State = {
+export const adapter: EntityAdapter<CharacterModel> = createEntityAdapter<CharacterModel>()
+
+const initialState = adapter.getInitialState({
     fetching: false,
     pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
-    data: [],
     error: null,
     filterId: null,
-}
+})
 
 const charactersByComicIdReducer = createReducer<State>(
     initialState,
@@ -45,13 +46,14 @@ const charactersByComicIdReducer = createReducer<State>(
         fetching: true,
         error: null,
     })),
-    on(fromCharactersByComicIdActions.fetchSuccess, (state, action) => ({
-        ...state,
-        fetching: false,
-        error: null,
-        pagination: action.pagination,
-        data: [...state.data, ...action.payload],
-    })),
+    on(fromCharactersByComicIdActions.fetchSuccess, (state, action) =>
+        adapter.addMany(action.payload, {
+            ...state,
+            fetching: false,
+            error: null,
+            pagination: action.pagination,
+        })
+    ),
     on(fromCharactersByComicIdActions.fetchError, (state, action) => ({
         ...state,
         fetching: false,
@@ -66,3 +68,6 @@ const charactersByComicIdReducer = createReducer<State>(
 export function reducer(state: State | undefined, action: Action) {
     return charactersByComicIdReducer(state, action)
 }
+
+export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal

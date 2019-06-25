@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { Store, select } from '@ngrx/store'
 
 import * as fromCharactersActions from './characters.actions'
+import * as fromRoot from '../../store/app.reducer'
 import { Character } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
@@ -21,12 +22,15 @@ export class CharactersEffects {
     fetchCharacters$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersActions.fetchStart),
-            withLatestFrom(this._store.select('characters')),
-            switchMap(([__, characterState]) => {
-                if (characterState.data.length > 0) {
+            withLatestFrom(
+                this._store.pipe(select(fromRoot.selectTotalCharacters)),
+                this._store.pipe(select(fromRoot.selectCharactersState))
+            ),
+            switchMap(([__, count, { pagination }]) => {
+                if (count > 0) {
                     return of(fromCharactersActions.fetchedFromStore())
                 }
-                return this._fetchFromServer(characterState.pagination.limit, characterState.pagination.nextPage)
+                return this._fetchFromServer(pagination.limit, pagination.nextPage)
             })
         )
     )
@@ -37,10 +41,8 @@ export class CharactersEffects {
     fetchCharactersNextPage$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersActions.fetchNextPage),
-            withLatestFrom(this._store.select('characters')),
-            switchMap(([__, characterState]) => {
-                const pagination: Pagination = characterState.pagination
-
+            withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersState))),
+            switchMap(([__, { pagination }]) => {
                 if (!pagination.hasMore) {
                     return of(fromCharactersActions.noMoreToFetch())
                 } else {
@@ -58,8 +60,8 @@ export class CharactersEffects {
      * @params offset: number - page offset
      * return : Observable<FetchCharactersSuccess>
      */
-    private _fetchFromServer(limit: number, offset: number) {
-        return this._APIService.fetchFromServer<Character>(this._URL, limit, offset).pipe(
+    private _fetchFromServer = (limit: number, offset: number) =>
+        this._APIService.fetchFromServer<Character>(this._URL, limit, offset).pipe(
             map(res => res.data),
             map(res =>
                 fromCharactersActions.fetchSuccess({
@@ -77,5 +79,4 @@ export class CharactersEffects {
                 )
             )
         )
-    }
 }

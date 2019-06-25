@@ -6,7 +6,7 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { AppState } from 'src/app/store/app.reducer'
 import * as fromComicActions from './store/comic.actions'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
-import { FilterType as CharacterFilterType } from 'src/app/characters/characters.component'
+import { Filter as CharacterFilter, types as CharacterFilterType } from 'src/app/characters/characters.component'
 
 @Component({
     selector: 'app-comic-details',
@@ -18,7 +18,7 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
     private comicSub: Subscription
     loading: boolean
     comic: ListDetailsModel
-    filter: CharacterFilterType = null
+    filter: CharacterFilter = null
     hasError: boolean
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
@@ -32,7 +32,7 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
         this.routeSub = this.route.params.subscribe((params: Params) => {
             const id = +params['id']
             this.filter = {
-                type: 'comics',
+                type: CharacterFilterType.comics,
                 id,
             }
             this.store.dispatch(

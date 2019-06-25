@@ -1,4 +1,4 @@
-export enum types {
+enum types {
     default = '',
     standard_small = '/standard_small',
     standard_fantastic = '/standard_fantastic',
@@ -9,6 +9,12 @@ export enum types {
 interface Image {
     actual: string
     placeholder: string
+}
+
+export enum ImageType {
+    default = 'default',
+    standard = 'standard',
+    portrait = 'portrait',
 }
 
 export class ImageGenerator {

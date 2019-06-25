@@ -1,3 +1,5 @@
+import { createFeatureSelector, createSelector, ActionReducerMap } from '@ngrx/store'
+
 import * as fromCharactersReducer from '../characters/store/characters.reducer'
 import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
@@ -24,7 +26,7 @@ export interface AppState {
     seriesByCharacterId: fromSeriesByCharacterIdReducer.State
 }
 
-export const appReducer = {
+export const appReducer: ActionReducerMap<AppState> = {
     characters: fromCharactersReducer.reducer,
     comics: fromComicsReducer.reducer,
     series: fromSeriesReducer.reducer,
@@ -37,3 +39,43 @@ export const appReducer = {
     seriesDetails: fromSeriesDetailsReducer.reducer,
     seriesByCharacterId: fromSeriesByCharacterIdReducer.reducer,
 }
+
+export const selectCharactersState = createFeatureSelector<fromCharactersReducer.State>('characters')
+
+export const selectAllCharacters = createSelector(
+    selectCharactersState,
+    fromCharactersReducer.selectAll
+)
+
+export const selectTotalCharacters = createSelector(
+    selectCharactersState,
+    fromCharactersReducer.selectTotal
+)
+
+export const selectCharactersByComicIdState = createFeatureSelector<fromCharactersByComicIdReducer.State>(
+    'charactersByComicId'
+)
+
+export const selectAllCharactersByComicId = createSelector(
+    selectCharactersByComicIdState,
+    fromCharactersByComicIdReducer.selectAll
+)
+
+export const selectTotalCharactersByComicId = createSelector(
+    selectCharactersByComicIdState,
+    fromCharactersByComicIdReducer.selectTotal
+)
+
+export const selectCharactersBySeriesIdState = createFeatureSelector<fromCharactersBySeriesIdReducer.State>(
+    'charactersBySeriesId'
+)
+
+export const selectAllCharactersBySeriesId = createSelector(
+    selectCharactersByComicIdState,
+    fromCharactersBySeriesIdReducer.selectAll
+)
+
+export const selectTotalCharactersBySeriesId = createSelector(
+    selectCharactersByComicIdState,
+    fromCharactersBySeriesIdReducer.selectTotal
+)

@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { Store, select } from '@ngrx/store'
 
 import * as fromCharactersByComicIdActions from './characters-by-comicId.actions'
+import * as fromRoot from '../../../store/app.reducer'
 import { Character } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
@@ -13,19 +14,22 @@ import { APIService } from 'src/app/shared/services/api.service'
 
 @Injectable()
 export class CharactersByComicIdEffects {
-    private _URL = action => `comics/${action['payload']}/characters`
+    private _URL = (id: number) => `comics/${id}/characters`
 
     /*
      * This effect is fired when FETCH_CHARACTERS_BY_COMIC_ID_START action is fired
      */
     @Effect() fetchCharacters = this._actions$.pipe(
         ofType(fromCharactersByComicIdActions.fetchStart),
-        withLatestFrom(this._store.select('charactersByComicId')),
-        switchMap(([action, characterState]) => {
-            if (characterState.data.length > 0) {
+        withLatestFrom(
+            this._store.pipe(select(fromRoot.selectTotalCharactersByComicId)),
+            this._store.pipe(select(fromRoot.selectCharactersByComicIdState))
+        ),
+        switchMap(([action, count, { pagination }]) => {
+            if (count > 0) {
                 return of(fromCharactersByComicIdActions.fetchedFromStore())
             }
-            return this._fetchFromServer(action, characterState.pagination.limit, characterState.pagination.nextPage)
+            return this._fetchFromServer(this._URL(action.payload), pagination.limit, pagination.nextPage)
         })
     )
 
@@ -34,14 +38,12 @@ export class CharactersByComicIdEffects {
      */
     @Effect() fetchCharactersNextPage = this._actions$.pipe(
         ofType(fromCharactersByComicIdActions.fetchNextPage),
-        withLatestFrom(this._store.select('charactersByComicId')),
-        switchMap(([action, characterState]) => {
-            const pagination: Pagination = characterState.pagination
-
+        withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersByComicIdState))),
+        switchMap(([action, { pagination, filterId }]) => {
             if (!pagination.hasMore) {
                 return of(fromCharactersByComicIdActions.noMoreToFetch())
             } else {
-                return this._fetchFromServer(action, pagination.limit, pagination.nextPage)
+                return this._fetchFromServer(this._URL(filterId), pagination.limit, pagination.nextPage)
             }
         })
     )
@@ -54,8 +56,8 @@ export class CharactersByComicIdEffects {
      * @params offset: number - page offset
      * return : Observable<FetchCharactersSuccess>
      */
-    private _fetchFromServer(action, limit: number, offset: number) {
-        return this._APIService.fetchFromServer<Character>(this._URL(action), limit, offset).pipe(
+    private _fetchFromServer(url: string, limit: number, offset: number) {
+        return this._APIService.fetchFromServer<Character>(url, limit, offset).pipe(
             map(res => res.data),
             map(res =>
                 fromCharactersByComicIdActions.fetchSuccess({
