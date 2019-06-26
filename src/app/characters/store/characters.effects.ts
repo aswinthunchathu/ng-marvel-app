@@ -17,13 +17,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class CharactersEffects {
+    private readonly _tag = ACTION_TAGS.characters
     private readonly _URL = 'characters'
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersActions.fetchStart, fromCharactersActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.characters)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -36,7 +37,7 @@ export class CharactersEffects {
             ofType(fromCharactersActions.fetchStart),
             withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersTotal)), this._store.select('characters')),
             switchMap(([__, count, { pagination }]) => {
-                this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.characters)())
+                this._store.dispatch(fromUIActions.resetError(this._tag)())
 
                 if (count > 0) {
                     return of(fromCharactersActions.fetchedFromStore())
@@ -70,9 +71,9 @@ export class CharactersEffects {
                 fromCharactersActions.fetchSuccess,
                 fromCharactersActions.fetchedFromStore,
                 fromCharactersActions.noMoreToFetch,
-                fromUIActions.setError(ACTION_TAGS.characters)
+                fromUIActions.setError(this._tag)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.characters)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -93,13 +94,13 @@ export class CharactersEffects {
                         item => new CharacterModel(item.id, item.name, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(ACTION_TAGS.characters)({
+                fromPaginationActions.setPagination(this._tag)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.characters)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )

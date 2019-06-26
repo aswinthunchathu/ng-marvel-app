@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
-import { Actions, Effect, ofType, createEffect } from '@ngrx/effects'
+import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
@@ -15,13 +15,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class ComicEffects {
+    private readonly _tag = ACTION_TAGS.comic
     private _URL = action => `comics/${action.payload}`
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromComicActions.fetchStart),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.comic)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -48,8 +49,8 @@ export class ComicEffects {
 
     hideSpinner$ = createEffect(() =>
         this._actions$.pipe(
-            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(ACTION_TAGS.comic)),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.comic)()))
+            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(this._tag)),
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -70,7 +71,7 @@ export class ComicEffects {
             ),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.comic)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )

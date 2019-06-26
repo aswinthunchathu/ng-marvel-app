@@ -15,13 +15,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class SeriesDetailsEffects {
+    private readonly _tag = ACTION_TAGS.seriesDetails
     private _URL = action => `series/${action.payload}`
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromSeriesDetailsActions.fetchStart),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.seriesDetails)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -48,8 +49,8 @@ export class SeriesDetailsEffects {
 
     hideSpinner$ = createEffect(() =>
         this._actions$.pipe(
-            ofType(fromSeriesDetailsActions.fetchSuccess, fromUIActions.setError(ACTION_TAGS.seriesDetails)),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.seriesDetails)()))
+            ofType(fromSeriesDetailsActions.fetchSuccess, fromUIActions.setError(this._tag)),
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -70,7 +71,7 @@ export class SeriesDetailsEffects {
             ),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.seriesDetails)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )

@@ -17,13 +17,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class SeriesEffects {
+    private readonly _tag = ACTION_TAGS.series
     private readonly _URL = 'series'
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromSeriesActions.fetchStart, fromSeriesActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.series)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -61,9 +62,9 @@ export class SeriesEffects {
                 fromSeriesActions.fetchSuccess,
                 fromSeriesActions.fetchedFromStore,
                 fromSeriesActions.noMoreToFetch,
-                fromUIActions.setError(ACTION_TAGS.series)
+                fromUIActions.setError(this._tag)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.series)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -84,13 +85,13 @@ export class SeriesEffects {
                         item => new SeriesModel(item.id, item.title, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(ACTION_TAGS.comics)({
+                fromPaginationActions.setPagination(this._tag)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.series)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )

@@ -15,13 +15,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class CharacterEffects {
+    private readonly _tag = ACTION_TAGS.character
     private _URL = action => `characters/${action.payload}`
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharacterActions.fetchStart),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.character)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -48,8 +49,8 @@ export class CharacterEffects {
 
     hideSpinner$ = createEffect(() =>
         this._actions$.pipe(
-            ofType(fromCharacterActions.fetchSuccess, fromUIActions.setError(ACTION_TAGS.character)),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.character)()))
+            ofType(fromCharacterActions.fetchSuccess, fromUIActions.setError(this._tag)),
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -70,7 +71,7 @@ export class CharacterEffects {
             ),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.character)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )

@@ -17,13 +17,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class ComicsBySeriesIdEffects {
+    private readonly _tag = ACTION_TAGS.comicsBySeriesId
     private _URL = action => `series/${action['payload']}/comics`
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromComicsBySeriesIdActions.fetchStart, fromComicsBySeriesIdActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.comicsBySeriesId)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -40,7 +41,7 @@ export class ComicsBySeriesIdEffects {
                 this._store.select('comicBySeriesId')
             ),
             switchMap(([action, count, { pagination }]) => {
-                this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.charactersByComicId)())
+                this._store.dispatch(fromUIActions.resetError(this._tag)())
                 if (count > 0) {
                     return of(fromComicsBySeriesIdActions.fetchedFromStore())
                 }
@@ -75,9 +76,9 @@ export class ComicsBySeriesIdEffects {
                 fromComicsBySeriesIdActions.fetchSuccess,
                 fromComicsBySeriesIdActions.fetchedFromStore,
                 fromComicsBySeriesIdActions.noMoreToFetch,
-                fromUIActions.setError(ACTION_TAGS.comicsBySeriesId)
+                fromUIActions.setError(this._tag)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.comicsBySeriesId)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -99,13 +100,13 @@ export class ComicsBySeriesIdEffects {
                         item => new ComicModel(item.id, item.title, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(ACTION_TAGS.comicsBySeriesId)({
+                fromPaginationActions.setPagination(this._tag)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.comicsBySeriesId)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )

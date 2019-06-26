@@ -17,13 +17,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class ComicsByCharacterIdEffects {
+    private readonly _tag = ACTION_TAGS.comicsByCharacterId
     private _URL = action => `characters/${action['payload']}/comics`
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromComicsByCharacterIDActions.fetchStart, fromComicsByCharacterIDActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.comicsByCharacterId)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -38,7 +39,7 @@ export class ComicsByCharacterIdEffects {
                 this._store.select('comicByCharacterId')
             ),
             switchMap(([action, count, { pagination }]) => {
-                this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.charactersByComicId)())
+                this._store.dispatch(fromUIActions.resetError(this._tag)())
                 if (count > 0) {
                     return of(fromComicsByCharacterIDActions.fetchedFromStore())
                 }
@@ -73,9 +74,9 @@ export class ComicsByCharacterIdEffects {
                 fromComicsByCharacterIDActions.fetchSuccess,
                 fromComicsByCharacterIDActions.fetchedFromStore,
                 fromComicsByCharacterIDActions.noMoreToFetch,
-                fromUIActions.setError(ACTION_TAGS.comicsByCharacterId)
+                fromUIActions.setError(this._tag)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.comicsByCharacterId)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -97,13 +98,13 @@ export class ComicsByCharacterIdEffects {
                         item => new ComicModel(item.id, item.title, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(ACTION_TAGS.comicsByCharacterId)({
+                fromPaginationActions.setPagination(this._tag)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.comicsByCharacterId)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )

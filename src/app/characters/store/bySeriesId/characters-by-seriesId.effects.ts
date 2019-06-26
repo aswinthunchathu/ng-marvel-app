@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { map, switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
-import { Actions, Effect, ofType, createEffect } from '@ngrx/effects'
+import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
@@ -17,13 +17,14 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class CharactersBySeriesIdEffects {
+    private readonly _tag = ACTION_TAGS.charactersBySeriesId
     private _URL = (id: number) => `series/${id}/characters`
 
     showSpinner$ = createEffect(() =>
         this._actions$.pipe(
             ofType(fromCharactersBySeriesIdActions.fetchStart, fromCharactersBySeriesIdActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(ACTION_TAGS.charactersBySeriesId)())
+                return of(fromUIActions.showSpinner(this._tag)())
             })
         )
     )
@@ -39,7 +40,7 @@ export class CharactersBySeriesIdEffects {
                 this._store.select('charactersBySeriesId')
             ),
             switchMap(([action, count, { pagination }]) => {
-                this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.charactersBySeriesId)())
+                this._store.dispatch(fromUIActions.resetError(this._tag)())
                 if (count > 0) {
                     return of(fromCharactersBySeriesIdActions.fetchedFromStore())
                 }
@@ -74,9 +75,9 @@ export class CharactersBySeriesIdEffects {
                 fromCharactersBySeriesIdActions.fetchSuccess,
                 fromCharactersBySeriesIdActions.fetchedFromStore,
                 fromCharactersBySeriesIdActions.noMoreToFetch,
-                fromUIActions.setError(ACTION_TAGS.charactersBySeriesId)
+                fromUIActions.setError(this._tag)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.charactersBySeriesId)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
         )
     )
 
@@ -98,13 +99,13 @@ export class CharactersBySeriesIdEffects {
                         item => new CharacterModel(item.id, item.name, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(ACTION_TAGS.charactersBySeriesId)({
+                fromPaginationActions.setPagination(this._tag)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(ACTION_TAGS.charactersBySeriesId)({
+                    fromUIActions.setError(this._tag)({
                         payload: err,
                     })
                 )
