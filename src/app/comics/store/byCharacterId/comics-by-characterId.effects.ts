@@ -1,53 +1,86 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
-import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
-import { Actions, Effect, ofType } from '@ngrx/effects'
-import { of, Observable } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { map, switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
+import { Actions, ofType, createEffect } from '@ngrx/effects'
+import { of } from 'rxjs'
+import { Store, select } from '@ngrx/store'
 
+import * as fromUIActions from '../../../shared/store/ui/ui.actions'
+import * as fromPaginationActions from '../../../shared/store/pagination/pagination.action'
 import * as fromComicsByCharacterIDActions from './comics-by-characterId.actions'
-import { ComicsResults } from '../../../shared/model/shared.interface'
+import * as fromRoot from '../../../store/app.reducer'
+import { Comic } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
-import { State } from './comics-by-characterId.reducer'
-import { FETCHED_FROM_STORE } from '../../../shared/constants'
 import { ComicModel } from '../../comic.model'
+import { APIService } from '../../../shared/services/api.service'
+import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class ComicsByCharacterIdEffects {
-    private _URL = (action: fromComicsByCharacterIDActions.type) =>
-        `characters/${action['payload']}/comics?orderBy=-modified`
+    private readonly _tag = ACTION_TAGS.comicsByCharacterId
+    private _URL = action => `characters/${action['payload']}/comics`
+
+    showSpinner$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromComicsByCharacterIDActions.fetchStart, fromComicsByCharacterIDActions.fetchNextPage),
+            switchMap(() => {
+                return of(fromUIActions.showSpinner(this._tag)())
+            })
+        )
+    )
     /*
      * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_START action is fired
      */
-    @Effect() fetchComicsInit = this.actions$.pipe(
-        ofType(fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_START),
-        withLatestFrom(this.store.select('comicByCharacterId')),
-        switchMap(([action, comicsState]: [fromComicsByCharacterIDActions.FetchComicsByCharacterIdStart, State]) => {
-            if (comicsState.data.length > 0) {
-                return of(new fromComicsByCharacterIDActions.FetchedFromStore())
-            }
-
-            return this._fetchFromServer(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-        })
+    fetchStart$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromComicsByCharacterIDActions.fetchStart),
+            withLatestFrom(
+                this._store.pipe(select(fromRoot.selectComicsByCharacterIdTotal)),
+                this._store.select('comicByCharacterId')
+            ),
+            switchMap(([action, count, { pagination }]) => {
+                this._store.dispatch(fromUIActions.resetError(this._tag)())
+                if (count > 0) {
+                    return of(fromComicsByCharacterIDActions.fetchedFromStore())
+                }
+                return this._fetchFromServer(this._URL(action.payload), pagination.data.limit, pagination.data.nextPage)
+            })
+        )
     )
 
     /*
      * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE action is fired
      */
-    @Effect() fetchComicsNextPage = this.actions$.pipe(
-        ofType(fromComicsByCharacterIDActions.FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE),
-        withLatestFrom(this.store.select('comicByCharacterId')),
-        switchMap(([action, comicsState]: [fromComicsByCharacterIDActions.FetchComicsByCharacterIdNextPage, State]) => {
-            if (!comicsState.pagination.hasMore) {
-                return of(new fromComicsByCharacterIDActions.NoMoreToFetch())
-            } else {
-                return this._fetchFromServer(action, comicsState.pagination.limit, comicsState.pagination.nextPage)
-            }
-        })
+    fetchNextPage$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromComicsByCharacterIDActions.fetchNextPage),
+            withLatestFrom(
+                this._store.pipe(select(fromRoot.selectFilterIdForComicsByCharacterId)),
+                this._store.select('comicByCharacterId')
+            ),
+            switchMap(([__, filterId, { pagination }]) => {
+                if (!pagination.data.hasMore) {
+                    return of(fromComicsByCharacterIDActions.noMoreToFetch())
+                } else {
+                    return this._fetchFromServer(this._URL(filterId), pagination.data.limit, pagination.data.nextPage)
+                }
+            })
+        )
     )
 
-    constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
+    hideSpinner$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(
+                fromComicsByCharacterIDActions.fetchSuccess,
+                fromComicsByCharacterIDActions.fetchedFromStore,
+                fromComicsByCharacterIDActions.noMoreToFetch,
+                fromUIActions.setError(this._tag)
+            ),
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+        )
+    )
+
+    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
 
     /*
      * fetch comics from server
@@ -56,38 +89,26 @@ export class ComicsByCharacterIdEffects {
      * @params offset: number - page offset
      * return : Observable<fromComicsByCharacterIDActions.type>
      */
-    private _fetchFromServer(
-        action: fromComicsByCharacterIDActions.type,
-        limit: number,
-        offset: number
-    ): Observable<
-        | fromComicsByCharacterIDActions.FetchComicsByCharacterIdSuccess
-        | fromComicsByCharacterIDActions.FetchComicsByCharacterIdError
-    > {
-        return this.http$
-            .get<ComicsResults>(this._URL(action), {
-                params: new HttpParams().set('limit', String(limit)).set('offset', String(offset)),
-            })
-            .pipe(
-                map(res => res.data),
-                map(
-                    res =>
-                        new fromComicsByCharacterIDActions.FetchComicsByCharacterIdSuccess(
-                            res.results.map(
-                                item =>
-                                    new ComicModel(
-                                        item.id,
-                                        item.title,
-                                        item.description,
-                                        item.thumbnail,
-                                        item.characters,
-                                        item.series
-                                    )
-                            ),
-                            new Pagination(res.offset, res.limit, res.total, res.count)
-                        )
-                ),
-                catchError(err => of(new fromComicsByCharacterIDActions.FetchComicsByCharacterIdError(err)))
+    private _fetchFromServer(action, limit: number, offset: number) {
+        return this._APIService.fetchFromServer<Comic>(this._URL(action), limit, offset).pipe(
+            map(res => res.data),
+            mergeMap(res => [
+                fromComicsByCharacterIDActions.fetchSuccess({
+                    payload: res.results.map(
+                        item => new ComicModel(item.id, item.title, item.description, item.thumbnail)
+                    ),
+                }),
+                fromPaginationActions.setPagination(this._tag)({
+                    payload: new Pagination(res.offset, res.limit, res.total, res.count),
+                }),
+            ]),
+            catchError(err =>
+                of(
+                    fromUIActions.setError(this._tag)({
+                        payload: err,
+                    })
+                )
             )
+        )
     }
 }

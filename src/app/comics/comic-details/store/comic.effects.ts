@@ -1,53 +1,81 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
-import { Actions, Effect, ofType } from '@ngrx/effects'
-import { of, Observable } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { Actions, ofType, createEffect } from '@ngrx/effects'
+import { of } from 'rxjs'
+import { Store, select } from '@ngrx/store'
 
+import * as fromUIActions from '../../../shared/store/ui/ui.actions'
 import * as fromComicActions from './comic.actions'
-import * as fromComicsReducer from '../../store/comics.reducer'
+import * as fromRoot from '../../../store/app.reducer'
 import { AppState } from '../../../store/app.reducer'
-import { ComicsResults } from 'src/app/shared/model/shared.interface'
+import { Comic } from 'src/app/shared/model/shared.interface'
 import { ComicModel } from '../../comic.model'
+import { APIService } from 'src/app/shared/services/api.service'
+import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class ComicEffects {
+    private readonly _tag = ACTION_TAGS.comic
     private _URL = action => `comics/${action.payload}`
 
-    @Effect() fetchCharacters = this.actions$.pipe(
-        ofType(fromComicActions.FETCH_COMIC_START),
-        withLatestFrom(this.store.select('comics')),
-        switchMap(([action, comicsState]: [fromComicActions.FetchComicStart, fromComicsReducer.State]) => {
-            if (comicsState.data.length > 0) {
-                const comic = comicsState.data.find(res => res.id === action.payload)
-                if (comic) {
-                    return of(new fromComicActions.FetchComicSuccess(comic))
-                }
-            }
-            return this._fetchFromServer(action)
-        })
+    showSpinner$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromComicActions.fetchStart),
+            switchMap(() => {
+                return of(fromUIActions.showSpinner(this._tag)())
+            })
+        )
     )
 
-    constructor(private http$: HttpClient, private actions$: Actions, private store: Store<AppState>) {}
+    fetchStart$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromComicActions.fetchStart),
+            withLatestFrom(this._store.pipe(select(fromRoot.selectComicsTotal)), this._store.select('comics')),
+            switchMap(([action, count, { data }]) => {
+                if (count > 0) {
+                    const comic = data.entities[action.payload]
+                    if (comic) {
+                        return of(
+                            fromComicActions.fetchSuccess({
+                                payload: comic,
+                            })
+                        )
+                    }
+                }
+                return this._fetchFromServer(action)
+            })
+        )
+    )
+
+    hideSpinner$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(this._tag)),
+            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+        )
+    )
+
+    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
 
     /*
      * fetch comic from server
      * @params action: action
      * return : Observable<FetchComicSuccess | FetchComicError>
      */
-    private _fetchFromServer(
-        action: fromComicActions.type
-    ): Observable<fromComicActions.FetchComicSuccess | fromComicActions.FetchComicError> {
-        return this.http$.get<ComicsResults>(this._URL(action)).pipe(
+    private _fetchFromServer(action) {
+        return this._APIService.fetchFromServer<Comic>(this._URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
-            map(
-                res =>
-                    new fromComicActions.FetchComicSuccess(
-                        new ComicModel(res.id, res.title, res.description, res.thumbnail, res.characters, res.series)
-                    )
+            map(res =>
+                fromComicActions.fetchSuccess({
+                    payload: new ComicModel(res.id, res.title, res.description, res.thumbnail),
+                })
             ),
-            catchError(err => of(new fromComicActions.FetchComicError(err)))
+            catchError(err =>
+                of(
+                    fromUIActions.setError(this._tag)({
+                        payload: err,
+                    })
+                )
+            )
         )
     }
 }

@@ -8,8 +8,8 @@
     >
         <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of characters">
             <app-card
-                [image-src]="item[imageType.image]"
-                [placeholder-image-src]="item[imageType.placeholder]"
+                [image-src]="item.image[imageType].actual"
+                [placeholder-image-src]="item.image[imageType].placeholder"
                 [title]="item.title"
                 [animated-card]="isAnimated"
                 [floating-label]="isFloatingLabel"

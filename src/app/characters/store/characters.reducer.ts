@@ -1,56 +1,21 @@
-import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity'
 
 import * as fromCharacterActions from './characters.actions'
-import { PAGE_LIMIT } from '../../shared/constants'
-import { Pagination } from '../../shared/model/pagination.model'
 import { CharacterModel } from '../character.model'
 
-export interface State {
-    fetching: boolean
-    data: CharacterModel[]
-    pagination: Pagination
-    error: HttpErrorResponse
-}
+export interface State extends EntityState<CharacterModel> {}
 
-const initialState: State = {
-    fetching: false,
-    pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
-    data: [],
-    error: null,
-}
+const adapter: EntityAdapter<CharacterModel> = createEntityAdapter<CharacterModel>()
 
-export const charactersReducer = (state = initialState, action: fromCharacterActions.type) => {
-    switch (action.type) {
-        case fromCharacterActions.FETCH_CHARACTERS_NEXT_PAGE:
-        case fromCharacterActions.FETCH_CHARACTERS_INIT:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromCharacterActions.FETCH_CHARACTERS_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
-            }
-        case fromCharacterActions.FETCH_CHARACTERS_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromCharacterActions.NO_MORE_TO_FETCH:
-        case fromCharacterActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
-}
+const initialState = adapter.getInitialState()
+
+const generateReducer = createReducer<State>(
+    initialState,
+    on(fromCharacterActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
+)
+
+export const reducer = (state: State | undefined, action: Action) => generateReducer(state, action)
+
+export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal

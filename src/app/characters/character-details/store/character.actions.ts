@@ -1,27 +1,9 @@
-import { Action } from '@ngrx/store'
-import { HttpErrorResponse } from '@angular/common/http'
+import { createAction, props } from '@ngrx/store'
 import { CharacterModel } from '../../character.model'
+import { ACTION_TAGS } from 'src/app/constants'
 
-export const FETCH_CHARACTER_START = '[CHARACTER] Fetch Start'
-export const FETCH_CHARACTER_SUCCESS = '[CHARACTER] Fetch Success'
-export const FETCH_CHARACTER_ERROR = '[CHARACTER] Fetch Error'
+const TAG = ACTION_TAGS.character
 
-export class FetchCharacterStart implements Action {
-    readonly type = FETCH_CHARACTER_START
+export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
 
-    constructor(public payload: number) {}
-}
-
-export class FetchCharacterSuccess implements Action {
-    readonly type = FETCH_CHARACTER_SUCCESS
-
-    constructor(public payload: CharacterModel) {}
-}
-
-export class FetchCharacterError implements Action {
-    readonly type = FETCH_CHARACTER_ERROR
-
-    constructor(public payload: HttpErrorResponse) {}
-}
-
-export type type = FetchCharacterStart | FetchCharacterSuccess | FetchCharacterError
+export const fetchSuccess = createAction(`${TAG} Fetch Success`, props<{ payload: CharacterModel }>())

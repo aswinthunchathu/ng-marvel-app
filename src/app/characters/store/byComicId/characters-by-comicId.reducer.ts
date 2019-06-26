@@ -1,72 +1,40 @@
-import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
+import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 
 import * as fromCharactersByComicIdActions from './characters-by-comicId.actions'
-import { PAGE_LIMIT } from '../../../shared/constants'
-import { Pagination } from '../../../shared/model/pagination.model'
 import { CharacterModel } from '../../character.model'
 
-export interface State {
-    fetching: boolean
-    data: CharacterModel[]
-    pagination: Pagination
-    error: HttpErrorResponse
+export interface State extends EntityState<CharacterModel> {
     filterId: number
 }
 
-const initialState: State = {
-    fetching: false,
-    pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
-    data: [],
-    error: null,
+export const adapter: EntityAdapter<CharacterModel> = createEntityAdapter<CharacterModel>()
+
+const initialState = adapter.getInitialState({
     filterId: null,
+})
+
+const generateReducer = createReducer<State>(
+    initialState,
+    on(fromCharactersByComicIdActions.fetchStart, (state, action) => {
+        if (state.filterId === action.payload) {
+            return {
+                ...state,
+            }
+        } else {
+            return {
+                ...state,
+                ...initialState,
+                filterId: action.payload,
+            }
+        }
+    }),
+    on(fromCharactersByComicIdActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
+)
+
+export function reducer(state: State | undefined, action: Action) {
+    return generateReducer(state, action)
 }
 
-export const charactersByComicIdReducer = (state = initialState, action: fromCharactersByComicIdActions.type) => {
-    switch (action.type) {
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_START:
-            if (state.filterId === action.payload) {
-                return {
-                    ...state,
-                    fetching: true,
-                    error: null,
-                }
-            } else {
-                return {
-                    ...state,
-                    ...initialState,
-                    fetching: true,
-                    filterId: action.payload,
-                }
-            }
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_NEXT_PAGE:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
-            }
-        case fromCharactersByComicIdActions.FETCH_CHARACTERS_BY_COMIC_ID_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromCharactersByComicIdActions.NO_MORE_TO_FETCH:
-        case fromCharactersByComicIdActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
-}
+export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal

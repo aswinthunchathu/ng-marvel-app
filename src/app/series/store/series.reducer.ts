@@ -1,56 +1,21 @@
-import { HttpErrorResponse } from '@angular/common/http'
+import { createReducer, on, Action } from '@ngrx/store'
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity'
 
 import * as fromSeriesActions from './series.actions'
-import { PAGE_LIMIT } from '../../shared/constants'
-import { Pagination } from '../../shared/model/pagination.model'
 import { SeriesModel } from '../series.model'
 
-export interface State {
-    fetching: boolean
-    data: SeriesModel[]
-    pagination: Pagination
-    error: HttpErrorResponse
-}
+export interface State extends EntityState<SeriesModel> {}
 
-const initialState: State = {
-    fetching: false,
-    pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
-    data: [],
-    error: null,
-}
+const adapter: EntityAdapter<SeriesModel> = createEntityAdapter<SeriesModel>()
 
-export const seriesReducer = (state = initialState, action: fromSeriesActions.type) => {
-    switch (action.type) {
-        case fromSeriesActions.FETCH_SERIES_NEXT_PAGE:
-        case fromSeriesActions.FETCH_SERIES_INIT:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            }
-        case fromSeriesActions.FETCH_SERIES_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                error: null,
-                pagination: action.pagination,
-                data: [...state.data, ...action.payload],
-            }
-        case fromSeriesActions.FETCH_SERIES_ERROR:
-            return {
-                ...state,
-                fetching: false,
-                error: action.payload,
-            }
-        case fromSeriesActions.NO_MORE_TO_FETCH:
-        case fromSeriesActions.FETCHED_FROM_STORE:
-            return {
-                ...state,
-                fetching: false,
-            }
-        default:
-            return {
-                ...state,
-            }
-    }
-}
+const initialState = adapter.getInitialState()
+
+const generateReducer = createReducer<State>(
+    initialState,
+    on(fromSeriesActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
+)
+
+export const reducer = (state: State | undefined, action: Action) => generateReducer(state, action)
+
+export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal

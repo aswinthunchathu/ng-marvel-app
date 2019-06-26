@@ -8,8 +8,8 @@
     >
         <a class="no-decoration" [routerLink]="comic.linkToDetails" *ngFor="let comic of comics">
             <app-card
-                [image-src]="comic.image"
-                [placeholder-image-src]="comic.placeholder"
+                [image-src]="comic.image.portrait.actual"
+                [placeholder-image-src]="comic.image.portrait.placeholder"
                 [title]="comic.title"
             ></app-card>
         </a>

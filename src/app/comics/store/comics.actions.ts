@@ -1,47 +1,15 @@
-import { Action } from '@ngrx/store'
-import { HttpErrorResponse } from '@angular/common/http'
-import { Pagination } from 'src/app/shared/model/pagination.model'
+import { createAction, props } from '@ngrx/store'
 import { ComicModel } from '../comic.model'
+import { ACTION_TAGS } from 'src/app/constants'
 
-export const FETCH_COMICS_START = '[COMICS] Fetch Start'
-export const FETCH_COMICS_NEXT_PAGE = '[COMICS] Fetch Next Page'
-export const FETCH_COMICS_SUCCESS = '[COMICS] Fetch Success'
-export const FETCH_COMICS_ERROR = '[COMICS] Fetch Error'
-export const NO_MORE_TO_FETCH = '[COMICS] No More'
-export const FETCHED_FROM_STORE = '[COMICS] Fetched From Store'
+const TAG = ACTION_TAGS.comics
 
-export class FetchComicsStart implements Action {
-    readonly type = FETCH_COMICS_START
-}
+export const fetchStart = createAction(`${TAG} Fetch Init`)
 
-export class FetchComicsNextPage implements Action {
-    readonly type = FETCH_COMICS_NEXT_PAGE
-}
+export const fetchNextPage = createAction(`${TAG} Fetch Next Page`)
 
-export class FetchComicsSuccess implements Action {
-    readonly type = FETCH_COMICS_SUCCESS
+export const fetchSuccess = createAction(`${TAG} Fetch Success`, props<{ payload: ComicModel[] }>())
 
-    constructor(public payload: ComicModel[], public pagination: Pagination) {}
-}
+export const fetchedFromStore = createAction(`${TAG} No More`)
 
-export class FetchComicsError implements Action {
-    readonly type = FETCH_COMICS_ERROR
-
-    constructor(public payload: HttpErrorResponse) {}
-}
-
-export class FetchedFromStore implements Action {
-    readonly type = FETCHED_FROM_STORE
-}
-
-export class NoMoreToFetch implements Action {
-    readonly type = NO_MORE_TO_FETCH
-}
-
-export type type =
-    | FetchComicsStart
-    | FetchComicsNextPage
-    | FetchComicsSuccess
-    | FetchComicsError
-    | FetchedFromStore
-    | NoMoreToFetch
+export const noMoreToFetch = createAction(`${TAG} Fetched From Store`)

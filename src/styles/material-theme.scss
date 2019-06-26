@@ -1,5 +1,5 @@
-@import './app//shared/styles/mixins';
-@import './app//shared/styles/variables';
+@import './mixins';
+@import './variables';
 @import '~@angular/material/theming';
 
 @include mat-core();

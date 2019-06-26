@@ -1,17 +1,34 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { Store, select } from '@ngrx/store'
 
 import { AppState } from '../store/app.reducer'
+import * as fromRoot from '../store/app.reducer'
 import * as fromComicsAction from './store/comics.actions'
 import * as fromComicsByCharacterIdAction from './store/byCharacterId/comics-by-characterId.actions'
 import * as fromComicsBySeriesIdAction from './store/bySeriesId/comics-by-seriesId.actions'
-import { Style } from '../UI/list/list.component'
+import { Style } from '../shared/components/list/list.component'
 import { ComicModel } from './comic.model'
+import { FILTER_TYPE } from '../constants'
+import { switchMap } from 'rxjs/operators'
+import { Filter } from '../shared/model/shared.interface'
 
-export interface FilterType {
-    type: 'character' | 'series'
-    id: number
+const keyMap = {
+    [FILTER_TYPE.none]: {
+        action: fromComicsAction,
+        state: 'comics',
+        list: fromRoot.selectAllComics,
+    },
+    [FILTER_TYPE.character]: {
+        action: fromComicsByCharacterIdAction,
+        state: 'comicByCharacterId',
+        list: fromRoot.selectAllComicsByCharacterId,
+    },
+    [FILTER_TYPE.series]: {
+        action: fromComicsBySeriesIdAction,
+        state: 'comicBySeriesId',
+        list: fromRoot.selectAllComicsBySeriesId,
+    },
 }
 
 @Component({
@@ -22,11 +39,11 @@ export interface FilterType {
 export class ComicsComponent implements OnInit, OnDestroy {
     storeSubscription: Subscription
     comics: ComicModel[]
-    hasMore: boolean = true
-    loading: boolean = true
+    hasMore: boolean
+    loading: boolean
     gridStyle = Style.gridSpaced
     hasError: boolean
-    @Input('filter') filter: FilterType
+    @Input('filter') filter: Filter
 
     constructor(private store: Store<AppState>) {}
 
@@ -37,49 +54,37 @@ export class ComicsComponent implements OnInit, OnDestroy {
 
     queryOnStore() {
         if (this.filter) {
-            if (this.filter.type === 'character') {
-                this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdStart(this.filter.id))
-            } else {
-                this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdStart(this.filter.id))
-            }
+            this.store.dispatch(
+                keyMap[this.filter.type].action.fetchStart({
+                    payload: this.filter.id,
+                })
+            )
         } else {
-            this.store.dispatch(new fromComicsAction.FetchComicsStart())
+            this.store.dispatch(keyMap[FILTER_TYPE.none].action.fetchStart())
         }
     }
 
     subscribeToStore() {
-        let store = 'comics'
+        const type = this.filter ? this.filter.type : FILTER_TYPE.none
 
-        if (this.filter) {
-            if (this.filter.type === 'character') {
-                store = 'comicByCharacterId'
-            } else {
-                store = 'comicBySeriesId'
-            }
-        }
+        this.storeSubscription = this.store
+            .select(keyMap[type].state)
+            .pipe(
+                switchMap(res => {
+                    this.loading = res.ui.fetching
+                    this.hasError = !!res.ui.error
+                    if (this.hasMore !== res.pagination.data.hasMore) {
+                        this.hasMore = res.pagination.data.hasMore
+                    }
 
-        this.storeSubscription = this.store.select(store).subscribe(res => {
-            this.loading = res.fetching
-            if (res.error) {
-                this.hasError = true
-            }
-            this.comics = res.data
-            if (this.hasMore !== res.pagination.hasMore) {
-                this.hasMore = res.pagination.hasMore
-            }
-        })
+                    return this.store.pipe(select(keyMap[type].list))
+                })
+            )
+            .subscribe(res => (this.comics = res))
     }
 
     onScroll() {
-        if (this.filter) {
-            if (this.filter.type === 'character') {
-                this.store.dispatch(new fromComicsByCharacterIdAction.FetchComicsByCharacterIdNextPage(this.filter.id))
-            } else {
-                this.store.dispatch(new fromComicsBySeriesIdAction.FetchComicsBySeriesIdNextPage(this.filter.id))
-            }
-        } else {
-            this.store.dispatch(new fromComicsAction.FetchComicsNextPage())
-        }
+        this.store.dispatch(keyMap[this.filter ? this.filter.type : FILTER_TYPE.none].action.fetchNextPage())
     }
 
     ngOnDestroy() {
