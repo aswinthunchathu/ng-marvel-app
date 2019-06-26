@@ -3,11 +3,11 @@ import { Subscription } from 'rxjs'
 import { Store } from '@ngrx/store'
 import { ActivatedRoute, Params } from '@angular/router'
 
-import { AppState } from 'src/app/store/app.reducer'
+import { AppState } from '../../store/app.reducer'
 import * as fromComicActions from './store/comic.actions'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
 import { FILTER_TYPE } from '../../constants'
-import { Filter } from 'src/app/shared/model/shared.interface'
+import { Filter } from '../../shared/model/shared.interface'
 
 @Component({
     selector: 'app-comic-details',

@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http'
 import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromComicActions from './comic.actions'

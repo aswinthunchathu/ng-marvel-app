@@ -70,7 +70,7 @@ export class SeriesDetailsEffects {
             ),
             catchError(err =>
                 of(
-                    fromSeriesDetailsActions.fetchError({
+                    fromUIActions.setError(ACTION_TAGS.seriesDetails)({
                         payload: err,
                     })
                 )
