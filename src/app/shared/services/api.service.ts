@@ -9,7 +9,6 @@ export class ApiInterceptor implements HttpInterceptor {
         const modifiedRequest = req.clone({
             url: `https://gateway.marvel.com/v1/public/${req.url}`,
             params: req.params.append('apikey', '1fa11c1e05a4b35c680736954ab33b15'),
-            //headers: req.headers.append('Accept-Encoding', 'gzip'),
         })
         return next.handle(modifiedRequest)
     }
@@ -23,8 +22,9 @@ export class APIService {
 
     public fetchFromServer<T>(url: string, limit?: number, offset?: number) {
         const options = {}
+        const params = 'params'
         if (limit && offset) {
-            options['params'] = new HttpParams().set('limit', String(limit)).set('offset', String(offset))
+            options[params] = new HttpParams().set('limit', String(limit)).set('offset', String(offset))
         }
         return this.http$.get<APIResponse<T>>(url, options)
     }

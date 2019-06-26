@@ -47,7 +47,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
     isFloatingLabel = true
     imageType = ImageType.standard
 
-    @Input('filter') filter: Filter
+    @Input() filter: Filter
 
     constructor(private store: Store<fromRoot.AppState>) {}
 

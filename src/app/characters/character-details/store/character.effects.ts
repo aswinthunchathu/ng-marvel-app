@@ -15,22 +15,19 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class CharacterEffects {
-    private readonly _tag = ACTION_TAGS.character
-    private _URL = action => `characters/${action.payload}`
-
     showSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(fromCharacterActions.fetchStart),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(this._tag)())
+                return of(fromUIActions.showSpinner(this.TAG)())
             })
         )
     )
 
     fetchStart$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(fromCharacterActions.fetchStart),
-            withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersTotal)), this._store.select('characters')),
+            withLatestFrom(this.store.pipe(select(fromRoot.selectCharactersTotal)), this.store.select('characters')),
             switchMap(([action, count, { data }]) => {
                 if (count > 0) {
                     const character = data.entities[action.payload]
@@ -42,27 +39,30 @@ export class CharacterEffects {
                         )
                     }
                 }
-                return this._fetchFromServer(action)
+                return this.fetchFromServer(action)
             })
         )
     )
 
     hideSpinner$ = createEffect(() =>
-        this._actions$.pipe(
-            ofType(fromCharacterActions.fetchSuccess, fromUIActions.setError(this._tag)),
-            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+        this.actions$.pipe(
+            ofType(fromCharacterActions.fetchSuccess, fromUIActions.setError(this.TAG)),
+            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
         )
     )
 
-    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
+    private readonly TAG = ACTION_TAGS.character
+    private URL = action => `characters/${action.payload}`
+
+    constructor(private api: APIService, private actions$: Actions, private store: Store<AppState>) {}
 
     /*
      * fetch character from server
      * @params action: action
      * return : Observable<FetchCharactersSuccess | FetchCharacterError>
      */
-    private _fetchFromServer(action) {
-        return this._APIService.fetchFromServer<Character>(this._URL(action)).pipe(
+    private fetchFromServer(action) {
+        return this.api.fetchFromServer<Character>(this.URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromCharacterActions.fetchSuccess({
@@ -71,7 +71,7 @@ export class CharacterEffects {
             ),
             catchError(err =>
                 of(
-                    fromUIActions.setError(this._tag)({
+                    fromUIActions.setError(this.TAG)({
                         payload: err,
                     })
                 )

@@ -20,7 +20,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     private characterSub: Subscription
     loading: boolean
     character: ListDetailsModel
-    bgImage: string = ''
+    bgImage = ''
     filter: Filter = null
     hasError: boolean
 
@@ -33,7 +33,8 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
 
     queryOnStore() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
-            const id = +params['id']
+            const key = 'id'
+            const id = +params[key]
             this.filter = {
                 type: FILTER_TYPE.character,
                 id,

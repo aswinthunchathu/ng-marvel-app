@@ -15,22 +15,19 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class SeriesDetailsEffects {
-    private readonly _tag = ACTION_TAGS.seriesDetails
-    private _URL = action => `series/${action.payload}`
-
     showSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromSeriesDetailsActions.fetchStart),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(this._tag)())
+                return of(fromUIActions.showSpinner(this.TAG)())
             })
         )
     )
 
     fetchStart$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromSeriesDetailsActions.fetchStart),
-            withLatestFrom(this._store.pipe(select(fromRoot.selectSeriesTotal)), this._store.select('series')),
+            withLatestFrom(this.store.pipe(select(fromRoot.selectSeriesTotal)), this.store.select('series')),
             switchMap(([action, count, { data }]) => {
                 if (count > 0) {
                     const comic = data.entities[action.payload]
@@ -42,27 +39,30 @@ export class SeriesDetailsEffects {
                         )
                     }
                 }
-                return this._fetchFromServer(action)
+                return this.fetchFromServer(action)
             })
         )
     )
 
     hideSpinner$ = createEffect(() =>
-        this._actions$.pipe(
-            ofType(fromSeriesDetailsActions.fetchSuccess, fromUIActions.setError(this._tag)),
-            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+        this.action$.pipe(
+            ofType(fromSeriesDetailsActions.fetchSuccess, fromUIActions.setError(this.TAG)),
+            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
         )
     )
 
-    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
+    private readonly TAG = ACTION_TAGS.seriesDetails
+    private URL = action => `series/${action.payload}`
+
+    constructor(private api: APIService, private action$: Actions, private store: Store<AppState>) {}
 
     /*
      * fetch series from server
      * @params action: action
      * return : Observable<FetchComicSuccess | FetchComicError>
      */
-    private _fetchFromServer(action) {
-        return this._APIService.fetchFromServer<Series>(this._URL(action)).pipe(
+    private fetchFromServer(action) {
+        return this.api.fetchFromServer<Series>(this.URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromSeriesDetailsActions.fetchSuccess({
@@ -71,7 +71,7 @@ export class SeriesDetailsEffects {
             ),
             catchError(err =>
                 of(
-                    fromUIActions.setError(this._tag)({
+                    fromUIActions.setError(this.TAG)({
                         payload: err,
                     })
                 )

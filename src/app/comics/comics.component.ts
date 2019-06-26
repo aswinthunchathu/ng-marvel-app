@@ -43,7 +43,7 @@ export class ComicsComponent implements OnInit, OnDestroy {
     loading: boolean
     gridStyle = Style.gridSpaced
     hasError: boolean
-    @Input('filter') filter: Filter
+    @Input() filter: Filter
 
     constructor(private store: Store<AppState>) {}
 

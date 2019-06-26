@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 import { switchMap } from 'rxjs/operators'
@@ -30,14 +30,14 @@ const keyMap = {
     templateUrl: './series.component.html',
     styleUrls: ['./series.component.scss'],
 })
-export class SeriesComponent implements OnInit {
+export class SeriesComponent implements OnInit, OnDestroy {
     storeSubscription: Subscription
     seriesList: SeriesModel[]
     hasMore: boolean
     loading: boolean
     gridStyle = Style.gridSpaced
     hasError: boolean
-    @Input('filter') filter: Filter
+    @Input() filter: Filter
 
     constructor(private store: Store<AppState>) {}
 

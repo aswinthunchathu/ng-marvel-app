@@ -15,22 +15,19 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class ComicEffects {
-    private readonly _tag = ACTION_TAGS.comic
-    private _URL = action => `comics/${action.payload}`
-
     showSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(fromComicActions.fetchStart),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(this._tag)())
+                return of(fromUIActions.showSpinner(this.TAG)())
             })
         )
     )
 
     fetchStart$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(fromComicActions.fetchStart),
-            withLatestFrom(this._store.pipe(select(fromRoot.selectComicsTotal)), this._store.select('comics')),
+            withLatestFrom(this.store.pipe(select(fromRoot.selectComicsTotal)), this.store.select('comics')),
             switchMap(([action, count, { data }]) => {
                 if (count > 0) {
                     const comic = data.entities[action.payload]
@@ -42,27 +39,30 @@ export class ComicEffects {
                         )
                     }
                 }
-                return this._fetchFromServer(action)
+                return this.fetchFromServer(action)
             })
         )
     )
 
     hideSpinner$ = createEffect(() =>
-        this._actions$.pipe(
-            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(this._tag)),
-            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+        this.actions$.pipe(
+            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(this.TAG)),
+            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
         )
     )
 
-    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
+    private readonly TAG = ACTION_TAGS.comic
+    private URL = action => `comics/${action.payload}`
+
+    constructor(private api: APIService, private actions$: Actions, private store: Store<AppState>) {}
 
     /*
      * fetch comic from server
      * @params action: action
      * return : Observable<FetchComicSuccess | FetchComicError>
      */
-    private _fetchFromServer(action) {
-        return this._APIService.fetchFromServer<Comic>(this._URL(action)).pipe(
+    private fetchFromServer(action) {
+        return this.api.fetchFromServer<Comic>(this.URL(action)).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
             map(res =>
                 fromComicActions.fetchSuccess({
@@ -71,7 +71,7 @@ export class ComicEffects {
             ),
             catchError(err =>
                 of(
-                    fromUIActions.setError(this._tag)({
+                    fromUIActions.setError(this.TAG)({
                         payload: err,
                     })
                 )

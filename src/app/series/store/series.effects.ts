@@ -17,58 +17,58 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class SeriesEffects {
-    private readonly _tag = ACTION_TAGS.series
-    private readonly _URL = 'series'
-
     showSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromSeriesActions.fetchStart, fromSeriesActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(this._tag)())
+                return of(fromUIActions.showSpinner(this.TAG)())
             })
         )
     )
 
     fetchStart$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromSeriesActions.fetchStart),
-            withLatestFrom(this._store.pipe(select(fromRoot.selectSeriesTotal)), this._store.select('series')),
+            withLatestFrom(this.store.pipe(select(fromRoot.selectSeriesTotal)), this.store.select('series')),
             switchMap(([__, count, { pagination }]) => {
                 if (count > 0) {
                     return of(fromSeriesActions.fetchedFromStore())
                 }
-                return this._fetchFromServer(pagination.data.limit, pagination.data.nextPage)
+                return this.fetchFromServer(pagination.data.limit, pagination.data.nextPage)
             })
         )
     )
 
     fetchNextPage$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromSeriesActions.fetchNextPage),
-            withLatestFrom(this._store.select('series')),
+            withLatestFrom(this.store.select('series')),
             switchMap(([__, { pagination }]) => {
                 if (!pagination.data.hasMore) {
                     return of(fromSeriesActions.noMoreToFetch())
                 } else {
-                    return this._fetchFromServer(pagination.data.limit, pagination.data.nextPage)
+                    return this.fetchFromServer(pagination.data.limit, pagination.data.nextPage)
                 }
             })
         )
     )
 
     hideSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(
                 fromSeriesActions.fetchSuccess,
                 fromSeriesActions.fetchedFromStore,
                 fromSeriesActions.noMoreToFetch,
-                fromUIActions.setError(this._tag)
+                fromUIActions.setError(this.TAG)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
         )
     )
 
-    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
+    private readonly TAG = ACTION_TAGS.series
+    private readonly URL = 'series'
+
+    constructor(private api: APIService, private action$: Actions, private store: Store<AppState>) {}
 
     /*
      * fetch Series from server
@@ -76,8 +76,8 @@ export class SeriesEffects {
      * @params offset: number - page offset
      * return : Observable<FetchSeriesSuccess>
      */
-    private _fetchFromServer(limit: number, offset: number) {
-        return this._APIService.fetchFromServer<Series>(this._URL, limit, offset).pipe(
+    private fetchFromServer(limit: number, offset: number) {
+        return this.api.fetchFromServer<Series>(this.URL, limit, offset).pipe(
             map(res => res.data),
             mergeMap(res => [
                 fromSeriesActions.fetchSuccess({
@@ -85,13 +85,13 @@ export class SeriesEffects {
                         item => new SeriesModel(item.id, item.title, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(this._tag)({
+                fromPaginationActions.setPagination(this.TAG)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(this._tag)({
+                    fromUIActions.setError(this.TAG)({
                         payload: err,
                     })
                 )

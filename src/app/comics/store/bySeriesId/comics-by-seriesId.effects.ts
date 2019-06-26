@@ -17,14 +17,11 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class ComicsBySeriesIdEffects {
-    private readonly _tag = ACTION_TAGS.comicsBySeriesId
-    private _URL = action => `series/${action['payload']}/comics`
-
     showSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromComicsBySeriesIdActions.fetchStart, fromComicsBySeriesIdActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(this._tag)())
+                return of(fromUIActions.showSpinner(this.TAG)())
             })
         )
     )
@@ -34,18 +31,18 @@ export class ComicsBySeriesIdEffects {
      */
 
     fetchStart$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromComicsBySeriesIdActions.fetchStart),
             withLatestFrom(
-                this._store.pipe(select(fromRoot.selectComicsBySeriesIdTotal)),
-                this._store.select('comicBySeriesId')
+                this.store.pipe(select(fromRoot.selectComicsBySeriesIdTotal)),
+                this.store.select('comicBySeriesId')
             ),
             switchMap(([action, count, { pagination }]) => {
-                this._store.dispatch(fromUIActions.resetError(this._tag)())
+                this.store.dispatch(fromUIActions.resetError(this.TAG)())
                 if (count > 0) {
                     return of(fromComicsBySeriesIdActions.fetchedFromStore())
                 }
-                return this._fetchFromServer(this._URL(action.payload), pagination.data.limit, pagination.data.nextPage)
+                return this.fetchFromServer(this.URL(action.payload), pagination.data.limit, pagination.data.nextPage)
             })
         )
     )
@@ -54,35 +51,38 @@ export class ComicsBySeriesIdEffects {
      * This effect is fired when FETCH_COMICS_BY_SERIES_ID_NEXT_PAGE action is fired
      */
     fetchNextPage$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(fromComicsBySeriesIdActions.fetchNextPage),
             withLatestFrom(
-                this._store.pipe(select(fromRoot.selectFilterIdForComicsByCharacterId)),
-                this._store.select('comicBySeriesId')
+                this.store.pipe(select(fromRoot.selectFilterIdForComicsByCharacterId)),
+                this.store.select('comicBySeriesId')
             ),
             switchMap(([__, filterId, { pagination }]) => {
                 if (!pagination.data.hasMore) {
                     return of(fromComicsBySeriesIdActions.noMoreToFetch())
                 } else {
-                    return this._fetchFromServer(this._URL(filterId), pagination.data.limit, pagination.data.nextPage)
+                    return this.fetchFromServer(this.URL(filterId), pagination.data.limit, pagination.data.nextPage)
                 }
             })
         )
     )
 
     hideSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.action$.pipe(
             ofType(
                 fromComicsBySeriesIdActions.fetchSuccess,
                 fromComicsBySeriesIdActions.fetchedFromStore,
                 fromComicsBySeriesIdActions.noMoreToFetch,
-                fromUIActions.setError(this._tag)
+                fromUIActions.setError(this.TAG)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
         )
     )
 
-    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
+    private readonly TAG = ACTION_TAGS.comicsBySeriesId
+    private URL = (action, key = 'payload') => `series/${action[key]}/comics`
+
+    constructor(private api: APIService, private action$: Actions, private store: Store<AppState>) {}
 
     /*
      * fetch comics from server
@@ -91,8 +91,8 @@ export class ComicsBySeriesIdEffects {
      * @params offset: number - page offset
      * return : Observable<FetchComicsBySeriesIdSuccess>
      */
-    private _fetchFromServer(action, limit: number, offset: number) {
-        return this._APIService.fetchFromServer<Comic>(this._URL(action), limit, offset).pipe(
+    private fetchFromServer(action, limit: number, offset: number) {
+        return this.api.fetchFromServer<Comic>(this.URL(action), limit, offset).pipe(
             map(res => res.data),
             mergeMap(res => [
                 fromComicsBySeriesIdActions.fetchSuccess({
@@ -100,13 +100,13 @@ export class ComicsBySeriesIdEffects {
                         item => new ComicModel(item.id, item.title, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(this._tag)({
+                fromPaginationActions.setPagination(this.TAG)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(this._tag)({
+                    fromUIActions.setError(this.TAG)({
                         payload: err,
                     })
                 )

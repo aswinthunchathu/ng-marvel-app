@@ -31,7 +31,8 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
 
     queryOnStore() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
-            const id = +params['id']
+            const key = 'id'
+            const id = +params[key]
 
             this.filter = {
                 type: FILTER_TYPE.series,

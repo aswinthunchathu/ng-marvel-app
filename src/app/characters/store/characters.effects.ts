@@ -17,14 +17,11 @@ import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class CharactersEffects {
-    private readonly _tag = ACTION_TAGS.characters
-    private readonly _URL = 'characters'
-
     showSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(fromCharactersActions.fetchStart, fromCharactersActions.fetchNextPage),
             switchMap(() => {
-                return of(fromUIActions.showSpinner(this._tag)())
+                return of(fromUIActions.showSpinner(this.TAG)())
             })
         )
     )
@@ -33,17 +30,17 @@ export class CharactersEffects {
      * This effect is fired when FETCH_CHARACTERS_INIT action is fired
      */
     fetchStart$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(fromCharactersActions.fetchStart),
-            withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersTotal)), this._store.select('characters')),
+            withLatestFrom(this.store.pipe(select(fromRoot.selectCharactersTotal)), this.store.select('characters')),
             switchMap(([__, count, { pagination }]) => {
-                this._store.dispatch(fromUIActions.resetError(this._tag)())
+                this.store.dispatch(fromUIActions.resetError(this.TAG)())
 
                 if (count > 0) {
                     return of(fromCharactersActions.fetchedFromStore())
                 }
 
-                return this._fetchFromServer(pagination.data.limit, pagination.data.nextPage)
+                return this.fetchFromServer(pagination.data.limit, pagination.data.nextPage)
             })
         )
     )
@@ -52,32 +49,35 @@ export class CharactersEffects {
      * This effect is fired when FETCH_CHARACTERS_NEXT_PAGE action is fired
      */
     fetchNextPage$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(fromCharactersActions.fetchNextPage),
-            withLatestFrom(this._store.select('characters')),
+            withLatestFrom(this.store.select('characters')),
             switchMap(([__, { pagination }]) => {
                 if (!pagination.data.hasMore) {
                     return of(fromCharactersActions.noMoreToFetch())
                 } else {
-                    return this._fetchFromServer(pagination.data.limit, pagination.data.nextPage)
+                    return this.fetchFromServer(pagination.data.limit, pagination.data.nextPage)
                 }
             })
         )
     )
 
     hideSpinner$ = createEffect(() =>
-        this._actions$.pipe(
+        this.actions$.pipe(
             ofType(
                 fromCharactersActions.fetchSuccess,
                 fromCharactersActions.fetchedFromStore,
                 fromCharactersActions.noMoreToFetch,
-                fromUIActions.setError(this._tag)
+                fromUIActions.setError(this.TAG)
             ),
-            switchMap(() => of(fromUIActions.hideSpinner(this._tag)()))
+            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
         )
     )
 
-    constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
+    private readonly TAG = ACTION_TAGS.characters
+    private readonly URL = 'characters'
+
+    constructor(private api: APIService, private actions$: Actions, private store: Store<AppState>) {}
 
     /*
      * fetch characters from server
@@ -85,8 +85,8 @@ export class CharactersEffects {
      * @params offset: number - page offset
      * return : Observable<FetchCharactersSuccess>
      */
-    private _fetchFromServer = (limit: number, offset: number) =>
-        this._APIService.fetchFromServer<Character>(this._URL, limit, offset).pipe(
+    private fetchFromServer = (limit: number, offset: number) =>
+        this.api.fetchFromServer<Character>(this.URL, limit, offset).pipe(
             map(res => res.data),
             mergeMap(res => [
                 fromCharactersActions.fetchSuccess({
@@ -94,13 +94,13 @@ export class CharactersEffects {
                         item => new CharacterModel(item.id, item.name, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(this._tag)({
+                fromPaginationActions.setPagination(this.TAG)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
             catchError(err =>
                 of(
-                    fromUIActions.setError(this._tag)({
+                    fromUIActions.setError(this.TAG)({
                         payload: err,
                     })
                 )

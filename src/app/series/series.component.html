@@ -4,7 +4,7 @@
         [hasMore]="hasMore"
         [isFetching]="loading"
         [grid-style]="gridStyle"
-        (onScroll)="onScroll()"
+        (scrollEvent)="onScroll()"
     >
         <a class="no-decoration" [routerLink]="series.linkToDetails" *ngFor="let series of seriesList">
             <app-card

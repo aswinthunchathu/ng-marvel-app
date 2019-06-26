@@ -4,9 +4,12 @@ import { Directive, HostBinding, Input, OnInit } from '@angular/core'
     selector: '[appProgressiveImageLoading]',
 })
 export class ProgressiveImageLoadingDirective implements OnInit {
-    //add a default image here
+    // add a default image here
+    // tslint:disable-next-line:no-input-rename
     @Input('appProgressiveImageLoading-placeholder') placeholder: string
+    // tslint:disable-next-line:no-input-rename
     @Input('appProgressiveImageLoading') image: string
+    // tslint:disable-next-line:no-input-rename
     @Input('class') cssClass: string
     @HostBinding('attr.src') bgImage: string
     @HostBinding('class') newCssClass: string
