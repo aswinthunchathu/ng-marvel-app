@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { Store, select } from '@ngrx/store'
 
 import * as fromComicActions from './comic.actions'
+import * as fromRoot from '../../../store/app.reducer'
 import { AppState } from '../../../store/app.reducer'
 import { Comic } from 'src/app/shared/model/shared.interface'
 import { ComicModel } from '../../comic.model'
@@ -16,10 +17,10 @@ export class ComicEffects {
 
     @Effect() fetchCharacters = this._actions$.pipe(
         ofType(fromComicActions.fetchStart),
-        withLatestFrom(this._store.select('comics')),
-        switchMap(([action, comicsState]) => {
-            if (comicsState.data.length > 0) {
-                const comic = comicsState.data.find(res => res.id === action.payload)
+        withLatestFrom(this._store.pipe(select(fromRoot.selectComicsTotal)), this._store.select('comics')),
+        switchMap(([action, count, { data }]) => {
+            if (count > 0) {
+                const comic = data.entities[action.payload]
                 if (comic) {
                     return of(
                         fromComicActions.fetchSuccess({

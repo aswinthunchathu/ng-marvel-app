@@ -35,7 +35,7 @@ export class CharactersEffects {
         this._actions$.pipe(
             ofType(fromCharactersActions.fetchStart),
             withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersTotal)), this._store.select('characters')),
-            switchMap(([__, count, { pagination, data }]) => {
+            switchMap(([__, count, { pagination }]) => {
                 this._store.dispatch(fromUIActions.resetError(ACTION_TAGS.characters)())
 
                 if (count > 0) {

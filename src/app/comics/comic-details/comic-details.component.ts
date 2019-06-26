@@ -7,7 +7,7 @@ import { AppState } from 'src/app/store/app.reducer'
 import * as fromComicActions from './store/comic.actions'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
 import { Filter } from '../../characters/characters.component'
-import { FILTER_TYPE } from 'src/app/constants'
+import { FILTER_TYPE } from '../../constants'
 
 @Component({
     selector: 'app-comic-details',

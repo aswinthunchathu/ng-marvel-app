@@ -7,8 +7,8 @@ import { AppState } from '../../store/app.reducer'
 import * as fromCharacterActions from './store/character.actions'
 import { BgService } from '../../shared/services/bg.service'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
-import { FilterType as ComicsFilterType } from '../../comics/comics.component'
-import { FilterType as SeriesFilterType } from '../../series/series.component'
+import { FILTER_TYPE } from '../../constants'
+import { Filter } from '../../comics/comics.component'
 
 @Component({
     selector: 'app-character-details',
@@ -21,7 +21,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     loading: boolean
     character: ListDetailsModel
     bgImage: string = ''
-    filter: ComicsFilterType | SeriesFilterType = null
+    filter: Filter = null
     hasError: boolean
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute, private bgService: BgService) {}
@@ -35,7 +35,7 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
         this.routeSub = this.route.params.subscribe((params: Params) => {
             const id = +params['id']
             this.filter = {
-                type: 'character',
+                type: FILTER_TYPE.character,
                 id,
             }
             this.store.dispatch(
