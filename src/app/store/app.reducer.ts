@@ -1,6 +1,7 @@
 import { createSelector, ActionReducerMap } from '@ngrx/store'
 
 import * as fromCharacters from '../characters/store'
+import * as fromCharacter from '../characters/character-details/store'
 import * as fromCharactersByComicId from '../characters/store/byComicId'
 import * as fromCharactersBySeriesId from '../characters/store/bySeriesId'
 import * as fromCharactersReducer from '../characters/store/characters.reducer'
@@ -11,19 +12,18 @@ import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
 import * as fromComicsBySeriesIdReducer from '../comics/store/bySeriesId/comics-by-seriesId.reducer'
 import * as fromComicReducer from '../comics/comic-details/store/comic.reducer'
-import * as fromCharacterReducer from '../characters/character-details/store/character.reducer'
 import * as fromSeriesReducer from '../series/store/series.reducer'
 import * as fromSeriesDetailsReducer from '../series/series-details/store/series-details.reducer'
 import * as fromSeriesByCharacterIdReducer from '../series/store/byCharacterId/series-by-characterId.reducer'
 
 export interface AppState {
     characters: fromCharacters.State
+    character: fromCharacter.State
     charactersByComicId: fromCharactersByComicId.State
     charactersBySeriesId: fromCharactersBySeriesId.State
 
     comics: fromComicsReducer.State
     series: fromSeriesReducer.State
-    character: fromCharacterReducer.State
     comicBySeriesId: fromComicsBySeriesIdReducer.State
     comicByCharacterId: fromComicsByCharacterIdReducer.State
     comic: fromComicReducer.State
@@ -33,13 +33,13 @@ export interface AppState {
 
 export const appReducer: ActionReducerMap<AppState> = {
     characters: fromCharacters.default,
+    character: fromCharacter.default,
     charactersByComicId: fromCharactersByComicId.default,
     charactersBySeriesId: fromCharactersBySeriesId.default,
 
     comics: fromComicsReducer.reducer,
     series: fromSeriesReducer.reducer,
 
-    character: fromCharacterReducer.reducer,
     comicBySeriesId: fromComicsBySeriesIdReducer.reducer,
     comicByCharacterId: fromComicsByCharacterIdReducer.reducer,
     comic: fromComicReducer.reducer,

@@ -47,19 +47,19 @@ export class CharacterDetailsComponent implements OnInit, OnDestroy {
     }
 
     subscribeToStore() {
-        this.characterSub = this.store.select('character').subscribe(res => {
-            this.loading = res.fetching
-            if (res.data) {
+        this.characterSub = this.store.select('character').subscribe(({ ui, data: state }) => {
+            this.loading = ui.fetching
+            if (state.data) {
                 this.character = new ListDetailsModel(
-                    res.data.title,
-                    res.data.image.portrait.actual,
-                    res.data.image.portrait.placeholder,
-                    res.data.description
+                    state.data.title,
+                    state.data.image.portrait.actual,
+                    state.data.image.portrait.placeholder,
+                    state.data.description
                 )
-                this.bgService.setBgImage(res.data.image.default.actual)
+                this.bgService.setBgImage(state.data.image.default.actual)
             }
 
-            if (res.error) {
+            if (ui.error) {
                 this.hasError = true
             }
         })

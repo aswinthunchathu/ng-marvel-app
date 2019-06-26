@@ -9,6 +9,7 @@ export enum FILTER_TYPE {
 
 export enum ACTION_TAGS {
     characters = '[CHARACTERS]',
+    character = '[CHARACTER]',
     charactersByComicId = '[CHARACTERS BY COMIC ID]',
     charactersBySeriesId = '[CHARACTERS BY SERIES ID]',
 }

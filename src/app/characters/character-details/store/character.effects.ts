@@ -1,36 +1,56 @@
 import { Injectable } from '@angular/core'
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators'
-import { Actions, Effect, ofType } from '@ngrx/effects'
+import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
+import * as fromUIActions from '../../../shared/store/ui/ui.actions'
 import * as fromCharacterActions from './character.actions'
 import * as fromRoot from '../../../store/app.reducer'
 import { AppState } from '../../../store/app.reducer'
 import { Character } from '../../../shared/model/shared.interface'
 import { CharacterModel } from '../../character.model'
 import { APIService } from 'src/app/shared/services/api.service'
+import { ACTION_TAGS } from 'src/app/constants'
 
 @Injectable()
 export class CharacterEffects {
     private _URL = action => `characters/${action.payload}`
 
-    @Effect() fetchCharacters = this._actions$.pipe(
-        ofType(fromCharacterActions.fetchStart),
-        withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersTotal)), this._store.select('characters')),
-        switchMap(([action, count, { data }]) => {
-            if (count > 0) {
-                const character = data[action.payload]
-                if (character) {
-                    return of(
-                        fromCharacterActions.fetchSuccess({
-                            payload: character,
-                        })
-                    )
+    showSpinner$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromCharacterActions.fetchStart),
+            switchMap(() => {
+                return of(fromUIActions.showSpinner(ACTION_TAGS.character)())
+            })
+        )
+    )
+
+    fetchStart$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromCharacterActions.fetchStart),
+            withLatestFrom(this._store.pipe(select(fromRoot.selectCharactersTotal)), this._store.select('characters')),
+            switchMap(([action, count, { data }]) => {
+                if (count > 0) {
+                    const character = data.entities[action.payload]
+                    if (character) {
+                        return of(
+                            fromCharacterActions.fetchSuccess({
+                                payload: character,
+                            })
+                        )
+                    }
                 }
-            }
-            return this._fetchFromServer(action)
-        })
+                return this._fetchFromServer(action)
+            })
+        )
+    )
+
+    hideSpinner$ = createEffect(() =>
+        this._actions$.pipe(
+            ofType(fromCharacterActions.fetchSuccess, fromUIActions.setError(ACTION_TAGS.character)),
+            switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.character)()))
+        )
     )
 
     constructor(private _APIService: APIService, private _actions$: Actions, private _store: Store<AppState>) {}
@@ -50,7 +70,7 @@ export class CharacterEffects {
             ),
             catchError(err =>
                 of(
-                    fromCharacterActions.fetchError({
+                    fromUIActions.setError(ACTION_TAGS.character)({
                         payload: err,
                     })
                 )
