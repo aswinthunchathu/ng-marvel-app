@@ -19,11 +19,11 @@ const keyMap = {
         state: 'comics',
         list: fromRoot.selectAllComics,
     },
-    // [FILTER_TYPE.comics]: {
-    //     action: fromComicsByCharacterIdAction,
-    //     state: 'charactersByComicId',
-    //     list: fromRoot.selectAllCharactersByComicId,
-    // },
+    [FILTER_TYPE.character]: {
+        action: fromComicsByCharacterIdAction,
+        state: 'comicByCharacterId',
+        list: fromRoot.selectAllComicsByCharacterId,
+    },
     // [FILTER_TYPE.series]: {
     //     action: fromComicsBySeriesIdAction,
     //     state: 'charactersBySeriesId',

@@ -12,5 +12,9 @@ export enum ACTION_TAGS {
     character = '[CHARACTER]',
     charactersByComicId = '[CHARACTERS BY COMIC ID]',
     charactersBySeriesId = '[CHARACTERS BY SERIES ID]',
+
     comics = '[COMICS]',
+    comic = '[COMIC]',
+    comicsByCharacterId = '[COMICS BY CHARACTER ID]',
+    comicsBySeriesId = '[COMICS BY SERIES ID]',
 }

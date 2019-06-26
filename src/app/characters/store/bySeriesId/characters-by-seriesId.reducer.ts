@@ -14,7 +14,7 @@ const initialState = adapter.getInitialState({
     filterId: null,
 })
 
-const charactersBySeriesIdReducer = createReducer<State>(
+const generateReducer = createReducer<State>(
     initialState,
     on(fromCharactersByComicIdActions.fetchStart, (state, action) => {
         if (state.filterId === action.payload) {
@@ -33,7 +33,7 @@ const charactersBySeriesIdReducer = createReducer<State>(
 )
 
 export function reducer(state: State | undefined, action: Action) {
-    return charactersBySeriesIdReducer(state, action)
+    return generateReducer(state, action)
 }
 
 export const selectAll = adapter.getSelectors().selectAll
