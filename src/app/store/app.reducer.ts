@@ -12,8 +12,9 @@ import * as fromComics from '../comics/store'
 import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterId from '../comics/store/byCharacterId'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
-
+import * as fromComicsBySeriesId from '../comics/store/bySeriesId'
 import * as fromComicsBySeriesIdReducer from '../comics/store/bySeriesId/comics-by-seriesId.reducer'
+
 import * as fromComicReducer from '../comics/comic-details/store/comic.reducer'
 import * as fromSeriesReducer from '../series/store/series.reducer'
 import * as fromSeriesDetailsReducer from '../series/series-details/store/series-details.reducer'
@@ -27,9 +28,9 @@ export interface AppState {
 
     comics: fromComics.State
     comicByCharacterId: fromComicsByCharacterId.State
+    comicBySeriesId: fromComicsBySeriesId.State
 
     series: fromSeriesReducer.State
-    comicBySeriesId: fromComicsBySeriesIdReducer.State
     comic: fromComicReducer.State
     seriesDetails: fromSeriesDetailsReducer.State
     seriesByCharacterId: fromSeriesByCharacterIdReducer.State
@@ -43,9 +44,9 @@ export const appReducer: ActionReducerMap<AppState> = {
 
     comics: fromComics.default,
     comicByCharacterId: fromComicsByCharacterId.default,
+    comicBySeriesId: fromComicsBySeriesId.default,
 
     series: fromSeriesReducer.reducer,
-    comicBySeriesId: fromComicsBySeriesIdReducer.reducer,
     comic: fromComicReducer.reducer,
     seriesDetails: fromSeriesDetailsReducer.reducer,
     seriesByCharacterId: fromSeriesByCharacterIdReducer.reducer,
@@ -127,6 +128,25 @@ export const selectComicsByCharacterIdTotal = createSelector(
 
 export const selectFilterIdForComicsByCharacterId = createSelector(
     comicsByCharacterId,
+    state => {
+        return state.filterId
+    }
+)
+
+const comicsBySeriesId = (state: AppState) => state.comicBySeriesId.data
+
+export const selectAllComicsBySeriesId = createSelector(
+    comicsBySeriesId,
+    fromComicsBySeriesIdReducer.selectAll
+)
+
+export const selectComicsBySeriesIdTotal = createSelector(
+    comicsBySeriesId,
+    fromComicsBySeriesIdReducer.selectTotal
+)
+
+export const selectFilterIdForComicsBySeriesId = createSelector(
+    comicsBySeriesId,
     state => {
         return state.filterId
     }

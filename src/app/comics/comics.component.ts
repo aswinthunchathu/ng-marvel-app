@@ -24,11 +24,11 @@ const keyMap = {
         state: 'comicByCharacterId',
         list: fromRoot.selectAllComicsByCharacterId,
     },
-    // [FILTER_TYPE.series]: {
-    //     action: fromComicsBySeriesIdAction,
-    //     state: 'charactersBySeriesId',
-    //     list: fromRoot.selectAllCharactersBySeriesId,
-    // },
+    [FILTER_TYPE.series]: {
+        action: fromComicsBySeriesIdAction,
+        state: 'comicBySeriesId',
+        list: fromRoot.selectAllComicsBySeriesId,
+    },
 }
 
 @Component({

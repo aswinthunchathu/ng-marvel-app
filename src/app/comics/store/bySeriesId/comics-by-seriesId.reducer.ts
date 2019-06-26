@@ -1,68 +1,41 @@
 import { HttpErrorResponse } from '@angular/common/http'
+import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromComicsBySeriesIdActions from './comics-by-seriesId.actions'
-import { PAGE_LIMIT } from '../../../constants'
-import { Pagination } from '../../../shared/model/pagination.model'
 import { ComicModel } from '../../comic.model'
 
-export interface State {
-    fetching: boolean
-    data: ComicModel[]
-    pagination: Pagination
-    error: HttpErrorResponse
+export interface State extends EntityState<ComicModel> {
     filterId: number
 }
 
-const initialState: State = {
-    fetching: false,
-    pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
-    data: [],
-    error: null,
-    filterId: null,
-}
+export const adapter: EntityAdapter<ComicModel> = createEntityAdapter<ComicModel>()
 
-const comicsBySeriesIdReducer = createReducer<State>(
+const initialState = adapter.getInitialState({
+    filterId: null,
+})
+
+const generateReducer = createReducer<State>(
     initialState,
     on(fromComicsBySeriesIdActions.fetchStart, (state, action) => {
         if (state.filterId === action.payload) {
             return {
                 ...state,
-                fetching: true,
-                error: null,
             }
         } else {
             return {
                 ...state,
                 ...initialState,
-                fetching: true,
                 filterId: action.payload,
             }
         }
     }),
-    on(fromComicsBySeriesIdActions.fetchNextPage, state => ({
-        ...state,
-        fetching: true,
-        error: null,
-    })),
-    on(fromComicsBySeriesIdActions.fetchSuccess, (state, action) => ({
-        ...state,
-        fetching: false,
-        error: null,
-        pagination: action.pagination,
-        data: [...state.data, ...action.payload],
-    })),
-    on(fromComicsBySeriesIdActions.fetchError, (state, action) => ({
-        ...state,
-        fetching: false,
-        error: action.payload,
-    })),
-    on(fromComicsBySeriesIdActions.fetchedFromStore, fromComicsBySeriesIdActions.noMoreToFetch, state => ({
-        ...state,
-        fetching: false,
-    }))
+    on(fromComicsBySeriesIdActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
 )
 
 export function reducer(state: State | undefined, action: Action) {
-    return comicsBySeriesIdReducer(state, action)
+    return generateReducer(state, action)
 }
+
+export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal
