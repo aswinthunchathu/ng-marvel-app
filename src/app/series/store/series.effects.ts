@@ -14,20 +14,12 @@ import { AppState } from '../../store/app.reducer'
 import { SeriesModel } from '../series.model'
 import { APIService } from 'src/app/shared/services/api.service'
 import { ACTION_TAGS } from 'src/app/constants'
+import { UIService } from 'src/app/shared/store/ui/ui.service'
 
 @Injectable()
 export class SeriesEffects {
-    showSpinner$ = createEffect(() =>
-        this.action$.pipe(
-            ofType(fromSeriesActions.fetchStart, fromSeriesActions.fetchNextPage),
-            switchMap(() => {
-                return of(fromUIActions.showSpinner(this.TAG)())
-            })
-        )
-    )
-
     fetchStart$ = createEffect(() =>
-        this.action$.pipe(
+        this.actions$.pipe(
             ofType(fromSeriesActions.fetchStart),
             withLatestFrom(this.store.pipe(select(fromRoot.selectSeriesTotal)), this.store.select('series')),
             switchMap(([__, count, { pagination }]) => {
@@ -40,7 +32,7 @@ export class SeriesEffects {
     )
 
     fetchNextPage$ = createEffect(() =>
-        this.action$.pipe(
+        this.actions$.pipe(
             ofType(fromSeriesActions.fetchNextPage),
             withLatestFrom(this.store.select('series')),
             switchMap(([__, { pagination }]) => {
@@ -53,22 +45,25 @@ export class SeriesEffects {
         )
     )
 
-    hideSpinner$ = createEffect(() =>
-        this.action$.pipe(
-            ofType(
-                fromSeriesActions.fetchSuccess,
-                fromSeriesActions.fetchedFromStore,
-                fromSeriesActions.noMoreToFetch,
-                fromUIActions.setError(this.TAG)
-            ),
-            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
-        )
-    )
-
     private readonly TAG = ACTION_TAGS.series
     private readonly URL = 'series'
 
-    constructor(private api: APIService, private action$: Actions, private store: Store<AppState>) {}
+    constructor(
+        private api: APIService,
+        private actions$: Actions,
+        private store: Store<AppState>,
+        private uiService: UIService
+    ) {}
+
+    showSpinner$ = this.uiService.showSpinnerEffect(
+        [fromSeriesActions.fetchStart, fromSeriesActions.fetchNextPage],
+        this.TAG
+    )
+
+    hideSpinner$ = this.uiService.hideSpinnerEffect(
+        [fromSeriesActions.fetchSuccess, fromSeriesActions.fetchedFromStore, fromSeriesActions.noMoreToFetch],
+        this.TAG
+    )
 
     /*
      * fetch Series from server
@@ -89,13 +84,7 @@ export class SeriesEffects {
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
-            catchError(err =>
-                of(
-                    fromUIActions.setError(this.TAG)({
-                        payload: err,
-                    })
-                )
-            )
+            catchError(err => of(this.uiService.setError(err, this.TAG)))
         )
     }
 }

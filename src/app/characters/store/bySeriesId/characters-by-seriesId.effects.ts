@@ -14,18 +14,10 @@ import { AppState } from '../../../store/app.reducer'
 import { CharacterModel } from '../../character.model'
 import { APIService } from 'src/app/shared/services/api.service'
 import { ACTION_TAGS } from 'src/app/constants'
+import { UIService } from 'src/app/shared/store/ui/ui.service'
 
 @Injectable()
 export class CharactersBySeriesIdEffects {
-    showSpinner$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(fromCharactersBySeriesIdActions.fetchStart, fromCharactersBySeriesIdActions.fetchNextPage),
-            switchMap(() => {
-                return of(fromUIActions.showSpinner(this.TAG)())
-            })
-        )
-    )
-
     /*
      * This effect is fired when FETCH_CHARACTERS_BY_SERIES_ID_START action is fired
      */
@@ -66,22 +58,29 @@ export class CharactersBySeriesIdEffects {
         )
     )
 
-    hideSpinner$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(
-                fromCharactersBySeriesIdActions.fetchSuccess,
-                fromCharactersBySeriesIdActions.fetchedFromStore,
-                fromCharactersBySeriesIdActions.noMoreToFetch,
-                fromUIActions.setError(this.TAG)
-            ),
-            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
-        )
-    )
-
     private readonly TAG = ACTION_TAGS.charactersBySeriesId
     private URL = (id: number) => `series/${id}/characters`
 
-    constructor(private api: APIService, private actions$: Actions, private store: Store<AppState>) {}
+    constructor(
+        private api: APIService,
+        private actions$: Actions,
+        private store: Store<AppState>,
+        private uiService: UIService
+    ) {}
+
+    showSpinner$ = this.uiService.showSpinnerEffect(
+        [fromCharactersBySeriesIdActions.fetchStart, fromCharactersBySeriesIdActions.fetchNextPage],
+        this.TAG
+    )
+
+    hideSpinner$ = this.uiService.hideSpinnerEffect(
+        [
+            fromCharactersBySeriesIdActions.fetchSuccess,
+            fromCharactersBySeriesIdActions.fetchedFromStore,
+            fromCharactersBySeriesIdActions.noMoreToFetch,
+        ],
+        this.TAG
+    )
 
     /*
      * fetch comics from server
@@ -103,13 +102,7 @@ export class CharactersBySeriesIdEffects {
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
-            catchError(err =>
-                of(
-                    fromUIActions.setError(this.TAG)({
-                        payload: err,
-                    })
-                )
-            )
+            catchError(err => of(this.uiService.setError(err, this.TAG)))
         )
     }
 }

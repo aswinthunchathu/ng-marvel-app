@@ -12,20 +12,13 @@ import { Character } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { CharacterModel } from '../character.model'
-import { APIService } from 'src/app/shared/services/api.service'
-import { ACTION_TAGS } from 'src/app/constants'
+import { APIService } from '../../shared/services/api.service'
+import { ACTION_TAGS } from '../../constants'
+import { TypedAction, ActionCreator } from '@ngrx/store/src/models'
+import { UIService } from '../../shared/store/ui/ui.service'
 
 @Injectable()
 export class CharactersEffects {
-    showSpinner$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(fromCharactersActions.fetchStart, fromCharactersActions.fetchNextPage),
-            switchMap(() => {
-                return of(fromUIActions.showSpinner(this.TAG)())
-            })
-        )
-    )
-
     /*
      * This effect is fired when FETCH_CHARACTERS_INIT action is fired
      */
@@ -62,22 +55,29 @@ export class CharactersEffects {
         )
     )
 
-    hideSpinner$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(
-                fromCharactersActions.fetchSuccess,
-                fromCharactersActions.fetchedFromStore,
-                fromCharactersActions.noMoreToFetch,
-                fromUIActions.setError(this.TAG)
-            ),
-            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
-        )
-    )
-
     private readonly TAG = ACTION_TAGS.characters
     private readonly URL = 'characters'
 
-    constructor(private api: APIService, private actions$: Actions, private store: Store<AppState>) {}
+    constructor(
+        private api: APIService,
+        private actions$: Actions,
+        private store: Store<AppState>,
+        private uiService: UIService
+    ) {}
+
+    showSpinner$ = this.uiService.showSpinnerEffect(
+        [fromCharactersActions.fetchStart, fromCharactersActions.fetchNextPage],
+        this.TAG
+    )
+
+    hideSpinner$ = this.uiService.hideSpinnerEffect(
+        [
+            fromCharactersActions.fetchSuccess,
+            fromCharactersActions.fetchedFromStore,
+            fromCharactersActions.noMoreToFetch,
+        ],
+        this.TAG
+    )
 
     /*
      * fetch characters from server
@@ -98,12 +98,6 @@ export class CharactersEffects {
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
-            catchError(err =>
-                of(
-                    fromUIActions.setError(this.TAG)({
-                        payload: err,
-                    })
-                )
-            )
+            catchError(err => of(this.uiService.setError(err, this.TAG)))
         )
 }

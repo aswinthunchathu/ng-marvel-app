@@ -12,18 +12,10 @@ import { Comic } from 'src/app/shared/model/shared.interface'
 import { ComicModel } from '../../comic.model'
 import { APIService } from 'src/app/shared/services/api.service'
 import { ACTION_TAGS } from 'src/app/constants'
+import { UIService } from 'src/app/shared/store/ui/ui.service'
 
 @Injectable()
 export class ComicEffects {
-    showSpinner$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(fromComicActions.fetchStart),
-            switchMap(() => {
-                return of(fromUIActions.showSpinner(this.TAG)())
-            })
-        )
-    )
-
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromComicActions.fetchStart),
@@ -44,18 +36,19 @@ export class ComicEffects {
         )
     )
 
-    hideSpinner$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(this.TAG)),
-            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
-        )
-    )
-
     private readonly TAG = ACTION_TAGS.comic
     private URL = action => `comics/${action.payload}`
 
-    constructor(private api: APIService, private actions$: Actions, private store: Store<AppState>) {}
+    constructor(
+        private api: APIService,
+        private actions$: Actions,
+        private store: Store<AppState>,
+        private uiService: UIService
+    ) {}
 
+    showSpinner$ = this.uiService.showSpinnerEffect([fromComicActions.fetchStart], this.TAG)
+
+    hideSpinner$ = this.uiService.hideSpinnerEffect([fromComicActions.fetchSuccess], this.TAG)
     /*
      * fetch comic from server
      * @params action: action
@@ -69,13 +62,7 @@ export class ComicEffects {
                     payload: new ComicModel(res.id, res.title, res.description, res.thumbnail),
                 })
             ),
-            catchError(err =>
-                of(
-                    fromUIActions.setError(this.TAG)({
-                        payload: err,
-                    })
-                )
-            )
+            catchError(err => of(this.uiService.setError(err, this.TAG)))
         )
     }
 }

@@ -14,22 +14,15 @@ import { AppState } from '../../../store/app.reducer'
 import { ComicModel } from '../../comic.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS } from 'src/app/constants'
+import { UIService } from 'src/app/shared/store/ui/ui.service'
 
 @Injectable()
 export class ComicsByCharacterIdEffects {
-    showSpinner$ = createEffect(() =>
-        this.action$.pipe(
-            ofType(fromComicsByCharacterIDActions.fetchStart, fromComicsByCharacterIDActions.fetchNextPage),
-            switchMap(() => {
-                return of(fromUIActions.showSpinner(this.TAG)())
-            })
-        )
-    )
     /*
      * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_START action is fired
      */
     fetchStart$ = createEffect(() =>
-        this.action$.pipe(
+        this.actions$.pipe(
             ofType(fromComicsByCharacterIDActions.fetchStart),
             withLatestFrom(
                 this.store.pipe(select(fromRoot.selectComicsByCharacterIdTotal)),
@@ -49,7 +42,7 @@ export class ComicsByCharacterIdEffects {
      * This effect is fired when FETCH_COMICS_BY_CHARACTER_ID_NEXT_PAGE action is fired
      */
     fetchNextPage$ = createEffect(() =>
-        this.action$.pipe(
+        this.actions$.pipe(
             ofType(fromComicsByCharacterIDActions.fetchNextPage),
             withLatestFrom(
                 this.store.pipe(select(fromRoot.selectFilterIdForComicsByCharacterId)),
@@ -65,22 +58,29 @@ export class ComicsByCharacterIdEffects {
         )
     )
 
-    hideSpinner$ = createEffect(() =>
-        this.action$.pipe(
-            ofType(
-                fromComicsByCharacterIDActions.fetchSuccess,
-                fromComicsByCharacterIDActions.fetchedFromStore,
-                fromComicsByCharacterIDActions.noMoreToFetch,
-                fromUIActions.setError(this.TAG)
-            ),
-            switchMap(() => of(fromUIActions.hideSpinner(this.TAG)()))
-        )
-    )
-
     private readonly TAG = ACTION_TAGS.comicsByCharacterId
     private URL = (action, key = 'payload') => `characters/${action[key]}/comics`
 
-    constructor(private api: APIService, private action$: Actions, private store: Store<AppState>) {}
+    constructor(
+        private api: APIService,
+        private actions$: Actions,
+        private store: Store<AppState>,
+        private uiService: UIService
+    ) {}
+
+    showSpinner$ = this.uiService.showSpinnerEffect(
+        [fromComicsByCharacterIDActions.fetchStart, fromComicsByCharacterIDActions.fetchNextPage],
+        this.TAG
+    )
+
+    hideSpinner$ = this.uiService.hideSpinnerEffect(
+        [
+            fromComicsByCharacterIDActions.fetchSuccess,
+            fromComicsByCharacterIDActions.fetchedFromStore,
+            fromComicsByCharacterIDActions.noMoreToFetch,
+        ],
+        this.TAG
+    )
 
     /*
      * fetch comics from server
@@ -102,13 +102,7 @@ export class ComicsByCharacterIdEffects {
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),
-            catchError(err =>
-                of(
-                    fromUIActions.setError(this.TAG)({
-                        payload: err,
-                    })
-                )
-            )
+            catchError(err => of(this.uiService.setError(err, this.TAG)))
         )
     }
 }
