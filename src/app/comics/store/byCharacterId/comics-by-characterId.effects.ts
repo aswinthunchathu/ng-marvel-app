@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams } from '@angular/common/http'
 import { map, switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
-import { Actions, Effect, ofType, createEffect } from '@ngrx/effects'
+import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
@@ -9,7 +8,7 @@ import * as fromUIActions from '../../../shared/store/ui/ui.actions'
 import * as fromPaginationActions from '../../../shared/store/pagination/pagination.action'
 import * as fromComicsByCharacterIDActions from './comics-by-characterId.actions'
 import * as fromRoot from '../../../store/app.reducer'
-import { APIResponse, Comic } from '../../../shared/model/shared.interface'
+import { Comic } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
 import { ComicModel } from '../../comic.model'
@@ -98,7 +97,7 @@ export class ComicsByCharacterIdEffects {
                         item => new ComicModel(item.id, item.title, item.description, item.thumbnail)
                     ),
                 }),
-                fromPaginationActions.setPagination(ACTION_TAGS.charactersByComicId)({
+                fromPaginationActions.setPagination(ACTION_TAGS.comicsByCharacterId)({
                     payload: new Pagination(res.offset, res.limit, res.total, res.count),
                 }),
             ]),

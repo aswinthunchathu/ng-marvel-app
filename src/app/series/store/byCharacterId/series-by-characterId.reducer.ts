@@ -1,70 +1,40 @@
-import { HttpErrorResponse } from '@angular/common/http'
-
-import * as fromSeriesByCharacterIdActions from './series-by-characterId.actions'
-import { PAGE_LIMIT } from '../../../constants'
-import { Pagination } from '../../../shared/model/pagination.model'
-import { SeriesModel } from '../../series.model'
+import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 import { createReducer, on, Action } from '@ngrx/store'
 
-export interface State {
-    fetching: boolean
-    data: SeriesModel[]
-    pagination: Pagination
-    error: HttpErrorResponse
+import * as fromSeriesByCharacterIdActions from './series-by-characterId.actions'
+import { SeriesModel } from '../../series.model'
+
+export interface State extends EntityState<SeriesModel> {
     filterId: number
-    previousFilterId: number
 }
 
-const initialState: State = {
-    fetching: false,
-    pagination: new Pagination(-1, PAGE_LIMIT, 0, 0),
-    data: [],
-    error: null,
+export const adapter: EntityAdapter<SeriesModel> = createEntityAdapter<SeriesModel>()
+
+const initialState = adapter.getInitialState({
     filterId: null,
-    previousFilterId: null,
-}
+})
 
-const seriesByCharacterIdReducer = createReducer<State>(
+const generateReducer = createReducer<State>(
     initialState,
     on(fromSeriesByCharacterIdActions.fetchStart, (state, action) => {
         if (state.filterId === action.payload) {
             return {
                 ...state,
-                fetching: true,
-                error: null,
             }
         } else {
             return {
                 ...state,
                 ...initialState,
-                fetching: true,
                 filterId: action.payload,
             }
         }
     }),
-    on(fromSeriesByCharacterIdActions.fetchNextPage, state => ({
-        ...state,
-        fetching: true,
-        error: null,
-    })),
-    on(fromSeriesByCharacterIdActions.fetchSuccess, (state, action) => ({
-        ...state,
-        fetching: false,
-        error: null,
-        pagination: action.pagination,
-        data: [...state.data, ...action.payload],
-    })),
-    on(fromSeriesByCharacterIdActions.fetchError, (state, action) => ({
-        ...state,
-        fetching: false,
-        error: action.payload,
-    })),
-    on(fromSeriesByCharacterIdActions.fetchedFromStore, fromSeriesByCharacterIdActions.noMoreToFetch, state => ({
-        ...state,
-        fetching: false,
-    }))
+    on(fromSeriesByCharacterIdActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
 )
 
 export function reducer(state: State | undefined, action: Action) {
-    return seriesByCharacterIdReducer(state, action)
+    return generateReducer(state, action)
 }
+
+export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal

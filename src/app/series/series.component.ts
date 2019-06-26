@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
-import { tap, map, switchMap } from 'rxjs/operators'
+import { switchMap } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
 import * as fromRoot from '../store/app.reducer'
@@ -18,11 +18,11 @@ const keyMap = {
         state: 'series',
         list: fromRoot.selectAllComics,
     },
-    // [FILTER_TYPE.character]: {
-    //     action: fromSeriesByCharacterIdActions,
-    //     state: 'comicByCharacterId',
-    //     list: fromRoot.selectAllComicsByCharacterId,
-    // }
+    [FILTER_TYPE.character]: {
+        action: fromSeriesByCharacterIdActions,
+        state: 'seriesByCharacterId',
+        list: fromRoot.selectAllSeriesByCharacterId,
+    },
 }
 
 @Component({
