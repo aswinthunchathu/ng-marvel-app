@@ -8,7 +8,7 @@ import * as fromCharacterActions from './store/character.actions'
 import { BgService } from '../../shared/services/bg.service'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
 import { FILTER_TYPE } from '../../constants'
-import { Filter } from '../../comics/comics.component'
+import { Filter } from 'src/app/shared/model/shared.interface'
 
 @Component({
     selector: 'app-character-details',

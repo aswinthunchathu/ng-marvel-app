@@ -6,8 +6,8 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { AppState } from 'src/app/store/app.reducer'
 import * as fromComicActions from './store/comic.actions'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
-import { Filter } from '../../characters/characters.component'
 import { FILTER_TYPE } from '../../constants'
+import { Filter } from 'src/app/shared/model/shared.interface'
 
 @Component({
     selector: 'app-comic-details',

@@ -11,11 +11,7 @@ import { Style } from '../shared/components/list/list.component'
 import { ComicModel } from './comic.model'
 import { FILTER_TYPE } from '../constants'
 import { switchMap } from 'rxjs/operators'
-
-export interface Filter {
-    type: FILTER_TYPE.character | FILTER_TYPE.series
-    id: number
-}
+import { Filter } from '../shared/model/shared.interface'
 
 const keyMap = {
     [FILTER_TYPE.none]: {

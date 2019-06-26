@@ -47,6 +47,6 @@ export interface APIResponse<T> {
 }
 
 export interface Filter {
-    type: FILTER_TYPE.comics | FILTER_TYPE.series | FILTER_TYPE.character
+    type: FILTER_TYPE
     id: number
 }
