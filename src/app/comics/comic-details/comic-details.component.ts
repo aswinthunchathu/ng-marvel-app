@@ -45,18 +45,18 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
     }
 
     subscribeToStore() {
-        this.comicSub = this.store.select('comic').subscribe(res => {
-            this.loading = res.fetching
-            if (res.data) {
+        this.comicSub = this.store.select('comic').subscribe(({ ui, data: state }) => {
+            this.loading = ui.fetching
+            if (state.data) {
                 this.comic = new ListDetailsModel(
-                    res.data.title,
-                    res.data.image.portrait.actual,
-                    res.data.image.portrait.placeholder,
-                    res.data.description
+                    state.data.title,
+                    state.data.image.portrait.actual,
+                    state.data.image.portrait.placeholder,
+                    state.data.description
                 )
             }
 
-            if (res.error) {
+            if (ui.error) {
                 this.hasError = true
             }
         })
