@@ -54,7 +54,6 @@ export class ComicsComponent implements OnInit, OnDestroy {
 
     queryOnStore() {
         if (this.filter) {
-            this.gridStyle = Style.gridSpaced
             this.store.dispatch(
                 keyMap[this.filter.type].action.fetchStart({
                     payload: this.filter.id,

@@ -16,6 +16,7 @@ import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/c
 import * as fromComicsBySeriesId from '../comics/store/bySeriesId'
 import * as fromComicsBySeriesIdReducer from '../comics/store/bySeriesId/comics-by-seriesId.reducer'
 
+import * as fromSeries from '../series/store'
 import * as fromSeriesReducer from '../series/store/series.reducer'
 import * as fromSeriesDetailsReducer from '../series/series-details/store/series-details.reducer'
 import * as fromSeriesByCharacterIdReducer from '../series/store/byCharacterId/series-by-characterId.reducer'
@@ -31,7 +32,7 @@ export interface AppState {
     comicByCharacterId: fromComicsByCharacterId.State
     comicBySeriesId: fromComicsBySeriesId.State
 
-    series: fromSeriesReducer.State
+    series: fromSeries.State
     seriesDetails: fromSeriesDetailsReducer.State
     seriesByCharacterId: fromSeriesByCharacterIdReducer.State
 }
@@ -47,7 +48,7 @@ export const appReducer: ActionReducerMap<AppState> = {
     comicByCharacterId: fromComicsByCharacterId.default,
     comicBySeriesId: fromComicsBySeriesId.default,
 
-    series: fromSeriesReducer.reducer,
+    series: fromSeries.default,
     seriesDetails: fromSeriesDetailsReducer.reducer,
     seriesByCharacterId: fromSeriesByCharacterIdReducer.reducer,
 }
@@ -150,4 +151,16 @@ export const selectFilterIdForComicsBySeriesId = createSelector(
     state => {
         return state.filterId
     }
+)
+
+const series = (state: AppState) => state.series.data
+
+export const selectAllSeries = createSelector(
+    series,
+    fromSeriesReducer.selectAll
+)
+
+export const selectSeriesTotal = createSelector(
+    series,
+    fromSeriesReducer.selectTotal
 )

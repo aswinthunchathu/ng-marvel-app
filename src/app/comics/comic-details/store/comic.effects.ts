@@ -48,7 +48,7 @@ export class ComicEffects {
 
     hideSpinner$ = createEffect(() =>
         this._actions$.pipe(
-            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(ACTION_TAGS.character)),
+            ofType(fromComicActions.fetchSuccess, fromUIActions.setError(ACTION_TAGS.comic)),
             switchMap(() => of(fromUIActions.hideSpinner(ACTION_TAGS.comic)()))
         )
     )
