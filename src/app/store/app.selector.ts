@@ -1,12 +1,12 @@
 import { createSelector } from '@ngrx/store'
 
-import * as fromCharactersReducer from '../characters/store/characters.reducer'
-import * as fromCharactersByComicIdReducer from '../characters/store/byComicId/characters-by-comicId.reducer'
-import * as fromCharactersBySeriesIdReducer from '../characters/store/bySeriesId/characters-by-seriesId.reducer'
+import * as fromCharactersReducer from './characters/characters.reducer'
+import * as fromCharactersByComicIdReducer from './characters/byComicId/characters-by-comicId.reducer'
+import * as fromCharactersBySeriesIdReducer from './characters/bySeriesId/characters-by-seriesId.reducer'
 
-import * as fromComicsReducer from '../comics/store/comics.reducer'
-import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
-import * as fromComicsBySeriesIdReducer from '../comics/store/bySeriesId/comics-by-seriesId.reducer'
+import * as fromComicsReducer from './comics/comics.reducer'
+import * as fromComicsByCharacterIdReducer from './comics/byCharacterId/comics-by-characterId.reducer'
+import * as fromComicsBySeriesIdReducer from './comics/bySeriesId/comics-by-seriesId.reducer'
 import * as fromSeriesReducer from './series/series.reducer'
 import * as fromSeriesByCharacterIdReducer from './series/byCharacterId/series-by-characterId.reducer'
 import { AppState } from './app.reducer'
