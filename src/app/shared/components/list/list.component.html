@@ -6,7 +6,7 @@
         [infiniteScrollDistance]="2"
         [infiniteScrollThrottle]="50"
         [infiniteScrollDisabled]="!hasMore"
-        (scrolled)="onScroll()"
+        (scrolled)="onScrolling()"
     >
         <ng-container *ngTemplateOutlet="list"></ng-container>
     </div>

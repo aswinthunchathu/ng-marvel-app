@@ -1,5 +1,3 @@
-import { FILTER_TYPE } from 'src/app/constants'
-
 export interface Image {
     path: string
     extension: string
@@ -44,9 +42,4 @@ export interface APIResponse<T> {
         count: number
         results: T[]
     }
-}
-
-export interface Filter {
-    type: FILTER_TYPE
-    id: number
 }

@@ -1,8 +1,8 @@
 import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromPaginationActions from './pagination.action'
-import { Pagination } from 'src/app/shared/model/pagination.model'
-import { PAGE_LIMIT } from 'src/app/constants'
+import { Pagination } from '../../../model/pagination.model'
+import { PAGE_LIMIT } from '../../../constants'
 
 export interface State {
     data: Pagination

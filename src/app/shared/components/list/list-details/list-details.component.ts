@@ -8,7 +8,7 @@ import { ListDetailsModel } from './list-details.model'
 })
 export class ListDetailsComponent implements OnInit, OnDestroy {
     @Input() item: ListDetailsModel
-    @Input() withBgImage: boolean = false
+    @Input() withBgImage = false
     @Input() loading: boolean
     @Input() hasError: boolean
 

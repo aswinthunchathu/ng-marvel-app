@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core'
     styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
-    toggleMenu: boolean = false
+    toggleMenu = false
     constructor() {}
 
     ngOnInit() {}
