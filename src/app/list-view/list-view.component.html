@@ -1,3 +1,5 @@
+<app-no-data *ngIf="!loading && collection.length === 0">No data available.</app-no-data>
+
 <app-error-handler [hasError]="hasError">
     <app-list
         [isInfiniteScroll]="true"

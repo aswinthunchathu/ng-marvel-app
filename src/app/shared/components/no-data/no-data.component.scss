@@ -1,0 +1,7 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.no-data {
+    color: $white;
+    @include rem-fallback(font-size, 30px);
+}

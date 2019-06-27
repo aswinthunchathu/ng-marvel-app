@@ -21,11 +21,6 @@ export enum COMPONENT_TYPE {
     characters = 'characters',
 }
 
-export interface Filter {
-    type: FILTER_TYPE
-    id: number
-}
-
 const charactersComponentMap = {
     [FILTER_TYPE.none]: {
         action: fromCharactersAction,

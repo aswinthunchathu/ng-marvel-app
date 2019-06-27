@@ -9,10 +9,8 @@ import { HeaderComponent } from './header/header.component'
 import { AppStoreModule } from './store/app-store.module'
 import { SharedModule } from './shared/shared.module'
 import { AppRoutingModule } from './app-routing.module'
-import { CharacterDetailsComponent } from './characters/character-details/character-details.component'
-import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
-import { SeriesDetailsComponent } from './series/series-details/series-details.component'
 import { ListViewComponent } from './list-view/list-view.component'
+import { DetailsComponent } from './list-view/details/details.component'
 
 @NgModule({
     declarations: [
@@ -20,10 +18,8 @@ import { ListViewComponent } from './list-view/list-view.component'
         NavLinkComponent,
         SidebarComponent,
         HeaderComponent,
-        CharacterDetailsComponent,
-        ComicDetailsComponent,
-        SeriesDetailsComponent,
         ListViewComponent,
+        DetailsComponent,
     ],
     imports: [BrowserAnimationsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],

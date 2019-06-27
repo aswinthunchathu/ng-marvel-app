@@ -11,6 +11,7 @@ import { ListDetailsComponent } from './components/list/list-details/list-detail
 import { ErrorHandlerComponent } from './components/error-handler/error-handler.component'
 import { MaterialComponentsModule } from './material-components.module'
 import { ApiInterceptor } from './services/api.service'
+import { NoDataComponent } from './components/no-data/no-data.component'
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { ApiInterceptor } from './services/api.service'
         ListComponent,
         ListDetailsComponent,
         ErrorHandlerComponent,
+        NoDataComponent,
     ],
     imports: [CommonModule, HttpClientModule, InfiniteScrollModule, MaterialComponentsModule],
     exports: [
@@ -31,6 +33,7 @@ import { ApiInterceptor } from './services/api.service'
         ListComponent,
         ListDetailsComponent,
         ErrorHandlerComponent,
+        NoDataComponent,
     ],
     providers: [
         {

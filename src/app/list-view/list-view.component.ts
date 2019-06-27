@@ -11,6 +11,7 @@ import { SeriesModel } from '../series/series.model'
 import { CharacterModel } from '../characters/character.model'
 import * as fromMapping from './map'
 import { ActivatedRoute } from '@angular/router'
+import { Filter } from './list-view.interface'
 
 @Component({
     selector: 'app-list-view',
@@ -29,19 +30,19 @@ export class ListViewComponent implements OnInit, OnDestroy {
     isFloatingLabel = false
     imageType = ImageType.portrait
     @Input() type: fromMapping.COMPONENT_TYPE
-    @Input() filter: fromMapping.Filter
+    @Input() filter: Filter
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
     ngOnInit() {
         if (!!this.type) {
-            // this.queryOnStore()
+            this.queryOnStore()
             this.subscribeToStore()
         } else {
             this.routeSubscription = this.route.data.subscribe(({ type }) => {
                 if (type) {
                     this.type = type
-                    // this.queryOnStore()
+                    this.queryOnStore()
                     this.subscribeToStore()
                 }
             })
