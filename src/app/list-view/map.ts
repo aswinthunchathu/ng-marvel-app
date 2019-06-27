@@ -8,11 +8,6 @@ import * as fromComicsBySeriesIdAction from '../comics/store/bySeriesId/comics-b
 import * as fromSeriesActions from '../series/store/series.actions'
 import * as fromSeriesByCharacterIdActions from '../series/store/byCharacterId/series-by-characterId.actions'
 
-export interface Filter {
-    type: FILTER_TYPE
-    id: number
-}
-
 export enum FILTER_TYPE {
     none = 'none',
     comic = 'comic',
@@ -24,6 +19,11 @@ export enum COMPONENT_TYPE {
     comics = 'comics',
     series = 'series',
     characters = 'characters',
+}
+
+export interface Filter {
+    type: FILTER_TYPE
+    id: number
 }
 
 const charactersComponentMap = {
@@ -80,3 +80,5 @@ export const componentSettings = {
     [COMPONENT_TYPE.comics]: comicsComponentMap,
     [COMPONENT_TYPE.series]: seriesComponentMap,
 }
+
+export const getSettings = (type: COMPONENT_TYPE, filter: FILTER_TYPE) => componentSettings[type][filter]

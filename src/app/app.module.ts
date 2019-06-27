@@ -9,12 +9,9 @@ import { HeaderComponent } from './header/header.component'
 import { AppStoreModule } from './store/app-store.module'
 import { SharedModule } from './shared/shared.module'
 import { AppRoutingModule } from './app-routing.module'
-import { CharactersComponent } from './characters/characters.component'
 import { CharacterDetailsComponent } from './characters/character-details/character-details.component'
-import { ComicsComponent } from './comics/comics.component'
 import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
-import { SeriesComponent } from './series/series.component'
-import { SeriesDetailsComponent } from './series/series-details/series-details.component';
+import { SeriesDetailsComponent } from './series/series-details/series-details.component'
 import { ListViewComponent } from './list-view/list-view.component'
 
 @NgModule({
@@ -23,11 +20,8 @@ import { ListViewComponent } from './list-view/list-view.component'
         NavLinkComponent,
         SidebarComponent,
         HeaderComponent,
-        CharactersComponent,
         CharacterDetailsComponent,
-        ComicsComponent,
         ComicDetailsComponent,
-        SeriesComponent,
         SeriesDetailsComponent,
         ListViewComponent,
     ],

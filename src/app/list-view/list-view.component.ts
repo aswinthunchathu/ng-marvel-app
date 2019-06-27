@@ -10,6 +10,7 @@ import { ComicModel } from '../comics/comic.model'
 import { SeriesModel } from '../series/series.model'
 import { CharacterModel } from '../characters/character.model'
 import * as fromMapping from './map'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
     selector: 'app-list-view',
@@ -18,6 +19,7 @@ import * as fromMapping from './map'
 })
 export class ListViewComponent implements OnInit, OnDestroy {
     storeSubscription: Subscription
+    routeSubscription: Subscription
     collection: CharacterModel[] | ComicModel[] | SeriesModel[]
     hasMore: boolean
     loading: boolean
@@ -29,17 +31,31 @@ export class ListViewComponent implements OnInit, OnDestroy {
     @Input() type: fromMapping.COMPONENT_TYPE
     @Input() filter: fromMapping.Filter
 
-    constructor(private store: Store<AppState>) {}
+    constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
     ngOnInit() {
-        this.queryOnStore()
-        this.subscribeToStore()
+        if (!!this.type) {
+            // this.queryOnStore()
+            this.subscribeToStore()
+        } else {
+            this.routeSubscription = this.route.data.subscribe(({ type }) => {
+                if (type) {
+                    this.type = type
+                    // this.queryOnStore()
+                    this.subscribeToStore()
+                }
+            })
+        }
+    }
+
+    get service() {
+        return fromMapping.getSettings(this.type, this.filter ? this.filter.type : fromMapping.FILTER_TYPE.none)
     }
 
     queryOnStore() {
         if (this.filter) {
             this.store.dispatch(
-                fromMapping.componentSettings[this.type][this.filter.type].action.fetchStart({
+                this.service.action.fetchStart({
                     payload: this.filter.id,
                 })
             )
@@ -51,17 +67,13 @@ export class ListViewComponent implements OnInit, OnDestroy {
                 this.imageType = ImageType.standard
             }
 
-            this.store.dispatch(
-                fromMapping.componentSettings[this.type][fromMapping.FILTER_TYPE.none].action.fetchStart()
-            )
+            this.store.dispatch(this.service.action.fetchStart())
         }
     }
 
     subscribeToStore() {
-        const type = this.filter ? this.filter.type : fromMapping.FILTER_TYPE.none
-
         this.storeSubscription = this.store
-            .select(fromMapping.componentSettings[this.type][type].state)
+            .select(this.service.state)
             .pipe(
                 switchMap(res => {
                     this.loading = res.ui.fetching
@@ -70,7 +82,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
                         this.hasMore = res.pagination.data.hasMore
                     }
 
-                    return this.store.pipe(select(fromMapping.componentSettings[this.type][type].list))
+                    return this.store.pipe(select(this.service.list))
                 })
             )
             .subscribe(res => (this.collection = res))
@@ -86,5 +98,8 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.storeSubscription.unsubscribe()
+        if (!this.type) {
+            this.routeSubscription.unsubscribe()
+        }
     }
 }
