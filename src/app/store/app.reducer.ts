@@ -6,14 +6,13 @@ import * as fromCharactersByComicId from '../characters/store/byComicId'
 import * as fromCharactersBySeriesId from '../characters/store/bySeriesId'
 
 import * as fromComics from '../comics/store'
-import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComic from '../comics/comic-details/store'
 import * as fromComicsByCharacterId from '../comics/store/byCharacterId'
 import * as fromComicsBySeriesId from '../comics/store/bySeriesId'
 
-import * as fromSeries from '../series'
-import * as fromSeriesByCharacterId from '../series/byCharacterId'
-import * as fromSeriesDetails from '../series/details/store'
+import * as fromSeries from './series'
+import * as fromSeriesByCharacterId from './series/byCharacterId'
+import * as fromSeriesDetails from './series/details'
 
 export interface AppState {
     characters: fromCharacters.State

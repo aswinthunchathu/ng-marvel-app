@@ -5,8 +5,8 @@ import * as fromCharactersBySeriesIdAction from '../characters/store/bySeriesId/
 import * as fromComicsAction from '../comics/store/comics.actions'
 import * as fromComicsByCharacterIdAction from '../comics/store/byCharacterId/comics-by-characterId.actions'
 import * as fromComicsBySeriesIdAction from '../comics/store/bySeriesId/comics-by-seriesId.actions'
-import * as fromSeriesActions from '../series/series.actions'
-import * as fromSeriesByCharacterIdActions from '../series/byCharacterId/series-by-characterId.actions'
+import * as fromSeriesActions from '../store/series/series.actions'
+import * as fromSeriesByCharacterIdActions from '../store/series/byCharacterId/series-by-characterId.actions'
 
 export enum FILTER_TYPE {
     none = 'none',
