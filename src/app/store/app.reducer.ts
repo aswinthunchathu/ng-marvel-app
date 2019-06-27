@@ -13,7 +13,7 @@ import * as fromComicsBySeriesId from '../comics/store/bySeriesId'
 
 import * as fromSeries from '../series'
 import * as fromSeriesByCharacterId from '../series/byCharacterId'
-import * as fromSeriesDetails from '../series/series-details/store'
+import * as fromSeriesDetails from '../series/details/store'
 
 export interface AppState {
     characters: fromCharacters.State

@@ -1,7 +1,7 @@
 import { FILTER_TYPE } from '../map'
 import * as fromCharacterActions from '../../characters/character-details/store/character.actions'
 import * as fromComicActions from '../../comics/comic-details/store/comic.actions'
-import * as fromSeriesDetailsActions from '../../series/series-details/store/series-details.actions'
+import * as fromSeriesDetailsActions from '../../series/details/store/series-details.actions'
 
 export enum COMPONENT_TYPE {
     'characterDetails' = 'characterDetails',

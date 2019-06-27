@@ -9,7 +9,7 @@ import { CharacterEffects } from '../characters/character-details/store/characte
 import { ComicsEffects } from '../comics/store/comics.effects'
 import { ComicEffects } from '../comics/comic-details/store/comic.effects'
 import { SeriesEffects } from '../series/series.effects'
-import { SeriesDetailsEffects } from '../series/series-details/store/series-details.effects'
+import { SeriesDetailsEffects } from '../series/details/store/series-details.effects'
 import { ComicsByCharacterIdEffects } from '../comics/store/byCharacterId/comics-by-characterId.effects'
 import { ComicsBySeriesIdEffects } from '../comics/store/bySeriesId/comics-by-seriesId.effects'
 import { SeriesByCharacterIdEffects } from '../series/byCharacterId/series-by-characterId.effects'
