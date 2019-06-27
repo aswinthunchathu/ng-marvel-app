@@ -1,4 +1,4 @@
-import { Image } from '../shared/model/shared.interface'
+import { Image } from './shared.interface'
 import { ImageGenerator } from './image-generator.model'
 
 export class CharacterModel {

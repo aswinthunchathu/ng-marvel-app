@@ -10,7 +10,7 @@ import { AppState } from '../../app.reducer'
 import { SeriesModel } from '../../../model/series.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS } from '../../../constants'
-import { UIService } from '../../../shared/store/ui/ui.service'
+import { UIService } from '../../ui/ui.service'
 
 @Injectable()
 export class SeriesDetailsEffects {

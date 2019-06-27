@@ -4,7 +4,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromPaginationActions from '../../shared/store/pagination/pagination.action'
+import * as fromPaginationActions from '../pagination/pagination.action'
 import * as fromComicsActions from './comics.actions'
 import * as fromRoot from '../app.selector'
 import { Pagination } from '../../model/pagination.model'
@@ -12,7 +12,7 @@ import { AppState } from '../app.reducer'
 import { ComicModel } from '../../model/comic.model'
 import { APIService } from '../../shared/services/api.service'
 import { ACTION_TAGS } from '../../constants'
-import { UIService } from '../../shared/store/ui/ui.service'
+import { UIService } from '../ui/ui.service'
 
 @Injectable()
 export class ComicsEffects {
