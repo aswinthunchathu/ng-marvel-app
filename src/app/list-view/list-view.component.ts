@@ -36,13 +36,13 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (!!this.type) {
-            // this.queryOnStore()
+            this.queryOnStore()
             this.subscribeToStore()
         } else {
             this.routeSubscription = this.route.data.subscribe(({ type }) => {
                 if (type) {
                     this.type = type
-                    //this.queryOnStore()
+                    this.queryOnStore()
                     this.subscribeToStore()
                 }
             })
