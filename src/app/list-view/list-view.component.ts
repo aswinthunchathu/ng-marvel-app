@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
 import { Style } from '../shared/components/list/list.component'
-import { ImageType } from '../shared/model/image-generator.model'
+import { ImageType } from '../model/image-generator.model'
 import { switchMap } from 'rxjs/operators'
 import { AppState } from '../store/app.reducer'
 import { ComicModel } from '../model/comic.model'

@@ -1,5 +1,5 @@
 import { Image } from '../shared/model/shared.interface'
-import { ImageGenerator } from '../shared/model/image-generator.model'
+import { ImageGenerator } from './image-generator.model'
 
 export class SeriesModel {
     constructor(public id: number, public title: string, public description: string, public thumbnail: Image) {}
