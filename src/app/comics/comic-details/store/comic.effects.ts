@@ -4,11 +4,9 @@ import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromUIActions from '../../../shared/store/ui/ui.actions'
 import * as fromComicActions from './comic.actions'
 import * as fromRoot from '../../../store/app.reducer'
 import { AppState } from '../../../store/app.reducer'
-import { Comic } from 'src/app/shared/model/shared.interface'
 import { ComicModel } from '../../comic.model'
 import { APIService } from 'src/app/shared/services/api.service'
 import { ACTION_TAGS } from 'src/app/constants'
@@ -31,13 +29,12 @@ export class ComicEffects {
                         )
                     }
                 }
-                return this.fetchFromServer(action)
+                return this.fetchFromServer(action.payload)
             })
         )
     )
 
     private readonly TAG = ACTION_TAGS.comic
-    private URL = action => `comics/${action.payload}`
 
     constructor(
         private api: APIService,
@@ -49,14 +46,9 @@ export class ComicEffects {
     showSpinner$ = this.uiService.showSpinnerEffect([fromComicActions.fetchStart], this.TAG)
 
     hideSpinner$ = this.uiService.hideSpinnerEffect([fromComicActions.fetchSuccess], this.TAG)
-    /*
-     * fetch comic from server
-     * @params action: action
-     * return : Observable<FetchComicSuccess | FetchComicError>
-     */
-    private fetchFromServer(action) {
-        return this.api.fetchFromServer<Comic>(this.URL(action)).pipe(
-            map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
+
+    private fetchFromServer(id: number) {
+        return this.api.getComic(id).pipe(
             map(res =>
                 fromComicActions.fetchSuccess({
                     payload: new ComicModel(res.id, res.title, res.description, res.thumbnail),

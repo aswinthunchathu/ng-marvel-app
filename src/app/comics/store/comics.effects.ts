@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core'
-import { map, switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
+import { switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromUIActions from '../../shared/store/ui/ui.actions'
 import * as fromPaginationActions from '../../shared/store/pagination/pagination.action'
 import * as fromComicsActions from './comics.actions'
 import * as fromRoot from '../../store/app.reducer'
-import { Comic } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { ComicModel } from '../comic.model'
@@ -18,9 +16,6 @@ import { UIService } from 'src/app/shared/store/ui/ui.service'
 
 @Injectable()
 export class ComicsEffects {
-    /*
-     * This effect is fired when FETCH_COMICS_START action is fired
-     */
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromComicsActions.fetchStart),
@@ -34,9 +29,6 @@ export class ComicsEffects {
         )
     )
 
-    /*
-     * This effect is fired when FETCH_COMICS_NEXT_PAGE action is fired
-     */
     fetchNextPage$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromComicsActions.fetchNextPage),
@@ -52,7 +44,6 @@ export class ComicsEffects {
     )
 
     private readonly TAG = ACTION_TAGS.comics
-    private readonly URL = 'comics'
 
     constructor(
         private api: APIService,
@@ -71,15 +62,8 @@ export class ComicsEffects {
         this.TAG
     )
 
-    /*
-     * fetch comics from server
-     * @param limit: number - limit per page
-     * @param offset: number - page offset
-     * return : Observable<FetchComicsSuccess>
-     */
     private fetchFromServer(limit: number, offset: number) {
-        return this.api.fetchFromServer<Comic>(this.URL, limit, offset).pipe(
-            map(res => res.data),
+        return this.api.getComics(limit, offset).pipe(
             mergeMap(res => [
                 fromComicsActions.fetchSuccess({
                     payload: res.results.map(

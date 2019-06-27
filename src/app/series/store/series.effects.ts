@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core'
-import { map, switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
+import { switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromUIActions from '../../shared/store/ui/ui.actions'
 import * as fromPaginationActions from '../../shared/store/pagination/pagination.action'
 import * as fromRoot from '../../store/app.reducer'
 import * as fromSeriesActions from './series.actions'
-import { Series } from '../../shared/model/shared.interface'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { SeriesModel } from '../series.model'
@@ -46,7 +44,6 @@ export class SeriesEffects {
     )
 
     private readonly TAG = ACTION_TAGS.series
-    private readonly URL = 'series'
 
     constructor(
         private api: APIService,
@@ -65,15 +62,8 @@ export class SeriesEffects {
         this.TAG
     )
 
-    /*
-     * fetch Series from server
-     * @params limit: number - limit per page
-     * @params offset: number - page offset
-     * return : Observable<FetchSeriesSuccess>
-     */
     private fetchFromServer(limit: number, offset: number) {
-        return this.api.fetchFromServer<Series>(this.URL, limit, offset).pipe(
-            map(res => res.data),
+        return this.api.getSeries(limit, offset).pipe(
             mergeMap(res => [
                 fromSeriesActions.fetchSuccess({
                     payload: res.results.map(

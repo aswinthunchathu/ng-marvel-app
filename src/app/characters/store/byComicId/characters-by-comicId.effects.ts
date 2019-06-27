@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { map, switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
+import { switchMap, catchError, withLatestFrom, mergeMap } from 'rxjs/operators'
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
@@ -8,7 +8,6 @@ import * as fromUIActions from '../../../shared/store/ui/ui.actions'
 import * as fromPaginationActions from '../../../shared/store/pagination/pagination.action'
 import * as fromCharactersByComicIdActions from './characters-by-comicId.actions'
 import * as fromRoot from '../../../store/app.reducer'
-import { Character } from '../../../shared/model/shared.interface'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
 import { CharacterModel } from '../../character.model'
@@ -18,9 +17,6 @@ import { UIService } from 'src/app/shared/store/ui/ui.service'
 
 @Injectable()
 export class CharactersByComicIdEffects {
-    /*
-     * This effect is fired when FETCH_CHARACTERS_BY_COMIC_ID_START action is fired
-     */
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromCharactersByComicIdActions.fetchStart),
@@ -33,14 +29,11 @@ export class CharactersByComicIdEffects {
                 if (count > 0) {
                     return of(fromCharactersByComicIdActions.fetchedFromStore())
                 }
-                return this.fetchFromServer(this.URL(action.payload), pagination.data.limit, pagination.data.nextPage)
+                return this.fetchFromServer(action.payload, pagination.data.limit, pagination.data.nextPage)
             })
         )
     )
 
-    /*
-     * This effect is fired when FETCH_CHARACTERS_BY_COMIC_ID_NEXT_PAGE action is fired
-     */
     fetchNextPage$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromCharactersByComicIdActions.fetchNextPage),
@@ -52,14 +45,13 @@ export class CharactersByComicIdEffects {
                 if (!pagination.data.hasMore) {
                     return of(fromCharactersByComicIdActions.noMoreToFetch())
                 } else {
-                    return this.fetchFromServer(this.URL(filterId), pagination.data.limit, pagination.data.nextPage)
+                    return this.fetchFromServer(filterId, pagination.data.limit, pagination.data.nextPage)
                 }
             })
         )
     )
 
     private readonly TAG = ACTION_TAGS.charactersByComicId
-    private URL = (id: number) => `comics/${id}/characters`
 
     constructor(
         private api: APIService,
@@ -88,9 +80,8 @@ export class CharactersByComicIdEffects {
      * @params offset: number - page offset
      * return : Observable<FetchCharactersSuccess>
      */
-    private fetchFromServer(url: string, limit: number, offset: number) {
-        return this.api.fetchFromServer<Character>(url, limit, offset).pipe(
-            map(res => res.data),
+    private fetchFromServer(id: number, limit: number, offset: number) {
+        return this.api.getCharactersByComicId(id, limit, offset).pipe(
             mergeMap(res => [
                 fromCharactersByComicIdActions.fetchSuccess({
                     payload: res.results.map(

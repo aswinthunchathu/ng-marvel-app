@@ -4,11 +4,9 @@ import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromUIActions from '../../../shared/store/ui/ui.actions'
 import * as fromCharacterActions from './character.actions'
 import * as fromRoot from '../../../store/app.reducer'
 import { AppState } from '../../../store/app.reducer'
-import { Character } from '../../../shared/model/shared.interface'
 import { CharacterModel } from '../../character.model'
 import { APIService } from 'src/app/shared/services/api.service'
 import { ACTION_TAGS } from 'src/app/constants'
@@ -31,13 +29,12 @@ export class CharacterEffects {
                         )
                     }
                 }
-                return this.fetchFromServer(action)
+                return this.fetchFromServer(action.payload)
             })
         )
     )
 
     private readonly TAG = ACTION_TAGS.character
-    private URL = action => `characters/${action.payload}`
 
     constructor(
         private api: APIService,
@@ -55,9 +52,8 @@ export class CharacterEffects {
      * @params action: action
      * return : Observable<FetchCharactersSuccess | FetchCharacterError>
      */
-    private fetchFromServer(action) {
-        return this.api.fetchFromServer<Character>(this.URL(action)).pipe(
-            map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null)),
+    private fetchFromServer(id: number) {
+        return this.api.getCharacter(id).pipe(
             map(res =>
                 fromCharacterActions.fetchSuccess({
                     payload: new CharacterModel(res.id, res.name, res.description, res.thumbnail),
