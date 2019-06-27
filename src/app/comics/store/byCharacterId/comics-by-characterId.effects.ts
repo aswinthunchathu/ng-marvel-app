@@ -10,7 +10,7 @@ import * as fromComicsByCharacterIDActions from './comics-by-characterId.actions
 import * as fromRoot from '../../../store/app.selector'
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
-import { ComicModel } from '../../comic.model'
+import { ComicModel } from '../../../model/comic.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS } from 'src/app/constants'
 import { UIService } from 'src/app/shared/store/ui/ui.service'

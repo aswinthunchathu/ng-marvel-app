@@ -1,7 +1,7 @@
 import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromComicsByCharacterIdActions from './comics-by-characterId.actions'
-import { ComicModel } from '../../comic.model'
+import { ComicModel } from '../../../model/comic.model'
 
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 

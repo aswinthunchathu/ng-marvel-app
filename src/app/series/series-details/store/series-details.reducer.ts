@@ -1,7 +1,7 @@
 import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromSeriesDetailsActions from './series-details.actions'
-import { SeriesModel } from '../../series.model'
+import { SeriesModel } from '../../../model/series.model'
 
 export interface State {
     data: SeriesModel

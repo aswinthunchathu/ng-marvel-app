@@ -4,4 +4,6 @@
 .no-data {
     color: $white;
     @include rem-fallback(font-size, 30px);
+    text-align: center;
+    @include rem-fallback(padding, 15px);
 }

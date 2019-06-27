@@ -6,9 +6,9 @@ import { Style } from '../shared/components/list/list.component'
 import { ImageType } from '../shared/model/image-generator.model'
 import { switchMap } from 'rxjs/operators'
 import { AppState } from '../store/app.reducer'
-import { ComicModel } from '../comics/comic.model'
-import { SeriesModel } from '../series/series.model'
-import { CharacterModel } from '../characters/character.model'
+import { ComicModel } from '../model/comic.model'
+import { SeriesModel } from '../model/series.model'
+import { CharacterModel } from '../model/character.model'
 import * as fromMapping from './map'
 import { ActivatedRoute } from '@angular/router'
 import { Filter } from './list-view.interface'
@@ -36,13 +36,13 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (!!this.type) {
-            this.queryOnStore()
+            // this.queryOnStore()
             this.subscribeToStore()
         } else {
             this.routeSubscription = this.route.data.subscribe(({ type }) => {
                 if (type) {
                     this.type = type
-                    this.queryOnStore()
+                    //this.queryOnStore()
                     this.subscribeToStore()
                 }
             })
