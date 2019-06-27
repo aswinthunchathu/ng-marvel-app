@@ -7,8 +7,8 @@ import * as fromCharactersBySeriesIdReducer from '../characters/store/bySeriesId
 import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
 import * as fromComicsBySeriesIdReducer from '../comics/store/bySeriesId/comics-by-seriesId.reducer'
-import * as fromSeriesReducer from '../series/store/series.reducer'
-import * as fromSeriesByCharacterIdReducer from '../series/store/byCharacterId/series-by-characterId.reducer'
+import * as fromSeriesReducer from '../series/series.reducer'
+import * as fromSeriesByCharacterIdReducer from '../series/byCharacterId/series-by-characterId.reducer'
 import { AppState } from './app.reducer'
 
 const characters = (state: AppState) => state.characters.data
