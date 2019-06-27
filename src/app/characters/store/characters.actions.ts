@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store'
 
 import { CharacterModel } from '../../model/character.model'
-import { ACTION_TAGS } from 'src/app/constants'
+import { ACTION_TAGS } from '../../constants'
 
 const TAG = ACTION_TAGS.characters
 

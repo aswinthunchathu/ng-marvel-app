@@ -11,9 +11,9 @@ import * as fromSeriesByCharacterIDActions from './series-by-characterId.actions
 import { Pagination } from '../../../shared/model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
 import { SeriesModel } from '../../../model/series.model'
-import { APIService } from 'src/app/shared/services/api.service'
-import { ACTION_TAGS } from 'src/app/constants'
-import { UIService } from 'src/app/shared/store/ui/ui.service'
+import { APIService } from '../../../shared/services/api.service'
+import { ACTION_TAGS } from '../../../constants'
+import { UIService } from '../../../shared/store/ui/ui.service'
 
 @Injectable()
 export class SeriesByCharacterIdEffects {

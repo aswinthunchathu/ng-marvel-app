@@ -4,13 +4,14 @@ import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { APIResponse, Character, Series } from '../model/shared.interface'
-import { Comic } from 'src/app/shared/model/shared.interface'
+import { Comic } from '../../shared/model/shared.interface'
+import { environment } from 'src/environments/environment'
 
 export class ApiInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const modifiedRequest = req.clone({
             url: `https://gateway.marvel.com/v1/public/${req.url}`,
-            params: req.params.append('apikey', '1fa11c1e05a4b35c680736954ab33b15'),
+            params: req.params.append('apikey', environment.apiKey),
         })
         return next.handle(modifiedRequest)
     }

@@ -6,7 +6,7 @@ import { of } from 'rxjs'
 import { Injectable } from '@angular/core'
 
 import * as fromUIActions from './ui.actions'
-import { ACTION_TAGS } from 'src/app/constants'
+import { ACTION_TAGS } from '../../../constants'
 import { HttpErrorResponse } from '@angular/common/http'
 
 @Injectable({

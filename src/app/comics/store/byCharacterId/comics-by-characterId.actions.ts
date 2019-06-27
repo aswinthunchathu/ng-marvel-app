@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store'
 import { ComicModel } from '../../../model/comic.model'
-import { ACTION_TAGS } from 'src/app/constants'
+import { ACTION_TAGS } from '../../../constants'
 
 const TAG = ACTION_TAGS.comicsByCharacterId
 
