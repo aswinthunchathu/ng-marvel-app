@@ -6,8 +6,7 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { AppState } from '../../store/app.reducer'
 import * as fromSeriesDetailsActions from './store/series-details.actions'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
-import { Filter } from '../../shared/model/shared.interface'
-import { FILTER_TYPE } from '../../constants'
+import { FILTER_TYPE, Filter } from 'src/app/list-view/map'
 
 @Component({
     selector: 'app-series-details',

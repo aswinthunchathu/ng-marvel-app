@@ -7,8 +7,7 @@ import { AppState } from '../../store/app.reducer'
 import * as fromCharacterActions from './store/character.actions'
 import { BgService } from '../../shared/services/bg.service'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
-import { FILTER_TYPE } from '../../constants'
-import { Filter } from 'src/app/shared/model/shared.interface'
+import { FILTER_TYPE, Filter } from 'src/app/list-view/map'
 
 @Component({
     selector: 'app-character-details',

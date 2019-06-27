@@ -6,7 +6,7 @@
         [grid-style]="gridStyle"
         (scrollEvent)="onScroll()"
     >
-        <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of characters">
+        <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of collection">
             <app-card
                 [image-src]="item.image[imageType].actual"
                 [placeholder-image-src]="item.image[imageType].placeholder"

@@ -14,7 +14,8 @@ import { CharacterDetailsComponent } from './characters/character-details/charac
 import { ComicsComponent } from './comics/comics.component'
 import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
 import { SeriesComponent } from './series/series.component'
-import { SeriesDetailsComponent } from './series/series-details/series-details.component'
+import { SeriesDetailsComponent } from './series/series-details/series-details.component';
+import { ListViewComponent } from './list-view/list-view.component'
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import { SeriesDetailsComponent } from './series/series-details/series-details.c
         ComicDetailsComponent,
         SeriesComponent,
         SeriesDetailsComponent,
+        ListViewComponent,
     ],
     imports: [BrowserAnimationsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],

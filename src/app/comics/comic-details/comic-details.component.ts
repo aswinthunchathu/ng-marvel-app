@@ -6,8 +6,7 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { AppState } from '../../store/app.reducer'
 import * as fromComicActions from './store/comic.actions'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
-import { FILTER_TYPE } from '../../constants'
-import { Filter } from '../../shared/model/shared.interface'
+import { FILTER_TYPE, Filter } from 'src/app/list-view/map'
 
 @Component({
     selector: 'app-comic-details',
@@ -34,7 +33,7 @@ export class ComicDetailsComponent implements OnInit, OnDestroy {
             const key = 'id'
             const id = +params[key]
             this.filter = {
-                type: FILTER_TYPE.comics,
+                type: FILTER_TYPE.comic,
                 id,
             }
             this.store.dispatch(
