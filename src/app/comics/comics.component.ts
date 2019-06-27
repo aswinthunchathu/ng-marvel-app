@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
 import { AppState } from '../store/app.reducer'
-import * as fromRoot from '../store/app.reducer'
+import * as fromRoot from '../store/app.selector'
 import * as fromComicsAction from './store/comics.actions'
 import * as fromComicsByCharacterIdAction from './store/byCharacterId/comics-by-characterId.actions'
 import * as fromComicsBySeriesIdAction from './store/bySeriesId/comics-by-seriesId.actions'

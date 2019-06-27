@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store'
 import { switchMap } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
-import * as fromRoot from '../store/app.reducer'
+import * as fromRoot from '../store/app.selector'
 import { Style } from '../shared/components/list/list.component'
 import { SeriesModel } from './series.model'
 import * as fromSeriesActions from './store/series.actions'

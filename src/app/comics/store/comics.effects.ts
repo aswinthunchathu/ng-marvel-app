@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store'
 
 import * as fromPaginationActions from '../../shared/store/pagination/pagination.action'
 import * as fromComicsActions from './comics.actions'
-import * as fromRoot from '../../store/app.reducer'
+import * as fromRoot from '../../store/app.selector'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'
 import { ComicModel } from '../comic.model'

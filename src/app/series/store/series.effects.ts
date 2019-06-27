@@ -5,7 +5,7 @@ import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
 import * as fromPaginationActions from '../../shared/store/pagination/pagination.action'
-import * as fromRoot from '../../store/app.reducer'
+import * as fromRoot from '../../store/app.selector'
 import * as fromSeriesActions from './series.actions'
 import { Pagination } from '../../shared/model/pagination.model'
 import { AppState } from '../../store/app.reducer'

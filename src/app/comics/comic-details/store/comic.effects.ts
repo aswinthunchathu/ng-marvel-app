@@ -5,7 +5,7 @@ import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
 import * as fromComicActions from './comic.actions'
-import * as fromRoot from '../../../store/app.reducer'
+import * as fromRoot from '../../../store/app.selector'
 import { AppState } from '../../../store/app.reducer'
 import { ComicModel } from '../../comic.model'
 import { APIService } from 'src/app/shared/services/api.service'

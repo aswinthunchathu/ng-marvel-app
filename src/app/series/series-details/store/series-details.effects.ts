@@ -4,7 +4,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromRoot from '../../../store/app.reducer'
+import * as fromRoot from '../../../store/app.selector'
 import * as fromSeriesDetailsActions from './series-details.actions'
 import { AppState } from '../../../store/app.reducer'
 import { SeriesModel } from '../../series.model'

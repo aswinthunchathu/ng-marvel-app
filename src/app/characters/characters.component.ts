@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromRoot from '../store/app.reducer'
+import * as fromRoot from '../store/app.selector'
 import { CharacterModel } from './character.model'
 import { Style } from '../shared/components/list/list.component'
 import { ImageType } from '../shared/model/image-generator.model'
@@ -12,6 +12,7 @@ import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-b
 import { FILTER_TYPE } from '../constants'
 import { switchMap } from 'rxjs/operators'
 import { Filter } from '../shared/model/shared.interface'
+import { AppState } from '../store/app.reducer'
 
 const keyMap = {
     [FILTER_TYPE.none]: {
@@ -49,7 +50,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
     @Input() filter: Filter
 
-    constructor(private store: Store<fromRoot.AppState>) {}
+    constructor(private store: Store<AppState>) {}
 
     ngOnInit() {
         this.queryOnStore()
