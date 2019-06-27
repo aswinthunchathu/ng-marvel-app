@@ -1,21 +1,15 @@
 import { createAction, props } from '@ngrx/store'
-import { HttpErrorResponse } from '@angular/common/http'
 
-import { Pagination } from '../../../shared/model/pagination.model'
 import { CharacterModel } from '../../character.model'
+import { ACTION_TAGS } from 'src/app/constants'
 
-const TAG = '[CHARACTERS BY COMIC ID]'
+const TAG = ACTION_TAGS.charactersByComicId
 
 export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
 
-export const fetchNextPage = createAction(`${TAG} Fetch Next Page`, props<{ payload: number }>())
+export const fetchNextPage = createAction(`${TAG} Fetch Next Page`)
 
-export const fetchSuccess = createAction(
-    `${TAG} Fetch Success`,
-    props<{ payload: CharacterModel[]; pagination: Pagination }>()
-)
-
-export const fetchError = createAction(`${TAG} Fetch Error`, props<{ payload: HttpErrorResponse }>())
+export const fetchSuccess = createAction(`${TAG} Fetch Success`, props<{ payload: CharacterModel[] }>())
 
 export const fetchedFromStore = createAction(`${TAG} No More`)
 

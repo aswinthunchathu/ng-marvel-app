@@ -1,17 +1,28 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Subscription } from 'rxjs'
-import { Store } from '@ngrx/store'
-import { tap, map } from 'rxjs/operators'
+import { Store, select } from '@ngrx/store'
+import { switchMap } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
-import { Style } from '../UI/list/list.component'
+import * as fromRoot from '../store/app.reducer'
+import { Style } from '../shared/components/list/list.component'
 import { SeriesModel } from './series.model'
 import * as fromSeriesActions from './store/series.actions'
 import * as fromSeriesByCharacterIdActions from './store/byCharacterId/series-by-characterId.actions'
+import { FILTER_TYPE } from '../constants'
+import { Filter } from '../shared/model/shared.interface'
 
-export interface FilterType {
-    type: 'character'
-    id: number
+const keyMap = {
+    [FILTER_TYPE.none]: {
+        action: fromSeriesActions,
+        state: 'series',
+        list: fromRoot.selectAllComics,
+    },
+    [FILTER_TYPE.character]: {
+        action: fromSeriesByCharacterIdActions,
+        state: 'seriesByCharacterId',
+        list: fromRoot.selectAllSeriesByCharacterId,
+    },
 }
 
 @Component({
@@ -26,7 +37,7 @@ export class SeriesComponent implements OnInit {
     loading: boolean
     gridStyle = Style.gridSpaced
     hasError: boolean
-    @Input('filter') filter: FilterType
+    @Input('filter') filter: Filter
 
     constructor(private store: Store<AppState>) {}
 
@@ -38,44 +49,36 @@ export class SeriesComponent implements OnInit {
     queryOnStore() {
         if (this.filter) {
             this.store.dispatch(
-                fromSeriesByCharacterIdActions.fetchStart({
+                keyMap[this.filter.type].action.fetchStart({
                     payload: this.filter.id,
                 })
             )
         } else {
-            this.store.dispatch(fromSeriesActions.fetchStart())
+            this.store.dispatch(keyMap[FILTER_TYPE.none].action.fetchStart())
         }
     }
 
     subscribeToStore() {
-        let store = 'series'
+        const type = this.filter ? this.filter.type : FILTER_TYPE.none
 
-        if (this.filter) {
-            store = 'seriesByCharacterId'
-        }
+        this.storeSubscription = this.store
+            .select(keyMap[type].state)
+            .pipe(
+                switchMap(res => {
+                    this.loading = res.ui.fetching
+                    this.hasError = !!res.ui.error
+                    if (this.hasMore !== res.pagination.data.hasMore) {
+                        this.hasMore = res.pagination.data.hasMore
+                    }
 
-        this.storeSubscription = this.store.select(store).subscribe(res => {
-            this.loading = res.fetching
-            if (res.error) {
-                this.hasError = true
-            }
-            if (this.hasMore !== res.pagination.hasMore) {
-                this.hasMore = res.pagination.hasMore
-            }
-            this.seriesList = res.data
-        })
+                    return this.store.pipe(select(keyMap[type].list))
+                })
+            )
+            .subscribe(res => (this.seriesList = res))
     }
 
     onScroll() {
-        if (this.filter) {
-            this.store.dispatch(
-                fromSeriesByCharacterIdActions.fetchNextPage({
-                    payload: this.filter.id,
-                })
-            )
-        } else {
-            this.store.dispatch(fromSeriesActions.fetchNextPage())
-        }
+        this.store.dispatch(keyMap[this.filter ? this.filter.type : FILTER_TYPE.none].action.fetchNextPage())
     }
 
     ngOnDestroy() {

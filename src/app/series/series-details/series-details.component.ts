@@ -5,9 +5,9 @@ import { ActivatedRoute, Params } from '@angular/router'
 
 import { AppState } from '../../store/app.reducer'
 import * as fromSeriesDetailsActions from './store/series-details.actions'
-import { ListDetailsModel } from '../../UI/list/list-details/list-details.model'
-import { FilterType as ComicFilterType } from '../../comics/comics.component'
-import { FilterType as CharacterFilterType } from '../../characters/characters.component'
+import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
+import { Filter } from '../../shared/model/shared.interface'
+import { FILTER_TYPE } from '../../constants'
 
 @Component({
     selector: 'app-series-details',
@@ -19,7 +19,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
     private seriesSub: Subscription
     loading: boolean
     series: ListDetailsModel
-    filter: ComicFilterType | CharacterFilterType = null
+    filter: Filter = null
     hasError: boolean
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
@@ -32,10 +32,12 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
     queryOnStore() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
             const id = +params['id']
+
             this.filter = {
-                type: 'series',
+                type: FILTER_TYPE.series,
                 id,
             }
+
             this.store.dispatch(
                 fromSeriesDetailsActions.fetchStart({
                     payload: id,
@@ -45,18 +47,18 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy {
     }
 
     subscribeToStore() {
-        this.seriesSub = this.store.select('seriesDetails').subscribe(res => {
-            this.loading = res.fetching
-            if (res.data) {
+        this.seriesSub = this.store.select('seriesDetails').subscribe(({ ui, data: state }) => {
+            this.loading = ui.fetching
+            if (state.data) {
                 this.series = new ListDetailsModel(
-                    res.data.title,
-                    res.data.image,
-                    res.data.placeholder,
-                    res.data.description
+                    state.data.title,
+                    state.data.image.portrait.actual,
+                    state.data.image.portrait.placeholder,
+                    state.data.description
                 )
             }
 
-            if (res.error) {
+            if (ui.error) {
                 this.hasError = true
             }
         })
