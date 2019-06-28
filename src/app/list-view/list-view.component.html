@@ -25,5 +25,5 @@
     [total]="pagination.total"
     [current]="pagination.offset === -1 ? 0 : pagination.offset + pagination.count"
     hideAfter="5000"
-    (onHide)="showPagination = false"
+    (hideEvent)="showPagination = false"
 ></app-page-info>

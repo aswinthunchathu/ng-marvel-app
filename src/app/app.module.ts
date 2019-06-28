@@ -10,7 +10,7 @@ import { AppStoreModule } from './store/app-store.module'
 import { SharedModule } from './shared/shared.module'
 import { AppRoutingModule } from './app-routing.module'
 import { ListViewComponent } from './list-view/list-view.component'
-import { DetailsComponent } from './list-view/details/details.component';
+import { DetailsComponent } from './list-view/details/details.component'
 import { PageInfoComponent } from './list-view/page-info/page-info.component'
 
 @NgModule({

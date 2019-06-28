@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core'
 import { trigger, transition, animate, style } from '@angular/animations'
 
 @Component({
@@ -15,18 +15,18 @@ import { trigger, transition, animate, style } from '@angular/animations'
         ]),
     ],
 })
-export class PageInfoComponent implements OnInit {
+export class PageInfoComponent implements OnInit, OnDestroy {
     @Input() showCondition: boolean
     @Input() total = 0
     @Input() current = 0
     @Input() hideAfter = 5000
-    @Output() onHide: EventEmitter<void> = new EventEmitter()
+    @Output() hideEvent: EventEmitter<void> = new EventEmitter()
     private hideTimeout
 
     constructor() {}
 
     ngOnInit() {
-        this.hideTimeout = setTimeout(() => this.onHide.emit(), +this.hideAfter)
+        this.hideTimeout = setTimeout(() => this.hideEvent.emit(), +this.hideAfter)
     }
 
     ngOnDestroy() {
