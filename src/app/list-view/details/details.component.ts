@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Subscription } from 'rxjs'
-import { ActivatedRoute, Params } from '@angular/router'
+import { ActivatedRoute, Params, Router } from '@angular/router'
+import { MatTabChangeEvent } from '@angular/material'
 
 import { AppState } from '../../store/app.reducer'
 import { BgService } from '../../shared/services/bg.service'
@@ -19,6 +20,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private paramsSub: Subscription
     private dataSub: Subscription
     private storeSub: Subscription
+    private querySub: Subscription
     loading: boolean
     collection: ListDetailsModel
     bgImage = ''
@@ -27,8 +29,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
     type: COMPONENT_TYPE
     isBgImage: false
     tabs: Tab[]
+    activeTab = 0
 
-    constructor(private store: Store<AppState>, private route: ActivatedRoute, private bgService: BgService) {}
+    constructor(
+        private store: Store<AppState>,
+        private route: ActivatedRoute,
+        private bgService: BgService,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         this.dataSub = this.route.data.subscribe(({ type, isBgImage, tabs }) => {
@@ -38,6 +46,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
             this.queryOnStore()
             this.subscribeToStore()
         })
+
+        const queryParams = this.route.snapshot.queryParams
+
+        if (queryParams) {
+            const key = 'tab'
+            this.activeTab = queryParams[key]
+        }
     }
 
     get service() {
@@ -79,6 +94,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
             if (ui.error) {
                 this.hasError = true
             }
+        })
+    }
+
+    onTabChange(event: MatTabChangeEvent) {
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {
+                tab: event.index,
+            },
         })
     }
 
