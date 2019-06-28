@@ -1,4 +1,4 @@
-import { FILTER_TYPE, COMPONENT_TYPE } from './map'
+import { FILTER_TYPE, COMPONENT_TYPE } from './list-view.metadata'
 
 export interface Tab {
     title: string

@@ -19,3 +19,11 @@
         </a>
     </app-list>
 </app-error-handler>
+
+<app-page-info
+    [showCondition]="showPagination"
+    [total]="pagination.total"
+    [current]="pagination.offset === -1 ? 0 : pagination.offset + pagination.count"
+    hideAfter="5000"
+    (hideEvent)="showPagination = false"
+></app-page-info>

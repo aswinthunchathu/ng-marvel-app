@@ -9,9 +9,10 @@ import { AppState } from '../store/app.reducer'
 import { ComicModel } from '../model/comic.model'
 import { SeriesModel } from '../model/series.model'
 import { CharacterModel } from '../model/character.model'
-import * as fromMapping from './map'
+import * as fromMapping from './list-view.metadata'
 import { ActivatedRoute } from '@angular/router'
 import { Filter } from './list-view.interface'
+import { Pagination } from '../model/pagination.model'
 
 @Component({
     selector: 'app-list-view',
@@ -25,6 +26,8 @@ export class ListViewComponent implements OnInit, OnDestroy {
     hasMore: boolean
     loading: boolean
     hasError: boolean
+    pagination: Pagination
+    showPagination = false
     gridStyle = Style.gridSpaced
     isAnimated = false
     isFloatingLabel = false
@@ -78,15 +81,21 @@ export class ListViewComponent implements OnInit, OnDestroy {
             .pipe(
                 switchMap(res => {
                     this.loading = res.ui.fetching
+                    this.pagination = res.pagination.data
                     this.hasError = !!res.ui.error
-                    if (this.hasMore !== res.pagination.data.hasMore) {
-                        this.hasMore = res.pagination.data.hasMore
+                    if (this.hasMore !== this.pagination.hasMore) {
+                        this.hasMore = this.pagination.hasMore
                     }
 
                     return this.store.pipe(select(this.service.list))
                 })
             )
-            .subscribe(res => (this.collection = res))
+            .subscribe(res => {
+                this.collection = res
+                if (this.pagination && this.pagination.offset > -1) {
+                    this.showPagination = true
+                }
+            })
     }
 
     onScroll() {
