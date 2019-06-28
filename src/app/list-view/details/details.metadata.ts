@@ -1,4 +1,4 @@
-import { FILTER_TYPE } from '../map'
+import { FILTER_TYPE } from '../list-view.metadata'
 import * as fromCharacterActions from '../../store/characters/details/character.actions'
 import * as fromComicActions from '../../store/comics/details/comic.actions'
 import * as fromSeriesDetailsActions from '../../store/series/details/series-details.actions'

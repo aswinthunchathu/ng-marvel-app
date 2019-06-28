@@ -6,8 +6,8 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { AppState } from '../../store/app.reducer'
 import { BgService } from '../../shared/services/bg.service'
 import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
-import * as fromMapping from './map'
-import { COMPONENT_TYPE } from './map'
+import * as fromMapping from './details.metadata'
+import { COMPONENT_TYPE } from './details.metadata'
 import { Filter, Tab } from '../list-view.interface'
 
 @Component({

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 
-import { COMPONENT_TYPE as ListViewType } from './list-view/map'
-import { COMPONENT_TYPE as DetailViewType } from './list-view/details/map'
+import { COMPONENT_TYPE as ListViewType } from './list-view/list-view.metadata'
+import { COMPONENT_TYPE as DetailViewType } from './list-view/details/details.metadata'
 import { ListViewComponent } from './list-view/list-view.component'
 import { DetailsComponent } from './list-view/details/details.component'
 

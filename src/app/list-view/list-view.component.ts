@@ -9,7 +9,7 @@ import { AppState } from '../store/app.reducer'
 import { ComicModel } from '../model/comic.model'
 import { SeriesModel } from '../model/series.model'
 import { CharacterModel } from '../model/character.model'
-import * as fromMapping from './map'
+import * as fromMapping from './list-view.metadata'
 import { ActivatedRoute } from '@angular/router'
 import { Filter } from './list-view.interface'
 
