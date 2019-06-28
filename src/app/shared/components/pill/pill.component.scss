@@ -1,0 +1,17 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $primary-color;
+    @include rem-fallback(font-size, 25px);
+    @include rem-fallback(padding, 5px, 20px);
+    @include rem-fallback(border-radius, 30px);
+    @include rem-fallback(min-width, 250px);
+    color: $white;
+    box-shadow: 3px 4px 5px $black;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
