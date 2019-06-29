@@ -25,9 +25,7 @@ export class PageInfoComponent implements OnDestroy {
     @Input() set showCondition(val) {
         this.show = val
         if (val) {
-            console.log('registered')
             this.hideTimeout = setTimeout(() => {
-                console.log('emitted')
                 this.hideEvent.emit()
             }, +this.hideAfter)
         }
