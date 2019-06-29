@@ -7,6 +7,9 @@ import { APIResponse, Character, Series } from '../../model/shared.interface'
 import { Comic } from '../../model/shared.interface'
 import { environment } from 'src/environments/environment'
 
+/* 
+    http interceptor to add API key and other settings
+*/
 export class ApiInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const modifiedRequest = req.clone({
@@ -17,6 +20,9 @@ export class ApiInterceptor implements HttpInterceptor {
     }
 }
 
+/* 
+    All Marvel APIs goes here
+*/
 @Injectable({
     providedIn: 'root',
 })

@@ -1,3 +1,6 @@
+/*
+    This is an higher order component to handle generic error
+*/
 import { Component, OnInit, Input } from '@angular/core'
 
 @Component({

@@ -15,6 +15,9 @@ import { HttpErrorResponse } from '@angular/common/http'
 export class UIService {
     constructor(private actions$: Actions) {}
 
+    /*
+     * This function creates an effect for showing UI spinner
+     */
     public showSpinnerEffect = (
         actions: (
             | ActionCreator<string, () => TypedAction<string>>
@@ -30,6 +33,9 @@ export class UIService {
             )
         )
 
+    /*
+     * This function creates an effect for hiding UI spinner
+     */
     public hideSpinnerEffect = (
         actions: (
             | ActionCreator<string, () => TypedAction<string>>
@@ -43,6 +49,9 @@ export class UIService {
             )
         )
 
+    /*
+     * This function creates an action to store error
+     */
     public setError = (err: HttpErrorResponse, tag) =>
         fromUIActions.setError(tag)({
             payload: err,

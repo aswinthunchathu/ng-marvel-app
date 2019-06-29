@@ -17,19 +17,29 @@ import { Filter, Tab } from '../list-view.interface'
     styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
+    /* 
+        component subscriptions
+    */
     private paramsSub: Subscription
     private dataSub: Subscription
     private storeSub: Subscription
-    private querySub: Subscription
+
+    /* 
+        Input data for the component app-list-details
+    */
     loading: boolean
     collection: ListDetailsModel
     bgImage = ''
-    filter: Filter = null
     hasError: boolean
-    type: COMPONENT_TYPE
-    isBgImage: false
+
+    /* 
+        Input data for this component
+    */
     tabs: Tab[]
     activeTab = 0
+    filter: Filter = null
+    type: COMPONENT_TYPE
+    isBgImage: false
 
     constructor(
         private store: Store<AppState>,
@@ -39,6 +49,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        /* 
+            Switching this component for rendering character details 
+            or comic details or series details based on route
+        */
         this.dataSub = this.route.data.subscribe(({ type, isBgImage, tabs }) => {
             this.isBgImage = isBgImage
             this.type = type
@@ -47,6 +61,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
             this.subscribeToStore()
         })
 
+        /* 
+            Retaining selected tab after reloading
+        */
         const queryParams = this.route.snapshot.queryParams
 
         if (queryParams) {
@@ -55,10 +72,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
     }
 
+    /*
+        This getter function return an object pointing to state, filter and actions 
+        based on the 'type' for which this component is rendered
+    */
     get service() {
         return fromMapping.getSettings(this.type)
     }
 
+    /*
+        Fetching state slice from NgRx store by dispatching actions
+    */
     queryOnStore() {
         this.paramsSub = this.route.params.subscribe((params: Params) => {
             const key = 'id'
@@ -75,6 +99,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
     }
 
+    /*
+        Subscription to NgRx store
+    */
     subscribeToStore() {
         this.storeSub = this.store.select(this.service.state).subscribe(({ ui, data: state }) => {
             this.loading = ui.fetching
@@ -97,6 +124,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
     }
 
+    /*
+        Adding tab index to URL for every tab change to
+        retain selected tab after reloading
+    */
     onTabChange(event: MatTabChangeEvent) {
         this.router.navigate([], {
             relativeTo: this.route,
@@ -107,9 +138,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        /*
+            Unsubscribing the subscriptions made
+        */
         this.paramsSub.unsubscribe()
         this.storeSub.unsubscribe()
         this.dataSub.unsubscribe()
+        /*
+            Resetting Background image set to empty
+        */
         if (this.isBgImage) {
             this.bgService.setBgImage('')
         }

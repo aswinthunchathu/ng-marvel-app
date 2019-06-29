@@ -3,12 +3,18 @@ import * as fromCharacterActions from '../../store/characters/details/character.
 import * as fromComicActions from '../../store/comics/details/comic.actions'
 import * as fromSeriesDetailsActions from '../../store/series/details/series-details.actions'
 
+/* 
+    app-details component type
+*/
 export enum COMPONENT_TYPE {
     'characterDetails' = 'characterDetails',
     'comicDetails' = 'comicDetails',
     'seriesDetails' = 'seriesDetails',
 }
 
+/* 
+    app-details settings - mapping component type to corresponding settings
+*/
 export const componentSettings = {
     [COMPONENT_TYPE.characterDetails]: {
         filterKey: FILTER_TYPE.character,
