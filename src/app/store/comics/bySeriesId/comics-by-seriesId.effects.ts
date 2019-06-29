@@ -76,6 +76,7 @@ export class ComicsBySeriesIdEffects {
      * @triggering action: fetch start/fetch next page
      * @action fired: show UI spinner
      */
+    // tslint:disable-next-line: Declaration of instance field not allowed
     showSpinner$ = this.uiService.showSpinnerEffect(
         [fromComicsBySeriesIdActions.fetchStart, fromComicsBySeriesIdActions.fetchNextPage],
         this.TAG
@@ -86,6 +87,7 @@ export class ComicsBySeriesIdEffects {
      * @triggering action: fetch success / fetch from store/ no moire to fetch
      * @action fired: show UI spinner
      */
+    // tslint:disable-next-line: Declaration of instance field not allowed
     hideSpinner$ = this.uiService.hideSpinnerEffect(
         [
             fromComicsBySeriesIdActions.fetchSuccess,

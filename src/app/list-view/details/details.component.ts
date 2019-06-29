@@ -17,14 +17,14 @@ import { Filter, Tab } from '../list-view.interface'
     styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
-    /* 
+    /*
         component subscriptions
     */
     private paramsSub: Subscription
     private dataSub: Subscription
     private storeSub: Subscription
 
-    /* 
+    /*
         Input data for the component app-list-details
     */
     loading: boolean
@@ -32,7 +32,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     bgImage = ''
     hasError: boolean
 
-    /* 
+    /*
         Input data for this component
     */
     tabs: Tab[]
@@ -49,8 +49,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        /* 
-            Switching this component for rendering character details 
+        /*
+            Switching this component for rendering character details
             or comic details or series details based on route
         */
         this.dataSub = this.route.data.subscribe(({ type, isBgImage, tabs }) => {
@@ -61,9 +61,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
             this.subscribeToStore()
         })
 
-        /* 
-            Retaining selected tab after reloading
-        */
+        /*
+         * Retaining selected tab after reloading
+         */
         const queryParams = this.route.snapshot.queryParams
 
         if (queryParams) {
@@ -73,7 +73,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     /*
-        This getter function return an object pointing to state, filter and actions 
+        This getter function return an object pointing to state, filter and actions
         based on the 'type' for which this component is rendered
     */
     get service() {

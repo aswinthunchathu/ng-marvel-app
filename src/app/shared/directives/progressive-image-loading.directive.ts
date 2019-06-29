@@ -23,7 +23,7 @@ export class ProgressiveImageLoadingDirective implements OnInit {
 
     ngOnInit() {
         /*
-            If placeholder image is not provided, 
+            If placeholder image is not provided,
             default placeholder image will be used
         */
         if (this.placeholder) {

@@ -8,7 +8,7 @@ import * as fromComicsBySeriesIdAction from '../store/comics/bySeriesId/comics-b
 import * as fromSeriesActions from '../store/series/series.actions'
 import * as fromSeriesByCharacterIdActions from '../store/series/byCharacterId/series-by-characterId.actions'
 
-/* 
+/*
     Types of filter app-lits-view component accepts
 */
 export enum FILTER_TYPE {
@@ -18,7 +18,7 @@ export enum FILTER_TYPE {
     character = 'character',
 }
 
-/* 
+/*
     app-lits-view component type
 */
 export enum COMPONENT_TYPE {
@@ -27,7 +27,7 @@ export enum COMPONENT_TYPE {
     characters = 'characters',
 }
 
-/* 
+/*
     app-lits-view settings for Characters input
 */
 const charactersComponentMap = {
@@ -48,7 +48,7 @@ const charactersComponentMap = {
     },
 }
 
-/* 
+/*
     app-lits-view settings for Comics input
 */
 const comicsComponentMap = {
@@ -69,7 +69,7 @@ const comicsComponentMap = {
     },
 }
 
-/* 
+/*
     app-lits-view settings for Series input
 */
 const seriesComponentMap = {
@@ -85,7 +85,7 @@ const seriesComponentMap = {
     },
 }
 
-/* 
+/*
     app-lits-view mapping the settings to component type
 */
 export const componentSettings = {

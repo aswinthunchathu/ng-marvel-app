@@ -3,7 +3,7 @@ import * as fromCharacterActions from '../../store/characters/details/character.
 import * as fromComicActions from '../../store/comics/details/comic.actions'
 import * as fromSeriesDetailsActions from '../../store/series/details/series-details.actions'
 
-/* 
+/*
     app-details component type
 */
 export enum COMPONENT_TYPE {
@@ -12,7 +12,7 @@ export enum COMPONENT_TYPE {
     'seriesDetails' = 'seriesDetails',
 }
 
-/* 
+/*
     app-details settings - mapping component type to corresponding settings
 */
 export const componentSettings = {

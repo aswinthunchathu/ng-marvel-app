@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core'
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core'
 import { trigger, transition, animate, style } from '@angular/animations'
 
 @Component({
@@ -15,16 +15,26 @@ import { trigger, transition, animate, style } from '@angular/animations'
         ]),
     ],
 })
-export class PageInfoComponent implements OnInit, OnDestroy {
-    /* 
+export class PageInfoComponent implements OnDestroy {
+    /*
         Input for this component
     */
-    @Input() showCondition: boolean
     @Input() total = 0
     @Input() current = 0
     @Input() hideAfter = 5000
+    @Input() set showCondition(val) {
+        this.show = val
+        if (val) {
+            console.log('registered')
+            this.hideTimeout = setTimeout(() => {
+                console.log('emitted')
+                this.hideEvent.emit()
+            }, +this.hideAfter)
+        }
+    }
+    show = false
 
-    /* 
+    /*
         Event emitted after the specified time (hideAfter)
     */
     @Output() hideEvent: EventEmitter<void> = new EventEmitter()
@@ -33,15 +43,8 @@ export class PageInfoComponent implements OnInit, OnDestroy {
 
     constructor() {}
 
-    ngOnInit() {
-        /* 
-            Remove pagination after the specified time
-        */
-        this.hideTimeout = setTimeout(() => this.hideEvent.emit(), +this.hideAfter)
-    }
-
     ngOnDestroy() {
-        /* 
+        /*
             Clear timeout when component is destroyed
         */
         clearTimeout(this.hideTimeout)

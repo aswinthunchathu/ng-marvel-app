@@ -20,13 +20,13 @@ import { Pagination } from '../model/pagination.model'
     styleUrls: ['./list-view.component.scss'],
 })
 export class ListViewComponent implements OnInit, OnDestroy {
-    /* 
+    /*
         component subscriptions
     */
     storeSubscription: Subscription
     routeSubscription: Subscription
 
-    /* 
+    /*
         Input data for the component app-list
     */
     gridStyle = Style.gridSpaced
@@ -34,7 +34,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
     isFloatingLabel = false
     imageType = ImageType.portrait
 
-    /* 
+    /*
         Input data for the component app-list
     */
     collection: CharacterModel[] | ComicModel[] | SeriesModel[]
@@ -42,13 +42,13 @@ export class ListViewComponent implements OnInit, OnDestroy {
     loading: boolean
     hasError: boolean
 
-    /* 
+    /*
         Input data for the component app-page-info
     */
     pagination: Pagination
     showPagination = false
 
-    /* 
+    /*
         Input data for this component
     */
     @Input() type: fromMapping.COMPONENT_TYPE
@@ -57,8 +57,8 @@ export class ListViewComponent implements OnInit, OnDestroy {
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
     ngOnInit() {
-        /* 
-            Switching this component for rendering characters list 
+        /*
+            Switching this component for rendering characters list
             or comics list or series list based on route or filter
         */
         if (!!this.type) {
@@ -76,7 +76,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
     }
 
     /*
-        This getter function return an object pointing to state, list and actions 
+        This getter function return an object pointing to state, list and actions
         based on the 'type' for which this component is rendered
     */
     get service() {
