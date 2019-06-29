@@ -1,3 +1,7 @@
+/*
+    Marvel API response mapping to interface
+*/
+
 export interface Image {
     path: string
     extension: string

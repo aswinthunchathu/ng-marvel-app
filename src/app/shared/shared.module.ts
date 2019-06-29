@@ -1,3 +1,7 @@
+/*
+    Shared directives, components and services are registered here
+*/
+
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'

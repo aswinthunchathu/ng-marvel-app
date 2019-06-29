@@ -16,20 +16,34 @@ import { trigger, transition, animate, style } from '@angular/animations'
     ],
 })
 export class PageInfoComponent implements OnInit, OnDestroy {
+    /* 
+        Input for this component
+    */
     @Input() showCondition: boolean
     @Input() total = 0
     @Input() current = 0
     @Input() hideAfter = 5000
+
+    /* 
+        Event emitted after the specified time (hideAfter)
+    */
     @Output() hideEvent: EventEmitter<void> = new EventEmitter()
+
     private hideTimeout
 
     constructor() {}
 
     ngOnInit() {
+        /* 
+            Remove pagination after the specified time
+        */
         this.hideTimeout = setTimeout(() => this.hideEvent.emit(), +this.hideAfter)
     }
 
     ngOnDestroy() {
+        /* 
+            Clear timeout when component is destroyed
+        */
         clearTimeout(this.hideTimeout)
     }
 }

@@ -1,3 +1,6 @@
+/*
+    This component renders a card view with a title and image
+*/
 import { Component, OnInit, Input } from '@angular/core'
 
 @Component({

@@ -1,3 +1,7 @@
+/*
+    This component renders a list of app-card, either as infinity scroll-able or not
+*/
+
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 
 export enum Style {

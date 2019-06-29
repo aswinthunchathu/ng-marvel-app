@@ -17,6 +17,11 @@ import { UIService } from '../../ui/ui.service'
 
 @Injectable()
 export class ComicsBySeriesIdEffects {
+    /*
+     * This effect fetch from server
+     * @triggering action: fetch start
+     * @action fired: fetch success / fetch error
+     */
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromComicsBySeriesIdActions.fetchStart),
@@ -34,6 +39,11 @@ export class ComicsBySeriesIdEffects {
         )
     )
 
+    /*
+     * This effect fetch next set from server
+     * @triggering action: fetch next page
+     * @action fired: fetch success / fetch  error
+     */
     fetchNextPage$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromComicsBySeriesIdActions.fetchNextPage),
@@ -61,11 +71,21 @@ export class ComicsBySeriesIdEffects {
         private uiService: UIService
     ) {}
 
+    /*
+     * This effect is used to show spinner
+     * @triggering action: fetch start/fetch next page
+     * @action fired: show UI spinner
+     */
     showSpinner$ = this.uiService.showSpinnerEffect(
         [fromComicsBySeriesIdActions.fetchStart, fromComicsBySeriesIdActions.fetchNextPage],
         this.TAG
     )
 
+    /*
+     * This effect is used to hide spinner
+     * @triggering action: fetch success / fetch from store/ no moire to fetch
+     * @action fired: show UI spinner
+     */
     hideSpinner$ = this.uiService.hideSpinnerEffect(
         [
             fromComicsBySeriesIdActions.fetchSuccess,
@@ -75,6 +95,13 @@ export class ComicsBySeriesIdEffects {
         this.TAG
     )
 
+    /*
+     * This function fetch data from server
+     * @params id : number
+     * @params limit : number
+     * @params offset : number
+     * return : Observable<fetch success / fetch error action>
+     */
     private fetchFromServer(id: number, limit: number, offset: number) {
         return this.api.getComicsBySeriesId(id, limit, offset).pipe(
             mergeMap(res => [

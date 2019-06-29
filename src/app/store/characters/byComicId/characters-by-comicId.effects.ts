@@ -17,6 +17,11 @@ import { UIService } from '../../ui/ui.service'
 
 @Injectable()
 export class CharactersByComicIdEffects {
+    /*
+     * This effect fetch from server
+     * @triggering action: fetch start
+     * @action fired: fetch success / fetch error
+     */
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromCharactersByComicIdActions.fetchStart),
@@ -34,6 +39,11 @@ export class CharactersByComicIdEffects {
         )
     )
 
+    /*
+     * This effect fetch next set from server
+     * @triggering action: fetch next page
+     * @action fired: fetch success / fetch  error
+     */
     fetchNextPage$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromCharactersByComicIdActions.fetchNextPage),
@@ -60,11 +70,21 @@ export class CharactersByComicIdEffects {
         private uiService: UIService
     ) {}
 
+    /*
+     * This effect is used to show spinner
+     * @triggering action: fetch start/fetch next page
+     * @action fired: show UI spinner
+     */
     showSpinner$ = this.uiService.showSpinnerEffect(
         [fromCharactersByComicIdActions.fetchStart, fromCharactersByComicIdActions.fetchNextPage],
         this.TAG
     )
 
+    /*
+     * This effect is used to hide spinner
+     * @triggering action: fetch success / fetch from store/ no moire to fetch
+     * @action fired: show UI spinner
+     */
     hideSpinner$ = this.uiService.hideSpinnerEffect(
         [
             fromCharactersByComicIdActions.fetchSuccess,
@@ -75,10 +95,11 @@ export class CharactersByComicIdEffects {
     )
 
     /*
-     * fetch comics from server
-     * @params limit: number - limit per page
-     * @params offset: number - page offset
-     * return : Observable<FetchCharactersSuccess>
+     * This function fetch data from server
+     * @params id : number
+     * @params limit : number
+     * @params offset : number
+     * return : Observable<fetch success / fetch error action>
      */
     private fetchFromServer(id: number, limit: number, offset: number) {
         return this.api.getCharactersByComicId(id, limit, offset).pipe(

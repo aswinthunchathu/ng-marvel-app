@@ -1,3 +1,7 @@
+/*
+    This service sets background image for app-details component
+*/
+
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 

@@ -1,3 +1,7 @@
+/*
+ * All the NgRx selectors goes here
+ */
+
 import { createSelector } from '@ngrx/store'
 
 import * as fromCharactersReducer from './characters/characters.reducer'

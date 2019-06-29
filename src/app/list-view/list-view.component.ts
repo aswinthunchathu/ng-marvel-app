@@ -20,24 +20,47 @@ import { Pagination } from '../model/pagination.model'
     styleUrls: ['./list-view.component.scss'],
 })
 export class ListViewComponent implements OnInit, OnDestroy {
+    /* 
+        component subscriptions
+    */
     storeSubscription: Subscription
     routeSubscription: Subscription
-    collection: CharacterModel[] | ComicModel[] | SeriesModel[]
-    hasMore: boolean
-    loading: boolean
-    hasError: boolean
-    pagination: Pagination
-    showPagination = false
+
+    /* 
+        Input data for the component app-list
+    */
     gridStyle = Style.gridSpaced
     isAnimated = false
     isFloatingLabel = false
     imageType = ImageType.portrait
+
+    /* 
+        Input data for the component app-list
+    */
+    collection: CharacterModel[] | ComicModel[] | SeriesModel[]
+    hasMore: boolean
+    loading: boolean
+    hasError: boolean
+
+    /* 
+        Input data for the component app-page-info
+    */
+    pagination: Pagination
+    showPagination = false
+
+    /* 
+        Input data for this component
+    */
     @Input() type: fromMapping.COMPONENT_TYPE
     @Input() filter: Filter
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
     ngOnInit() {
+        /* 
+            Switching this component for rendering characters list 
+            or comics list or series list based on route or filter
+        */
         if (!!this.type) {
             this.queryOnStore()
             this.subscribeToStore()
@@ -52,10 +75,17 @@ export class ListViewComponent implements OnInit, OnDestroy {
         }
     }
 
+    /*
+        This getter function return an object pointing to state, list and actions 
+        based on the 'type' for which this component is rendered
+    */
     get service() {
         return fromMapping.getSettings(this.type, this.filter ? this.filter.type : fromMapping.FILTER_TYPE.none)
     }
 
+    /*
+        Fetching state slice from NgRx store by dispatching actions
+    */
     queryOnStore() {
         if (this.filter) {
             this.store.dispatch(
@@ -75,6 +105,9 @@ export class ListViewComponent implements OnInit, OnDestroy {
         }
     }
 
+    /*
+        Subscription to NgRx store
+    */
     subscribeToStore() {
         this.storeSubscription = this.store
             .select(this.service.state)
@@ -98,6 +131,9 @@ export class ListViewComponent implements OnInit, OnDestroy {
             })
     }
 
+    /*
+        This event is fired when user scrolls down the list
+    */
     onScroll() {
         this.store.dispatch(
             fromMapping.componentSettings[this.type][
@@ -107,6 +143,9 @@ export class ListViewComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        /*
+            Unsubscribing the subscriptions made
+        */
         this.storeSubscription.unsubscribe()
         if (!this.type) {
             this.routeSubscription.unsubscribe()
