@@ -1,5 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component'
 
@@ -12,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module'
 import { ListViewComponent } from './list-view/list-view.component'
 import { DetailsComponent } from './list-view/details/details.component'
 import { PageInfoComponent } from './list-view/page-info/page-info.component'
+import { SearchBoxComponent } from './search-box/search-box.component'
 
 @NgModule({
     declarations: [
@@ -22,8 +24,9 @@ import { PageInfoComponent } from './list-view/page-info/page-info.component'
         ListViewComponent,
         DetailsComponent,
         PageInfoComponent,
+        SearchBoxComponent,
     ],
-    imports: [BrowserAnimationsModule, SharedModule, AppStoreModule, AppRoutingModule],
+    imports: [BrowserAnimationsModule, FormsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],
     bootstrap: [AppComponent],
 })

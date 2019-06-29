@@ -1,6 +1,7 @@
 @import './mixins';
 @import './variables';
 @import '~@angular/material/theming';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 @include mat-core();
 

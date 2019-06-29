@@ -62,13 +62,13 @@ export class ListViewComponent implements OnInit, OnDestroy {
             or comics list or series list based on route or filter
         */
         if (!!this.type) {
-            this.queryOnStore()
+            //this.queryOnStore()
             this.subscribeToStore()
         } else {
             this.routeSubscription = this.route.data.subscribe(({ type }) => {
                 if (type) {
                     this.type = type
-                    this.queryOnStore()
+                    //this.queryOnStore()
                     this.subscribeToStore()
                 }
             })

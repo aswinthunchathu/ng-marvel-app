@@ -2,10 +2,10 @@
     Angular Material design components are registered here
 */
 import { NgModule } from '@angular/core'
-import { MatTabsModule } from '@angular/material'
+import { MatTabsModule, MatIconModule } from '@angular/material'
 
 @NgModule({
-    imports: [MatTabsModule],
-    exports: [MatTabsModule],
+    imports: [MatTabsModule, MatIconModule],
+    exports: [MatTabsModule, MatIconModule],
 })
 export class MaterialComponentsModule {}
