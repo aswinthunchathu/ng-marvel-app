@@ -1,3 +1,7 @@
+/*
+    This service sets background image for app-details component
+*/
+
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 
@@ -5,7 +9,7 @@ import { Subject } from 'rxjs'
     providedIn: 'root',
 })
 export class BgService {
-    private bgImage: string = ''
+    private bgImage = ''
     bgImageSub = new Subject<void>()
 
     constructor() {}

@@ -1,3 +1,7 @@
+/*
+    This component renders a list of app-card, either as infinity scroll-able or not
+*/
+
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 
 export enum Style {
@@ -11,18 +15,22 @@ export enum Style {
     styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-    @Input('isInfiniteScroll') isInfiniteScroll: boolean = false
+    // tslint:disable-next-line:no-input-rename
+    @Input('isInfiniteScroll') isInfiniteScroll = false
+    // tslint:disable-next-line:no-input-rename
     @Input('grid-style') gridStyle = 'grid'
+    // tslint:disable-next-line:no-input-rename
     @Input('isFetching') loading: boolean
+    // tslint:disable-next-line:no-input-rename
     @Input('hasMore') hasMore: boolean
 
-    @Output('onScroll') scrollEvent = new EventEmitter<void>()
+    @Output() scrollEvent = new EventEmitter<void>()
 
     constructor() {}
 
     ngOnInit() {}
 
-    onScroll() {
+    onScrolling() {
         this.scrollEvent.emit()
     }
 }

@@ -1,3 +1,6 @@
+/*
+    This is an higher order component to handle generic error
+*/
 import { Component, OnInit, Input } from '@angular/core'
 
 @Component({
@@ -7,7 +10,7 @@ import { Component, OnInit, Input } from '@angular/core'
 })
 export class ErrorHandlerComponent implements OnInit {
     @Input() hasError: boolean
-    @Input() message: string = ' Some error occurred. Please try later.'
+    @Input() message = ' Some error occurred. Please try later.'
     @Input() type: 'error' | 'error-text-only' = 'error'
 
     constructor() {}

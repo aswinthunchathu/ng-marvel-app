@@ -1,3 +1,7 @@
+/*
+    Shared directives, components and services are registered here
+*/
+
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
@@ -11,6 +15,8 @@ import { ListDetailsComponent } from './components/list/list-details/list-detail
 import { ErrorHandlerComponent } from './components/error-handler/error-handler.component'
 import { MaterialComponentsModule } from './material-components.module'
 import { ApiInterceptor } from './services/api.service'
+import { NoDataComponent } from './components/no-data/no-data.component'
+import { PillComponent } from './components/pill/pill.component'
 
 @NgModule({
     declarations: [
@@ -20,6 +26,8 @@ import { ApiInterceptor } from './services/api.service'
         ListComponent,
         ListDetailsComponent,
         ErrorHandlerComponent,
+        NoDataComponent,
+        PillComponent,
     ],
     imports: [CommonModule, HttpClientModule, InfiniteScrollModule, MaterialComponentsModule],
     exports: [
@@ -31,6 +39,8 @@ import { ApiInterceptor } from './services/api.service'
         ListComponent,
         ListDetailsComponent,
         ErrorHandlerComponent,
+        NoDataComponent,
+        PillComponent,
     ],
     providers: [
         {

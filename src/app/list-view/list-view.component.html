@@ -1,0 +1,29 @@
+<app-no-data *ngIf="!loading && collection.length === 0">No data available.</app-no-data>
+
+<app-error-handler [hasError]="hasError">
+    <app-list
+        [isInfiniteScroll]="true"
+        [hasMore]="hasMore"
+        [isFetching]="loading"
+        [grid-style]="gridStyle"
+        (scrollEvent)="onScroll()"
+    >
+        <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of collection">
+            <app-card
+                [image-src]="item.image[imageType].actual"
+                [placeholder-image-src]="item.image[imageType].placeholder"
+                [title]="item.title"
+                [animated-card]="isAnimated"
+                [floating-label]="isFloatingLabel"
+            ></app-card>
+        </a>
+    </app-list>
+</app-error-handler>
+
+<app-page-info
+    [showCondition]="showPagination"
+    [total]="pagination.total"
+    [current]="pagination.offset === -1 ? 0 : pagination.offset + pagination.count"
+    hideAfter="5000"
+    (hideEvent)="showPagination = false"
+></app-page-info>

@@ -10,8 +10,12 @@
                     [appProgressiveImageLoading-placeholder]="item.placeholder"
                 />
                 <h1 class="container-grid--title">{{ item.title }}</h1>
+
                 <div class="container-grid--description">
-                    {{ item.description ? item.description : 'No description available.' }}
+                    <app-no-data *ngIf="!item.description; else desc">No description available.</app-no-data>
+                    <ng-template #desc>
+                        {{ item.description }}
+                    </ng-template>
                 </div>
             </div>
         </ng-container>

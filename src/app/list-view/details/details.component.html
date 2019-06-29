@@ -1,0 +1,13 @@
+<app-list-details [item]="collection" [withBgImage]="isBgImage" [loading]="loading" [hasError]="hasError">
+    <ng-template [ngIf]="tabs && tabs.length > 0">
+        <div class="tab--spacer">
+            <mat-tab-group (selectedTabChange)="onTabChange($event)" [selectedIndex]="activeTab">
+                <mat-tab *ngFor="let tab of tabs" [label]="tab.title">
+                    <ng-template matTabContent>
+                        <app-list-view [type]="tab.type" [filter]="filter"></app-list-view>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </ng-template>
+</app-list-details>
