@@ -11,6 +11,9 @@
     z-index: 10;
     @include rem-fallback(padding, 0, 15px);
     @include rem-fallback(top, 90px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     &.sidebar--mobile {
         display: block;
@@ -37,9 +40,10 @@
 
     @media (min-width: $breakpoint-lg) {
         position: absolute;
-        @include rem-fallback(top, 130px);
+        top: 130px;
         background-color: transparent;
         width: 100%;
+        height: calc(100% - 130px);
 
         &.sidebar--mobile {
             display: none;
@@ -135,4 +139,8 @@
     &.active {
         display: block;
     }
+}
+
+.sidebar--search {
+    @include rem-fallback(padding, 20px, 0, 50px, 0);
 }
