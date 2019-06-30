@@ -12,6 +12,8 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {}
 
     onToggleMenu() {
-        this.toggleMenu = !this.toggleMenu
+        if (window.outerWidth < 992) {
+            this.toggleMenu = !this.toggleMenu
+        }
     }
 }

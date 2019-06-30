@@ -27,6 +27,10 @@ $padding: 15px;
     .header--search {
         display: flex;
         align-self: center;
+
+        @media (min-width: $breakpoint-lg) {
+            display: none;
+        }
     }
 
     .header--logo {
@@ -62,4 +66,8 @@ $padding: 15px;
             display: block;
         }
     }
+}
+
+.w-100 {
+    width: 100%;
 }
