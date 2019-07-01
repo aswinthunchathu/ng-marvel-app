@@ -1,9 +1,10 @@
-<form>
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <div class="search-box">
-        <input class="search-box--input" type="text" placeholder="Search" name="txtSearch" [(ngModel)]="value" />
+        <input class="search-box--input" type="text" placeholder="Search" formControlName="search" />
         <span class="search-box--line"></span>
         <button class="search-box--btn">
             <mat-icon class="search-box--icon" aria-hidden="false" aria-label="search icon">search</mat-icon>
         </button>
     </div>
+    <div class="hint--txt">Hint: Min 3 characters</div>
 </form>

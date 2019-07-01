@@ -53,3 +53,10 @@
         }
     }
 }
+
+.hint--txt {
+    color: $grey;
+    font-style: italic;
+    @include rem-fallback(font-size, 14px);
+    @include rem-fallback(margin, 5px, 0, 0);
+}

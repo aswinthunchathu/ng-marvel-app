@@ -38,8 +38,10 @@ export class APIService {
         return this.http$.get<APIResponse<T>>(url, options)
     }
 
-    getCharacters = (limit?: number, offset?: number) =>
-        this.fetchFromServer<Character>('characters', limit, offset).pipe(map(res => res.data))
+    getCharacters = (limit?: number, offset?: number, filter?: string) =>
+        this.fetchFromServer<Character>(`characters${filter ? '?nameStartsWith' + filter : ''}`, limit, offset).pipe(
+            map(res => res.data)
+        )
 
     getCharacter = (id: number) =>
         this.fetchFromServer<Character>(`characters/${id}`).pipe(

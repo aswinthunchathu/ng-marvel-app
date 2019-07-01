@@ -3,6 +3,8 @@ import { EffectsModule } from '@ngrx/effects'
 import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 
+import { environment } from '../../environments/environment'
+
 import { appReducer } from './app.reducer'
 import { CharactersEffects } from './characters/characters.effects'
 import { CharacterEffects } from './characters/details/character.effects'
@@ -15,7 +17,7 @@ import { ComicsBySeriesIdEffects } from './comics/bySeriesId/comics-by-seriesId.
 import { SeriesByCharacterIdEffects } from './series/byCharacterId/series-by-characterId.effects'
 import { CharactersByComicIdEffects } from './characters/byComicId/characters-by-comicId.effects'
 import { CharactersBySeriesIdEffects } from './characters/bySeriesId/characters-by-seriesId.effects'
-import { environment } from '../../environments/environment'
+import { SearchResultsEffects } from './search-results/search-results.effects'
 
 @NgModule({
     declarations: [],
@@ -33,6 +35,7 @@ import { environment } from '../../environments/environment'
             SeriesByCharacterIdEffects,
             CharactersByComicIdEffects,
             CharactersBySeriesIdEffects,
+            SearchResultsEffects,
         ]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,

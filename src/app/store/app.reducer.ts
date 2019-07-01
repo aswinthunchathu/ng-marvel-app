@@ -14,6 +14,8 @@ import * as fromSeries from './series'
 import * as fromSeriesByCharacterId from './series/byCharacterId'
 import * as fromSeriesDetails from './series/details'
 
+import * as fromSearchResults from './search-results'
+
 export interface AppState {
     characters: fromCharacters.State
     character: fromCharacter.State
@@ -26,6 +28,7 @@ export interface AppState {
     series: fromSeries.State
     seriesDetails: fromSeriesDetails.State
     seriesByCharacterId: fromSeriesByCharacterId.State
+    searchResults: fromSearchResults.State
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -40,4 +43,5 @@ export const appReducer: ActionReducerMap<AppState> = {
     series: fromSeries.default,
     seriesDetails: fromSeriesDetails.default,
     seriesByCharacterId: fromSeriesByCharacterId.default,
+    searchResults: fromSearchResults.default,
 }
