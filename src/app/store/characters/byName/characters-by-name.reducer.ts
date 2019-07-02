@@ -16,10 +16,19 @@ const initialState = adapter.getInitialState({
 
 const generateReducer = createReducer<State>(
     initialState,
-    on(fromCharactersByNameActions.fetchStart, (state, action) => ({
-        ...state,
-        filter: action.payload,
-    })),
+    on(fromCharactersByNameActions.fetchStart, (state, action) => {
+        if (state.filter === action.payload) {
+            return {
+                ...state,
+            }
+        } else {
+            return {
+                ...state,
+                ...initialState,
+                filter: action.payload,
+            }
+        }
+    }),
     on(fromCharactersByNameActions.fetchSuccess, (state, action) => adapter.addAll(action.payload, state))
 )
 
@@ -28,3 +37,4 @@ export function reducer(state: State | undefined, action: Action) {
 }
 
 export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal

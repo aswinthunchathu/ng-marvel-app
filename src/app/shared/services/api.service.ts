@@ -29,12 +29,10 @@ export class ApiInterceptor implements HttpInterceptor {
 export class APIService {
     constructor(private http$: HttpClient) {}
 
-    fetchFromServer<T>(url: string, limit?: number, offset?: number) {
+    fetchFromServer<T>(url: string, limit = 20, offset = 0) {
         const options = {}
         const params = 'params'
-        if (limit && offset) {
-            options[params] = new HttpParams().set('limit', String(limit)).set('offset', String(offset))
-        }
+        options[params] = new HttpParams().set('limit', String(limit)).set('offset', String(offset))
         return this.http$.get<APIResponse<T>>(url, options)
     }
 
@@ -70,8 +68,10 @@ export class APIService {
     getComicsByCharactersId = (id: number, limit?: number, offset?: number) =>
         this.fetchFromServer<Comic>(`characters/${id}/comics`, limit, offset).pipe(map(res => res.data))
 
-    getSeries = (limit?: number, offset?: number) =>
-        this.fetchFromServer<Series>('series', limit, offset).pipe(map(res => res.data))
+    getSeries = (limit?: number, offset?: number, filter?: string) =>
+        this.fetchFromServer<Comic>(`series${filter ? '?titleStartsWith=' + filter : ''}`, limit, offset).pipe(
+            map(res => res.data)
+        )
 
     getSeriesById = (id: number) =>
         this.fetchFromServer<Series>(`series/${id}`).pipe(

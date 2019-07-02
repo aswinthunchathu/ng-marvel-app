@@ -61,6 +61,13 @@ export const selectCharactersBySeriesIdTotal = createSelector(
     fromCharactersBySeriesIdReducer.selectTotal
 )
 
+export const selectFilterIdForCharactersBySeriesId = createSelector(
+    charactersBySeriesId,
+    state => {
+        return state.filterId
+    }
+)
+
 const charactersByName = (state: AppState) => state.charactersByName.data
 
 export const selectAllCharactersByName = createSelector(
@@ -68,11 +75,9 @@ export const selectAllCharactersByName = createSelector(
     fromCharactersByNameReducer.selectAll
 )
 
-export const selectFilterIdForCharactersBySeriesId = createSelector(
-    charactersBySeriesId,
-    state => {
-        return state.filterId
-    }
+export const selectCharactersByNameTotal = createSelector(
+    charactersByName,
+    fromCharactersByNameReducer.selectTotal
 )
 
 const comics = (state: AppState) => state.comics.data
@@ -132,6 +137,11 @@ export const selectAllComicsByName = createSelector(
     fromComicsByNameReducer.selectAll
 )
 
+export const selectComicsByNameTotal = createSelector(
+    comicsByName,
+    fromComicsByNameReducer.selectTotal
+)
+
 const series = (state: AppState) => state.series.data
 
 export const selectAllSeries = createSelector(
@@ -168,4 +178,9 @@ const seriesByName = (state: AppState) => state.seriesByName.data
 export const selectAllSeriesByName = createSelector(
     seriesByName,
     fromSeriesByNameReducer.selectAll
+)
+
+export const selectSeriesByNameTotal = createSelector(
+    seriesByName,
+    fromSeriesByNameReducer.selectTotal
 )

@@ -1,8 +1,31 @@
-<div>Characters</div>
-<app-list-view type="characters" [filter]="filter"></app-list-view>
+<div *ngIf="filter" class="search-results">
+    <div>
+        <div class="search-results--heading">
+            Characters
+            <a class="search-results--show-more" [routerLink]="['/characters']" *ngIf="(charactersCount | async) > 0">
+                Show More
+            </a>
+        </div>
+        <app-list-view type="characters" [filter]="filter"></app-list-view>
+    </div>
 
-<div>Comics</div>
-<app-list-view type="comics" [filter]="filter"></app-list-view>
+    <div>
+        <div class="search-results--heading">
+            Comics
+            <a class="search-results--show-more" [routerLink]="['/comics']" *ngIf="(comicsCount | async) > 0">
+                Show More
+            </a>
+        </div>
+        <app-list-view type="comics" [filter]="filter"></app-list-view>
+    </div>
 
-<div>Series</div>
-<app-list-view type="series" [filter]="filter"></app-list-view>
+    <div>
+        <div class="search-results--heading">
+            Series
+            <a class="search-results--show-more" [routerLink]="['/series']" *ngIf="(seriesCount | async) > 0">
+                Show More
+            </a>
+        </div>
+        <app-list-view type="series" [filter]="filter"></app-list-view>
+    </div>
+</div>

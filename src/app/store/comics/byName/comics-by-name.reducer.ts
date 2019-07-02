@@ -28,3 +28,4 @@ export function reducer(state: State | undefined, action: Action) {
 }
 
 export const selectAll = adapter.getSelectors().selectAll
+export const selectTotal = adapter.getSelectors().selectTotal

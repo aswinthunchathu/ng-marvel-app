@@ -1,4 +1,5 @@
 export const PAGE_LIMIT = 20
+export const SEARCH_PAGE_LIMIT = 7
 
 export enum ACTION_TAGS {
     characters = '[CHARACTERS]',

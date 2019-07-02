@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core'
 import { switchMap, catchError, withLatestFrom, map } from 'rxjs/operators'
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { Store } from '@ngrx/store'
+import { Store, select } from '@ngrx/store'
 
 import * as fromSeriesByNameActions from './series-by-name.actions'
 import * as fromRoot from '../../app.selector'
 import { AppState } from '../../app.reducer'
-import { CharacterModel } from '../../../model/character.model'
+import { SeriesModel } from 'src/app/model/series.model'
 import { APIService } from '../../../shared/services/api.service'
-import { ACTION_TAGS } from '../../../constants'
+import { ACTION_TAGS, SEARCH_PAGE_LIMIT } from '../../../constants'
 import { UIService } from '../../ui/ui.service'
 
 @Injectable()
-export class ComicsByNameEffects {
+export class SeriesByNameEffects {
     /*
      * This effect fetch from server
      * @triggering action: fetch start
@@ -22,7 +22,13 @@ export class ComicsByNameEffects {
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromSeriesByNameActions.fetchStart),
-            switchMap(() => this.fetchFromServer('spi', 10, 0))
+            withLatestFrom(this.store.pipe(select(fromRoot.selectComicsByNameTotal))),
+            switchMap(([action, count]) => {
+                if (count > 0) {
+                    return of(fromSeriesByNameActions.fetchedFromStore())
+                }
+                return this.fetchFromServer(action.payload, SEARCH_PAGE_LIMIT, 0)
+            })
         )
     )
 
@@ -57,11 +63,11 @@ export class ComicsByNameEffects {
      * return : Observable<fetch success / fetch error action>
      */
     private fetchFromServer(filter: string, limit: number, offset: number) {
-        return this.api.getCharacters(limit, offset, filter).pipe(
+        return this.api.getSeries(limit, offset, filter).pipe(
             map(res =>
                 fromSeriesByNameActions.fetchSuccess({
                     payload: res.results.map(
-                        item => new CharacterModel(item.id, item.name, item.description, item.thumbnail)
+                        item => new SeriesModel(item.id, item.title, item.description, item.thumbnail)
                     ),
                 })
             ),

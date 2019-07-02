@@ -18,6 +18,8 @@ import { SeriesByCharacterIdEffects } from './series/byCharacterId/series-by-cha
 import { CharactersByComicIdEffects } from './characters/byComicId/characters-by-comicId.effects'
 import { CharactersBySeriesIdEffects } from './characters/bySeriesId/characters-by-seriesId.effects'
 import { CharactersByNameEffects } from './characters/byName/characters-by-name.effects'
+import { ComicsByNameEffects } from './comics/byName/comics-by-name.effects'
+import { SeriesByNameEffects } from './series/byName/series-by-name.effects'
 
 @NgModule({
     declarations: [],
@@ -36,6 +38,8 @@ import { CharactersByNameEffects } from './characters/byName/characters-by-name.
             CharactersByComicIdEffects,
             CharactersBySeriesIdEffects,
             CharactersByNameEffects,
+            ComicsByNameEffects,
+            SeriesByNameEffects,
         ]),
         StoreDevtoolsModule.instrument({
             logOnly: environment.production,

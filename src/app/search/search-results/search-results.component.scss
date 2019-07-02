@@ -1,0 +1,23 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+.search-results {
+    @include rem-fallback(padding, 5px, 15px);
+
+    &--heading {
+        color: $white;
+        @include rem-fallback(font-size, 30px);
+        @include rem-fallback(margin, 0, 0, 15px, 0);
+    }
+
+    &--show-more {
+        color: $primary-color;
+        @include rem-fallback(font-size, 16px);
+        text-decoration: none;
+        @include rem-fallback(padding, 0, 10px);
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

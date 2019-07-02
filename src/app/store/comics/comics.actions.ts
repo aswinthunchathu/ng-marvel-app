@@ -10,6 +10,6 @@ export const fetchNextPage = createAction(`${TAG} Fetch Next Page`)
 
 export const fetchSuccess = createAction(`${TAG} Fetch Success`, props<{ payload: ComicModel[] }>())
 
-export const fetchedFromStore = createAction(`${TAG} No More`)
+export const noMoreToFetch = createAction(`${TAG} No More`)
 
-export const noMoreToFetch = createAction(`${TAG} Fetched From Store`)
+export const fetchedFromStore = createAction(`${TAG} Fetched From Store`)
