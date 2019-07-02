@@ -4,7 +4,7 @@ import * as fromCharacters from './characters'
 import * as fromCharacter from './characters/details'
 import * as fromCharactersByComicId from './characters/byComicId'
 import * as fromCharactersBySeriesId from './characters/bySeriesId'
-import * as fromCharactersByName from './characters/nameStartsWith'
+import * as fromCharactersByName from './characters/byName'
 
 import * as fromComics from './comics'
 import * as fromComic from './comics/details'

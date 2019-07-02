@@ -89,7 +89,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
             const id = +params[key]
             this.filter = {
                 type: this.service.filterKey,
-                id,
+                value: id,
             }
             this.store.dispatch(
                 this.service.action.fetchStart({

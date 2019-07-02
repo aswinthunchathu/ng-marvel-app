@@ -7,5 +7,5 @@ export interface Tab {
 
 export interface Filter {
     type: FILTER_TYPE
-    id: number
+    value: number | string
 }

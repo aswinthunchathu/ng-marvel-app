@@ -17,7 +17,7 @@ import { ComicsBySeriesIdEffects } from './comics/bySeriesId/comics-by-seriesId.
 import { SeriesByCharacterIdEffects } from './series/byCharacterId/series-by-characterId.effects'
 import { CharactersByComicIdEffects } from './characters/byComicId/characters-by-comicId.effects'
 import { CharactersBySeriesIdEffects } from './characters/bySeriesId/characters-by-seriesId.effects'
-import { CharactersByNameEffects } from './characters/nameStartsWith/characters-by-name.effects'
+import { CharactersByNameEffects } from './characters/byName/characters-by-name.effects'
 
 @NgModule({
     declarations: [],

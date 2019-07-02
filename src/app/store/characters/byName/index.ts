@@ -10,6 +10,6 @@ export interface State {
 }
 
 export default combineReducers<State>({
-    ui: fromUIReducer.reducer(ACTION_TAGS.charactersByNameStartsWith),
+    ui: fromUIReducer.reducer(ACTION_TAGS.charactersByName),
     data: fromReducer.reducer,
 })

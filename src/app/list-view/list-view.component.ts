@@ -90,7 +90,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
         if (this.filter) {
             this.store.dispatch(
                 this.service.action.fetchStart({
-                    payload: this.filter.id,
+                    payload: this.filter.value,
                 })
             )
         } else {
@@ -114,11 +114,14 @@ export class ListViewComponent implements OnInit, OnDestroy {
             .pipe(
                 switchMap(res => {
                     this.loading = res.ui.fetching
-                    this.pagination = res.pagination.data
-                    this.hasError = !!res.ui.error
-                    if (this.hasMore !== this.pagination.hasMore) {
-                        this.hasMore = this.pagination.hasMore
+                    if (res.pagination) {
+                        this.pagination = res.pagination.data
+                        if (this.hasMore !== this.pagination.hasMore) {
+                            this.hasMore = this.pagination.hasMore
+                        }
                     }
+
+                    this.hasError = !!res.ui.error
 
                     return this.store.pipe(select(this.service.list))
                 })

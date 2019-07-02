@@ -5,7 +5,7 @@ import { COMPONENT_TYPE as ListViewType } from './list-view/list-view.metadata'
 import { COMPONENT_TYPE as DetailViewType } from './list-view/details/details.metadata'
 import { ListViewComponent } from './list-view/list-view.component'
 import { DetailsComponent } from './list-view/details/details.component'
-import { SearchResultsComponent } from './search-results/search-results.component'
+import { SearchResultsComponent } from './search/search-results/search-results.component'
 
 const routes: Routes = [
     {

@@ -7,7 +7,7 @@ import * as fromComicsByCharacterIdAction from '../store/comics/byCharacterId/co
 import * as fromComicsBySeriesIdAction from '../store/comics/bySeriesId/comics-by-seriesId.actions'
 import * as fromSeriesActions from '../store/series/series.actions'
 import * as fromSeriesByCharacterIdActions from '../store/series/byCharacterId/series-by-characterId.actions'
-import * as fromCharactersByNameActions from '../store/characters/nameStartsWith/characters-by-name.actions'
+import * as fromCharactersByNameActions from '../store/characters/byName/characters-by-name.actions'
 /*
     Types of filter app-lits-view component accepts
 */

@@ -39,7 +39,7 @@ export class APIService {
     }
 
     getCharacters = (limit?: number, offset?: number, filter?: string) =>
-        this.fetchFromServer<Character>(`characters${filter ? '?nameStartsWith' + filter : ''}`, limit, offset).pipe(
+        this.fetchFromServer<Character>(`characters${filter ? '?nameStartsWith=' + filter : ''}`, limit, offset).pipe(
             map(res => res.data)
         )
 

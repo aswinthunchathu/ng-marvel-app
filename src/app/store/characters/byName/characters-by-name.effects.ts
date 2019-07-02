@@ -22,13 +22,11 @@ export class CharactersByNameEffects {
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromCharactersByNameActions.fetchStart),
-            switchMap(() => {
-                return this.fetchFromServer('spi', 10, 0)
-            })
+            switchMap(() => this.fetchFromServer('spi', 10, 0))
         )
     )
 
-    private readonly TAG = ACTION_TAGS.charactersByComicId
+    private readonly TAG = ACTION_TAGS.charactersByName
 
     constructor(
         private api: APIService,
