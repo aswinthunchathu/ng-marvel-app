@@ -21,6 +21,7 @@
 </app-error-handler>
 
 <app-page-info
+    *ngIf="pagination"
     [showCondition]="showPagination"
     [total]="pagination.total"
     [current]="pagination.offset === -1 ? 0 : pagination.offset + pagination.count"

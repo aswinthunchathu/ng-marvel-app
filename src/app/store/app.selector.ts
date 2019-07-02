@@ -4,16 +4,17 @@
 
 import { createSelector } from '@ngrx/store'
 
+import { AppState } from './app.reducer'
+
 import * as fromCharactersReducer from './characters/characters.reducer'
 import * as fromCharactersByComicIdReducer from './characters/byComicId/characters-by-comicId.reducer'
 import * as fromCharactersBySeriesIdReducer from './characters/bySeriesId/characters-by-seriesId.reducer'
-
+import * as fromCharactersByNameReducer from './characters/nameStartsWith/characters-by-name.reducer'
 import * as fromComicsReducer from './comics/comics.reducer'
 import * as fromComicsByCharacterIdReducer from './comics/byCharacterId/comics-by-characterId.reducer'
 import * as fromComicsBySeriesIdReducer from './comics/bySeriesId/comics-by-seriesId.reducer'
 import * as fromSeriesReducer from './series/series.reducer'
 import * as fromSeriesByCharacterIdReducer from './series/byCharacterId/series-by-characterId.reducer'
-import { AppState } from './app.reducer'
 
 const characters = (state: AppState) => state.characters.data
 
@@ -56,6 +57,13 @@ export const selectAllCharactersBySeriesId = createSelector(
 export const selectCharactersBySeriesIdTotal = createSelector(
     charactersBySeriesId,
     fromCharactersBySeriesIdReducer.selectTotal
+)
+
+const charactersByName = (state: AppState) => state.charactersByName.data
+
+export const selectAllCharactersByName = createSelector(
+    charactersByName,
+    fromCharactersByNameReducer.selectAll
 )
 
 export const selectFilterIdForCharactersBySeriesId = createSelector(

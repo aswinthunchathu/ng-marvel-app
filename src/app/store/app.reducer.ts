@@ -4,6 +4,7 @@ import * as fromCharacters from './characters'
 import * as fromCharacter from './characters/details'
 import * as fromCharactersByComicId from './characters/byComicId'
 import * as fromCharactersBySeriesId from './characters/bySeriesId'
+import * as fromCharactersByName from './characters/nameStartsWith'
 
 import * as fromComics from './comics'
 import * as fromComic from './comics/details'
@@ -14,13 +15,12 @@ import * as fromSeries from './series'
 import * as fromSeriesByCharacterId from './series/byCharacterId'
 import * as fromSeriesDetails from './series/details'
 
-import * as fromSearchResults from './search-results'
-
 export interface AppState {
     characters: fromCharacters.State
     character: fromCharacter.State
     charactersByComicId: fromCharactersByComicId.State
     charactersBySeriesId: fromCharactersBySeriesId.State
+    charactersByName: fromCharactersByName.State
     comics: fromComics.State
     comic: fromComic.State
     comicByCharacterId: fromComicsByCharacterId.State
@@ -28,7 +28,6 @@ export interface AppState {
     series: fromSeries.State
     seriesDetails: fromSeriesDetails.State
     seriesByCharacterId: fromSeriesByCharacterId.State
-    searchResults: fromSearchResults.State
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -36,6 +35,7 @@ export const appReducer: ActionReducerMap<AppState> = {
     character: fromCharacter.default,
     charactersByComicId: fromCharactersByComicId.default,
     charactersBySeriesId: fromCharactersBySeriesId.default,
+    charactersByName: fromCharactersByName.default,
     comics: fromComics.default,
     comic: fromComic.default,
     comicByCharacterId: fromComicsByCharacterId.default,
@@ -43,5 +43,4 @@ export const appReducer: ActionReducerMap<AppState> = {
     series: fromSeries.default,
     seriesDetails: fromSeriesDetails.default,
     seriesByCharacterId: fromSeriesByCharacterId.default,
-    searchResults: fromSearchResults.default,
 }

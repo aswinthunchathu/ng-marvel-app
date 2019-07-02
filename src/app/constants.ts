@@ -5,6 +5,7 @@ export enum ACTION_TAGS {
     character = '[CHARACTER]',
     charactersByComicId = '[CHARACTERS BY COMIC ID]',
     charactersBySeriesId = '[CHARACTERS BY SERIES ID]',
+    charactersByNameStartsWith = '[CHARACTERS BY NAME STARTS WITH]',
 
     comics = '[COMICS]',
     comic = '[COMIC]',
@@ -14,9 +15,4 @@ export enum ACTION_TAGS {
     series = '[SERIES]',
     seriesDetails = '[SERIES DETAILS]',
     seriesByCharacterId = '[SERIES BY CHARACTER ID]',
-
-    search = '[SEARCH]',
-    searchCharacters = '[SEARCH CHARACTERS]',
-    searchComics = '[SEARCH COMICS]',
-    searchSeries = '[SEARCH SERIES]',
 }
