@@ -67,6 +67,7 @@ const routes: Routes = [
         component: ListViewComponent,
         data: {
             type: ListViewType.series,
+            infiniteScroll: true,
         },
     },
     {
@@ -74,6 +75,7 @@ const routes: Routes = [
         component: ListViewComponent,
         data: {
             type: ListViewType.comics,
+            infiniteScroll: true,
         },
     },
     {
@@ -81,6 +83,7 @@ const routes: Routes = [
         component: ListViewComponent,
         data: {
             type: ListViewType.characters,
+            infiniteScroll: true,
         },
     },
     { path: '', redirectTo: '/characters', pathMatch: 'full' },

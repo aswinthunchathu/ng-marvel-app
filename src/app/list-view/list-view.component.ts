@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import { Style } from '../shared/components/list/list.component'
 import { ImageType } from '../model/image-generator.model'
 import { switchMap } from 'rxjs/operators'
 import { AppState } from '../store/app.reducer'
@@ -13,6 +12,11 @@ import * as fromMapping from './list-view.metadata'
 import { ActivatedRoute } from '@angular/router'
 import { Filter } from './list-view.interface'
 import { Pagination } from '../model/pagination.model'
+
+export enum Style {
+    grid = 'grid',
+    gridSpaced = 'grid-spaced',
+}
 
 @Component({
     selector: 'app-list-view',
@@ -41,6 +45,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
     hasMore: boolean
     loading: boolean
     hasError: boolean
+    isInfiniteScroll = false
 
     /*
         Input data for the component app-page-info
@@ -65,9 +70,10 @@ export class ListViewComponent implements OnInit, OnDestroy {
             this.queryOnStore()
             this.subscribeToStore()
         } else {
-            this.routeSubscription = this.route.data.subscribe(({ type }) => {
+            this.routeSubscription = this.route.data.subscribe(({ type, infiniteScroll }) => {
                 if (type) {
                     this.type = type
+                    this.isInfiniteScroll = infiniteScroll
                     this.queryOnStore()
                     this.subscribeToStore()
                 }

@@ -32,6 +32,7 @@ import { PillComponent } from './components/pill/pill.component'
     imports: [CommonModule, HttpClientModule, InfiniteScrollModule, MaterialComponentsModule],
     exports: [
         HttpClientModule,
+        InfiniteScrollModule,
         MaterialComponentsModule,
         LoaderComponent,
         ProgressiveImageLoadingDirective,
