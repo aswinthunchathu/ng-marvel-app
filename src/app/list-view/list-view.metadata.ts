@@ -8,6 +8,8 @@ import * as fromComicsBySeriesIdAction from '../store/comics/bySeriesId/comics-b
 import * as fromSeriesActions from '../store/series/series.actions'
 import * as fromSeriesByCharacterIdActions from '../store/series/byCharacterId/series-by-characterId.actions'
 import * as fromCharactersByNameActions from '../store/characters/byName/characters-by-name.actions'
+import * as fromComicsByNameActions from '../store/comics/byName/comics-by-name.actions'
+import * as fromSeriesByNameActions from '../store/series/byName/series-by-name.actions'
 /*
     Types of filter app-lits-view component accepts
 */
@@ -73,6 +75,11 @@ const comicsComponentMap = {
         state: 'comicBySeriesId',
         list: fromRoot.selectAllComicsBySeriesId,
     },
+    [FILTER_TYPE.title]: {
+        action: fromComicsByNameActions,
+        state: 'comicsByName',
+        list: fromRoot.selectAllComicsByName,
+    },
 }
 
 /*
@@ -88,6 +95,11 @@ const seriesComponentMap = {
         action: fromSeriesByCharacterIdActions,
         state: 'seriesByCharacterId',
         list: fromRoot.selectAllSeriesByCharacterId,
+    },
+    [FILTER_TYPE.title]: {
+        action: fromSeriesByNameActions,
+        state: 'seriesByName',
+        list: fromRoot.selectAllSeriesByName,
     },
 }
 

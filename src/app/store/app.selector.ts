@@ -13,8 +13,10 @@ import * as fromCharactersByNameReducer from './characters/byName/characters-by-
 import * as fromComicsReducer from './comics/comics.reducer'
 import * as fromComicsByCharacterIdReducer from './comics/byCharacterId/comics-by-characterId.reducer'
 import * as fromComicsBySeriesIdReducer from './comics/bySeriesId/comics-by-seriesId.reducer'
+import * as fromComicsByNameReducer from './comics/byName/comics-by-name.reducer'
 import * as fromSeriesReducer from './series/series.reducer'
 import * as fromSeriesByCharacterIdReducer from './series/byCharacterId/series-by-characterId.reducer'
+import * as fromSeriesByNameReducer from './series/byName/series-by-name.reducer'
 
 const characters = (state: AppState) => state.characters.data
 
@@ -123,6 +125,13 @@ export const selectFilterIdForComicsBySeriesId = createSelector(
     }
 )
 
+const comicsByName = (state: AppState) => state.comicsByName.data
+
+export const selectAllComicsByName = createSelector(
+    comicsByName,
+    fromComicsByNameReducer.selectAll
+)
+
 const series = (state: AppState) => state.series.data
 
 export const selectAllSeries = createSelector(
@@ -152,4 +161,11 @@ export const selectFilterIdForSeriesByCharacterId = createSelector(
     state => {
         return state.filterId
     }
+)
+
+const seriesByName = (state: AppState) => state.seriesByName.data
+
+export const selectAllSeriesByName = createSelector(
+    seriesByName,
+    fromSeriesByNameReducer.selectAll
 )

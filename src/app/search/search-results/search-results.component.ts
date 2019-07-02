@@ -8,7 +8,7 @@ import { FILTER_TYPE } from 'src/app/list-view/list-view.metadata'
     styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent implements OnInit {
-    characterFilter: Filter = {
+    filter: Filter = {
         type: FILTER_TYPE.title,
         value: 'spi',
     }

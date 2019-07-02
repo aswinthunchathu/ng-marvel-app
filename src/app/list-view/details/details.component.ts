@@ -6,10 +6,10 @@ import { MatTabChangeEvent } from '@angular/material'
 
 import { AppState } from '../../store/app.reducer'
 import { BgService } from '../../shared/services/bg.service'
-import { ListDetailsModel } from '../../shared/components/list/list-details/list-details.model'
 import * as fromMapping from './details.metadata'
 import { COMPONENT_TYPE } from './details.metadata'
 import { Filter, Tab } from '../list-view.interface'
+import { ListDetailsModel } from './list-details.model'
 
 @Component({
     selector: 'app-details',

@@ -54,8 +54,10 @@ export class APIService {
     getCharactersByComicId = (id: number, limit?: number, offset?: number) =>
         this.fetchFromServer<Character>(`comics/${id}/characters`, limit, offset).pipe(map(res => res.data))
 
-    getComics = (limit?: number, offset?: number) =>
-        this.fetchFromServer<Comic>('comics', limit, offset).pipe(map(res => res.data))
+    getComics = (limit?: number, offset?: number, filter?: string) =>
+        this.fetchFromServer<Comic>(`comics${filter ? '?titleStartsWith=' + filter : ''}`, limit, offset).pipe(
+            map(res => res.data)
+        )
 
     getComic = (id: number) =>
         this.fetchFromServer<Comic>(`comics/${id}`).pipe(
