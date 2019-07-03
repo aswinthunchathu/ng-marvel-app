@@ -10,6 +10,7 @@ import { Required } from '../decorators/inputRequired.decorator'
 export class ListViewComponent implements OnInit {
     @Input() @Required hasError: boolean
     @Input() @Required loading: boolean
+    @Input() spacedItems: boolean
 
     // infinite scroll settings
     @Input() @Required isInfiniteScroll: boolean

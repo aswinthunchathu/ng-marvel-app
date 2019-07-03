@@ -1,6 +1,7 @@
 <app-list-view
     [loading]="(state | async).ui.fetching"
     [hasError]="false"
+    [spacedItems]="spacedItems"
     [isInfiniteScroll]="infinityScroll"
     [hasMore]="true"
 >

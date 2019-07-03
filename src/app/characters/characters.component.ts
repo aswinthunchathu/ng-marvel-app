@@ -5,9 +5,18 @@ import { switchMap, map } from 'rxjs/operators'
 
 import { mapping, FILTER_TYPE } from './characters.metadata'
 import { AppState } from '../store/app.reducer'
-import { State } from './store'
+import { State as CharactersState } from './store'
+import { State as CharactersByComicIdState } from './store/byComicId'
+import { State as CharactersBySeriesIdState } from './store/bySeriesId'
+import { State as CharactersByNameState } from './store/byName'
 import { CharacterModel } from './character.model'
 import { ImageType } from '../model/image-generator.model'
+
+import * as fromRoot from '../store/app.selector'
+import * as fromCharactersAction from './store/characters.actions'
+import * as fromCharactersByComicIdAction from './store/byComicId/characters-by-comicId.actions'
+import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-by-seriesId.actions'
+import * as fromCharactersByNameActions from './store/byName/characters-by-name.actions'
 
 //filtered by title without infinite scroll
 
@@ -24,10 +33,14 @@ export interface Filter {
 export class CharactersComponent implements OnInit {
     @Input() filter: Filter
     @Input() infinityScroll = true
+    @Input() spacedItems: boolean = false
 
     //component props
-    settings = mapping()
-    state: Observable<State>
+    state:
+        | Observable<CharactersState>
+        | Observable<CharactersByComicIdState>
+        | Observable<CharactersBySeriesIdState>
+        | Observable<CharactersByNameState>
     list: Observable<CharacterModel[]>
 
     //app-card props
@@ -38,56 +51,61 @@ export class CharactersComponent implements OnInit {
     constructor(private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.queryOnStore()
-        this.subscribeToStore()
-    }
-
-    /*
-        Dispatch NgRx actions
-    */
-    queryOnStore() {
-        if (!!this.filter) {
-            //filtered by comic id list with infinite scroll
-            //filtered by series id list with infinite scroll
-            //filtered by title with infinite scroll
-        } else {
-            //full list with infinite scroll
-            this.imageType = ImageType.standard
-            this.isAnimated = true
-            this.isFloatingLabel = true
-            this.store.dispatch(this.settings.action.fetchStart())
+        switch (this.filter ? this.filter.type : undefined) {
+            // filtered by comic id list with infinite scroll
+            case FILTER_TYPE.byComicId:
+                this.initCharactersByComicId()
+                break
+            // filtered by series id list with infinite scroll
+            case FILTER_TYPE.bySeriesId:
+                this.initCharactersBySeriesId()
+                break
+            // filtered by title with infinite scroll
+            case FILTER_TYPE.byTitle:
+                this.initCharactersByName()
+                break
+            // full list with infinite scroll
+            default:
+                this.initCharacters()
         }
     }
 
-    /*
-        Subscription to NgRx store
-    */
-    subscribeToStore() {
-        this.state = this.store.select(this.settings.state)
-        this.list = this.store.pipe(select(this.settings.list))
+    initCharacters() {
+        this.imageType = ImageType.standard
+        this.isAnimated = true
+        this.isFloatingLabel = true
+        this.store.dispatch(fromCharactersAction.fetchStart())
+        this.state = this.store.select('characters')
+        this.list = this.store.pipe(select(fromRoot.selectAllCharacters))
+    }
 
-        // this.store
-        //     .select(this.settings.state)
-        //     .pipe(
-        //         switchMap(res => {
-        //             this.loading = res.ui.fetching
-        //             // if (res.pagination) {
-        //             //     this.pagination = res.pagination.data
-        //             //     if (this.hasMore !== this.pagination.hasMore) {
-        //             //         this.hasMore = this.pagination.hasMore
-        //             //     }
-        //             // }
+    initCharactersByComicId() {
+        this.store.dispatch(
+            fromCharactersByComicIdAction.fetchStart({
+                payload: +this.filter.value,
+            })
+        )
+        this.state = this.store.select('charactersByComicId')
+        this.list = this.store.pipe(select(fromRoot.selectAllCharactersByComicId))
+    }
 
-        //             this.hasError = !!res.ui.error
+    initCharactersBySeriesId() {
+        this.store.dispatch(
+            fromCharactersBySeriesIdAction.fetchStart({
+                payload: +this.filter.value,
+            })
+        )
+        this.state = this.store.select('charactersBySeriesId')
+        this.list = this.store.pipe(select(fromRoot.selectAllCharactersBySeriesId))
+    }
 
-        //             return this.store.pipe(select(this.service.list))
-        //         })
-        //     )
-        //     .subscribe(res => {
-        //         this.collection = res
-        //         if (this.pagination && this.pagination.offset > -1) {
-        //             this.showPagination = true
-        //         }
-        //     })
+    initCharactersByName() {
+        this.store.dispatch(
+            fromCharactersByNameActions.fetchStart({
+                payload: String(this.filter.value),
+            })
+        )
+        this.state = this.store.select('charactersByName')
+        this.list = this.store.pipe(select(fromRoot.selectAllCharactersByName))
     }
 }

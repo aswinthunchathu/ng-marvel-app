@@ -29,7 +29,7 @@ const generateReducer = createReducer<State>(
             }
         }
     }),
-    on(fromCharactersByNameActions.fetchSuccess, (state, action) => adapter.addAll(action.payload, state))
+    on(fromCharactersByNameActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
 )
 
 export function reducer(state: State | undefined, action: Action) {
