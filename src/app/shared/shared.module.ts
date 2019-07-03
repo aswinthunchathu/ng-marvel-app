@@ -15,6 +15,8 @@ import { MaterialComponentsModule } from './material-components.module'
 import { ApiInterceptor } from './services/api.service'
 import { NoDataComponent } from './components/no-data/no-data.component'
 import { PillComponent } from './components/pill/pill.component'
+import { ListViewComponent } from './list-view/list-view.component';
+import { PaginationComponent } from './pagination/pagination.component'
 
 @NgModule({
     declarations: [
@@ -24,6 +26,8 @@ import { PillComponent } from './components/pill/pill.component'
         ErrorHandlerComponent,
         NoDataComponent,
         PillComponent,
+        ListViewComponent,
+        PaginationComponent,
     ],
     imports: [CommonModule, HttpClientModule, InfiniteScrollModule, MaterialComponentsModule],
     exports: [
@@ -36,6 +40,7 @@ import { PillComponent } from './components/pill/pill.component'
         ErrorHandlerComponent,
         NoDataComponent,
         PillComponent,
+        ListViewComponent,
     ],
     providers: [
         {

@@ -1,0 +1,26 @@
+<app-error-handler [hasError]="hasError">
+    <ng-container [ngSwitch]="isInfiniteScroll">
+        <div
+            *ngSwitchCase="true"
+            [class]="spacedItems ? 'grid-spaced' : 'grids'"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            [infiniteScrollDisabled]="!hasMore"
+            (scrolled)="onScroll()"
+        >
+            <ng-container *ngTemplateOutlet="list"></ng-container>
+        </div>
+        <div *ngSwitchCase="false" [class]="spacedItems ? 'grid-spaced' : 'grids'">
+            <ng-container *ngTemplateOutlet="list"></ng-container>
+        </div>
+    </ng-container>
+</app-error-handler>
+
+<app-loader *ngIf="loading"></app-loader>
+
+<ng-template #list>
+    <ng-content></ng-content>
+</ng-template>
+
+<!-- <app-page-info *ngIf="showPagination" [total]="totalPages" [current]="currentPage" hideAfter="5000"></app-page-info> -->

@@ -4,19 +4,19 @@ import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromUIActions from '../../ui/ui.actions'
-import * as fromPaginationActions from '../../pagination/pagination.action'
-import * as fromCharactersByComicIdActions from './characters-by-comicId.actions'
-import * as fromRoot from '../../app.selector'
+import * as fromUIActions from '../../../store/ui/ui.actions'
+import * as fromPaginationActions from '../../../store/pagination/pagination.action'
+import * as fromCharactersBySeriesIdActions from './characters-by-seriesId.actions'
+import * as fromRoot from '../../../store/app.selector'
 import { Pagination } from '../../../model/pagination.model'
-import { AppState } from '../../app.reducer'
+import { AppState } from '../../../store/app.reducer'
 import { CharacterModel } from '../../../model/character.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS } from '../../../constants'
-import { UIService } from '../../ui/ui.service'
+import { UIService } from '../../../store/ui/ui.service'
 
 @Injectable()
-export class CharactersByComicIdEffects {
+export class CharactersBySeriesIdEffects {
     /*
      * This effect fetch from server
      * @triggering action: fetch start
@@ -24,15 +24,15 @@ export class CharactersByComicIdEffects {
      */
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(fromCharactersByComicIdActions.fetchStart),
+            ofType(fromCharactersBySeriesIdActions.fetchStart),
             withLatestFrom(
-                this.store.pipe(select(fromRoot.selectCharactersByComicIdTotal)),
-                this.store.select('charactersByComicId')
+                this.store.pipe(select(fromRoot.selectCharactersBySeriesIdTotal)),
+                this.store.select('charactersBySeriesId')
             ),
             switchMap(([action, count, { pagination }]) => {
                 this.store.dispatch(fromUIActions.resetError(this.TAG)())
                 if (count > 0) {
-                    return of(fromCharactersByComicIdActions.fetchedFromStore())
+                    return of(fromCharactersBySeriesIdActions.fetchedFromStore())
                 }
                 return this.fetchFromServer(action.payload, pagination.data.limit, pagination.data.nextPage)
             })
@@ -46,14 +46,14 @@ export class CharactersByComicIdEffects {
      */
     fetchNextPage$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(fromCharactersByComicIdActions.fetchNextPage),
+            ofType(fromCharactersBySeriesIdActions.fetchNextPage),
             withLatestFrom(
-                this.store.pipe(select(fromRoot.selectFilterIdForCharactersByComicId)),
-                this.store.select('charactersByComicId')
+                this.store.pipe(select(fromRoot.selectFilterIdForCharactersBySeriesId)),
+                this.store.select('charactersBySeriesId')
             ),
             switchMap(([__, filterId, { pagination }]) => {
                 if (!pagination.data.hasMore) {
-                    return of(fromCharactersByComicIdActions.noMoreToFetch())
+                    return of(fromCharactersBySeriesIdActions.noMoreToFetch())
                 } else {
                     return this.fetchFromServer(filterId, pagination.data.limit, pagination.data.nextPage)
                 }
@@ -61,7 +61,7 @@ export class CharactersByComicIdEffects {
         )
     )
 
-    private readonly TAG = ACTION_TAGS.charactersByComicId
+    private readonly TAG = ACTION_TAGS.charactersBySeriesId
 
     constructor(
         private api: APIService,
@@ -76,7 +76,7 @@ export class CharactersByComicIdEffects {
      * @action fired: show UI spinner
      */
     showSpinner$ = this.uiService.showSpinnerEffect(
-        [fromCharactersByComicIdActions.fetchStart, fromCharactersByComicIdActions.fetchNextPage],
+        [fromCharactersBySeriesIdActions.fetchStart, fromCharactersBySeriesIdActions.fetchNextPage],
         this.TAG
     )
 
@@ -87,9 +87,9 @@ export class CharactersByComicIdEffects {
      */
     hideSpinner$ = this.uiService.hideSpinnerEffect(
         [
-            fromCharactersByComicIdActions.fetchSuccess,
-            fromCharactersByComicIdActions.fetchedFromStore,
-            fromCharactersByComicIdActions.noMoreToFetch,
+            fromCharactersBySeriesIdActions.fetchSuccess,
+            fromCharactersBySeriesIdActions.fetchedFromStore,
+            fromCharactersBySeriesIdActions.noMoreToFetch,
         ],
         this.TAG
     )
@@ -102,9 +102,9 @@ export class CharactersByComicIdEffects {
      * return : Observable<fetch success / fetch error action>
      */
     private fetchFromServer(id: number, limit: number, offset: number) {
-        return this.api.getCharactersByComicId(id, limit, offset).pipe(
+        return this.api.getCharactersBySeriesId(id, limit, offset).pipe(
             mergeMap(res => [
-                fromCharactersByComicIdActions.fetchSuccess({
+                fromCharactersBySeriesIdActions.fetchSuccess({
                     payload: res.results.map(
                         item => new CharacterModel(item.id, item.name, item.description, item.thumbnail)
                     ),

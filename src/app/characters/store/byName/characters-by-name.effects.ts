@@ -5,12 +5,12 @@ import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
 import * as fromCharactersByNameActions from './characters-by-name.actions'
-import * as fromRoot from '../../app.selector'
-import { AppState } from '../../app.reducer'
+import * as fromRoot from '../../../store/app.selector'
+import { AppState } from '../../../store/app.reducer'
 import { CharacterModel } from '../../../model/character.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS, SEARCH_PAGE_LIMIT } from '../../../constants'
-import { UIService } from '../../ui/ui.service'
+import { UIService } from '../../../store/ui/ui.service'
 
 @Injectable()
 export class CharactersByNameEffects {

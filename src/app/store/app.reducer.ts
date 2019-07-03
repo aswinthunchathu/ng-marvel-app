@@ -1,10 +1,10 @@
 import { ActionReducerMap } from '@ngrx/store'
 
-import * as fromCharacters from './characters'
-import * as fromCharacter from './characters/details'
-import * as fromCharactersByComicId from './characters/byComicId'
-import * as fromCharactersBySeriesId from './characters/bySeriesId'
-import * as fromCharactersByName from './characters/byName'
+import * as fromCharacters from '../characters/store'
+import * as fromCharacter from '../characters/store/details'
+import * as fromCharactersByComicId from '../characters/store/byComicId'
+import * as fromCharactersBySeriesId from '../characters/store/bySeriesId'
+import * as fromCharactersByName from '../characters/store/byName'
 
 import * as fromComics from './comics'
 import * as fromComic from './comics/details'

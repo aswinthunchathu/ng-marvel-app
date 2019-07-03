@@ -15,6 +15,7 @@ import { DetailsComponent } from './list-view/details/details.component'
 import { PageInfoComponent } from './list-view/page-info/page-info.component'
 import { SearchBoxComponent } from './search/search-box/search-box.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
+import { CharactersComponent } from './characters/characters.component'
 
 @NgModule({
     declarations: [
@@ -22,11 +23,11 @@ import { SearchResultsComponent } from './search/search-results/search-results.c
         NavLinkComponent,
         SidebarComponent,
         HeaderComponent,
-        ListViewComponent,
-        DetailsComponent,
-        PageInfoComponent,
+        // DetailsComponent,
+        // PageInfoComponent,
         SearchBoxComponent,
-        SearchResultsComponent,
+        // SearchResultsComponent,
+        CharactersComponent,
     ],
     imports: [BrowserAnimationsModule, ReactiveFormsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],

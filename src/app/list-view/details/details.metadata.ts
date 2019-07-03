@@ -1,5 +1,5 @@
 import { FILTER_TYPE } from '../list-view.metadata'
-import * as fromCharacterActions from '../../store/characters/details/character.actions'
+import * as fromCharacterActions from '../../characters/store/details/character.actions'
 import * as fromComicActions from '../../store/comics/details/comic.actions'
 import * as fromSeriesDetailsActions from '../../store/series/details/series-details.actions'
 
