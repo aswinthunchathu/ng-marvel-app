@@ -10,12 +10,10 @@ import { HeaderComponent } from './header/header.component'
 import { AppStoreModule } from './store/app-store.module'
 import { SharedModule } from './shared/shared.module'
 import { AppRoutingModule } from './app-routing.module'
-import { ListViewComponent } from './list-view/list-view.component'
 import { DetailsComponent } from './list-view/details/details.component'
-import { PageInfoComponent } from './list-view/page-info/page-info.component'
 import { SearchBoxComponent } from './search/search-box/search-box.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
-import { CharactersComponent } from './characters/characters.component';
+import { CharactersComponent } from './characters/characters.component'
 import { DummyComponent } from './dummy/dummy.component'
 
 @NgModule({
@@ -25,9 +23,8 @@ import { DummyComponent } from './dummy/dummy.component'
         SidebarComponent,
         HeaderComponent,
         // DetailsComponent,
-        // PageInfoComponent,
         SearchBoxComponent,
-        // SearchResultsComponent,
+        SearchResultsComponent,
         CharactersComponent,
         DummyComponent,
     ],

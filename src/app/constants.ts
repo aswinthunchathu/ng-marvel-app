@@ -19,3 +19,8 @@ export enum ACTION_TAGS {
     seriesByCharacterId = '[SERIES BY CHARACTER ID]',
     seriesByName = '[SERIES BY NAME]',
 }
+
+export enum ROUTE_PATHS {
+    search = 'search',
+    characters = 'characters',
+}

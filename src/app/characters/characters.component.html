@@ -1,9 +1,9 @@
 <app-list-view
-    [loading]="(state | async).ui.fetching"
+    [loading]="(state | async) && (state | async).ui.fetching"
     [hasError]="false"
     [spacedItems]="spacedItems"
     [isInfiniteScroll]="infinityScroll"
-    [hasMore]="(state | async).pagination.data.hasMore"
+    [hasMore]="(state | async) && (state | async).pagination.data.hasMore"
     (scrolled)="onScroll()"
 >
     <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of list | async">
@@ -18,12 +18,12 @@
 </app-list-view>
 
 <app-pagination
-    *ngIf="showPagination"
+    *ngIf="withPagination && showPagination"
     (hideEvent)="showPagination = false"
-    [total]="(state | async).pagination.data.total"
+    [total]="(state | async) ? (state | async).pagination.data.total : 0"
     [current]="
-        (state | async).pagination.data.offset === -1
-            ? 0
-            : (state | async).pagination.data.offset + (state | async).pagination.data.count
+        (state | async) && (state | async).pagination.data.offset > -1
+            ? (state | async).pagination.data.offset + (state | async).pagination.data.count
+            : 0
     "
 ></app-pagination>

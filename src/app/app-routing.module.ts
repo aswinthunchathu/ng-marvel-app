@@ -2,14 +2,19 @@ import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 
 import { CharactersComponent } from './characters/characters.component'
-import { DummyComponent } from './dummy/dummy.component'
+import { SearchResultsComponent } from './search/search-results/search-results.component'
+import { ROUTE_PATHS } from './constants'
 
 const routes: Routes = [
     {
-        path: 'characters',
-        component: DummyComponent,
+        path: ROUTE_PATHS.search,
+        component: SearchResultsComponent,
     },
-    { path: '', redirectTo: '/characters', pathMatch: 'full' },
+    {
+        path: ROUTE_PATHS.characters,
+        component: CharactersComponent,
+    },
+    { path: '', redirectTo: `/${ROUTE_PATHS.characters}`, pathMatch: 'full' },
 ]
 
 @NgModule({

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
+import { ROUTE_PATHS } from '../../constants'
 
 @Component({
     selector: 'app-search-box',
@@ -18,15 +19,15 @@ export class SearchBoxComponent implements OnInit {
 
     initForm() {
         this.searchForm = new FormGroup({
-            search: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+            search: new FormControl(null, [Validators.required]),
         })
     }
 
     onSubmit() {
         if (this.searchForm.valid) {
-            this.router.navigate(['search'], {
+            this.router.navigate([ROUTE_PATHS.search], {
                 queryParams: {
-                    search: this.searchForm.controls.search.value,
+                    key: this.searchForm.controls.search.value,
                 },
             })
         }
