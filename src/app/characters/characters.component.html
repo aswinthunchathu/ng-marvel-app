@@ -1,1 +1,16 @@
-<app-list-view [loading]="true" [hasError]="false" [isInfiniteScroll]="true" [hasMore]="true"></app-list-view>
+<app-list-view
+    [loading]="(state | async).ui.fetching"
+    [hasError]="false"
+    [isInfiniteScroll]="infinityScroll"
+    [hasMore]="true"
+>
+    <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of list | async">
+        <app-card
+            [image-src]="item.image[imageType].actual"
+            [placeholder-image-src]="item.image[imageType].placeholder"
+            [title]="item.title"
+            [animated-card]="isAnimated"
+            [floating-label]="isFloatingLabel"
+        ></app-card>
+    </a>
+</app-list-view>

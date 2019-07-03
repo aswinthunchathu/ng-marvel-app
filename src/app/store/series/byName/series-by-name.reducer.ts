@@ -2,7 +2,7 @@ import { createReducer, on, Action } from '@ngrx/store'
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 
 import * as fromSeriesByNameActions from './series-by-name.actions'
-import { CharacterModel } from '../../../model/character.model'
+import { CharacterModel } from '../../../characters/character.model'
 
 export interface State extends EntityState<CharacterModel> {
     filter: string

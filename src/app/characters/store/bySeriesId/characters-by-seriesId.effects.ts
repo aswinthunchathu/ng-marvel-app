@@ -10,7 +10,7 @@ import * as fromCharactersBySeriesIdActions from './characters-by-seriesId.actio
 import * as fromRoot from '../../../store/app.selector'
 import { Pagination } from '../../../model/pagination.model'
 import { AppState } from '../../../store/app.reducer'
-import { CharacterModel } from '../../../model/character.model'
+import { CharacterModel } from '../../character.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS } from '../../../constants'
 import { UIService } from '../../../store/ui/ui.service'

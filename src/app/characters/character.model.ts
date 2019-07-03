@@ -1,5 +1,5 @@
-import { Image } from './shared.interface'
-import { ImageGenerator } from './image-generator.model'
+import { Image } from '../model/shared.interface'
+import { ImageGenerator } from '../model/image-generator.model'
 
 export class CharacterModel {
     constructor(public id: number, public title: string, public description: string, public thumbnail: Image) {}
