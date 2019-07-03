@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core'
+import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core'
 import { trigger, transition, animate, style } from '@angular/animations'
 
 @Component({
@@ -15,31 +15,23 @@ import { trigger, transition, animate, style } from '@angular/animations'
         ]),
     ],
 })
-export class PaginationComponent implements OnDestroy {
+export class PaginationComponent implements OnInit, OnDestroy {
     /*
-        Input for this component
+        component props
     */
     @Input() total = 0
     @Input() current = 0
-    @Input() hideAfter = 5000
-    @Input() set showCondition(val) {
-        this.show = val
-        if (val) {
-            this.hideTimeout = setTimeout(() => {
-                this.hideEvent.emit()
-            }, +this.hideAfter)
-        }
-    }
-    show = false
-
-    /*
-        Event emitted after the specified time (hideAfter)
-    */
     @Output() hideEvent: EventEmitter<void> = new EventEmitter()
 
     private hideTimeout
 
     constructor() {}
+
+    ngOnInit() {
+        this.hideTimeout = setTimeout(() => {
+            this.hideEvent.emit()
+        }, 5000)
+    }
 
     ngOnDestroy() {
         /*

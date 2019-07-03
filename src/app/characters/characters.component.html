@@ -3,7 +3,8 @@
     [hasError]="false"
     [spacedItems]="spacedItems"
     [isInfiniteScroll]="infinityScroll"
-    [hasMore]="true"
+    [hasMore]="(state | async).pagination.data.hasMore"
+    (scrolled)="onScroll()"
 >
     <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of list | async">
         <app-card
@@ -15,3 +16,14 @@
         ></app-card>
     </a>
 </app-list-view>
+
+<app-pagination
+    *ngIf="showPagination"
+    (hideEvent)="showPagination = false"
+    [total]="(state | async).pagination.data.total"
+    [current]="
+        (state | async).pagination.data.offset === -1
+            ? 0
+            : (state | async).pagination.data.offset + (state | async).pagination.data.count
+    "
+></app-pagination>

@@ -12,3 +12,10 @@ export class CharacterModel {
         return ['/characters', this.id]
     }
 }
+
+export enum FILTER_TYPE {
+    'none' = 'none',
+    'byComicId' = 'byComicId',
+    'bySeriesId' = 'bySeriesId',
+    'byTitle' = 'byTitle',
+}

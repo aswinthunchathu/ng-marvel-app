@@ -15,8 +15,8 @@ import { MaterialComponentsModule } from './material-components.module'
 import { ApiInterceptor } from './services/api.service'
 import { NoDataComponent } from './components/no-data/no-data.component'
 import { PillComponent } from './components/pill/pill.component'
-import { ListViewComponent } from './list-view/list-view.component';
-import { PaginationComponent } from './pagination/pagination.component'
+import { ListViewComponent } from './components/list-view/list-view.component'
+import { PaginationComponent } from './components/pagination/pagination.component'
 
 @NgModule({
     declarations: [
@@ -41,6 +41,7 @@ import { PaginationComponent } from './pagination/pagination.component'
         NoDataComponent,
         PillComponent,
         ListViewComponent,
+        PaginationComponent,
     ],
     providers: [
         {

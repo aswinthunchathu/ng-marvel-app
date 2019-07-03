@@ -80,6 +80,13 @@ export const selectCharactersByNameTotal = createSelector(
     fromCharactersByNameReducer.selectTotal
 )
 
+export const selectFilterForCharactersByName = createSelector(
+    charactersByName,
+    state => {
+        return state.filter
+    }
+)
+
 const comics = (state: AppState) => state.comics.data
 
 export const selectAllComics = createSelector(
