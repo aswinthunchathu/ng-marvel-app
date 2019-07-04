@@ -16,10 +16,19 @@ const initialState = adapter.getInitialState({
 
 const generateReducer = createReducer<State>(
     initialState,
-    on(fromSeriesByNameActions.fetchStart, (state, action) => ({
-        ...state,
-        filter: action.payload,
-    })),
+    on(fromSeriesByNameActions.fetchStart, (state, action) => {
+        if (state.filter === action.payload) {
+            return {
+                ...state,
+            }
+        } else {
+            return {
+                ...state,
+                ...initialState,
+                filter: action.payload,
+            }
+        }
+    }),
     on(fromSeriesByNameActions.fetchSuccess, (state, action) => adapter.addAll(action.payload, state))
 )
 

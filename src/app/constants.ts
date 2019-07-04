@@ -23,4 +23,6 @@ export enum ACTION_TAGS {
 export enum ROUTE_PATHS {
     search = 'search',
     characters = 'characters',
+    comics = 'comics',
+    series = 'series',
 }

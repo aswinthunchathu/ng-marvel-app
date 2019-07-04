@@ -9,7 +9,7 @@ import * as fromRoot from '../../../store/app.selector'
 import { AppState } from '../../../store/app.reducer'
 import { SeriesModel } from '../../series.model'
 import { APIService } from '../../../shared/services/api.service'
-import { ACTION_TAGS, SEARCH_PAGE_LIMIT } from '../../../constants'
+import { ACTION_TAGS, SEARCH_PAGE_LIMIT, PAGE_LIMIT } from '../../../constants'
 import { UIService } from '../../../store/ui/ui.service'
 
 @Injectable()
@@ -19,15 +19,38 @@ export class SeriesByNameEffects {
      * @triggering action: fetch start
      * @action fired: fetch success / fetch error
      */
+
     fetchStart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromSeriesByNameActions.fetchStart),
-            withLatestFrom(this.store.pipe(select(fromRoot.selectComicsByNameTotal))),
+            withLatestFrom(this.store.pipe(select(fromRoot.selectCharactersByNameTotal))),
             switchMap(([action, count]) => {
                 if (count > 0) {
                     return of(fromSeriesByNameActions.fetchedFromStore())
                 }
-                return this.fetchFromServer(action.payload, SEARCH_PAGE_LIMIT, 0)
+                return this.fetchFromServer(action.payload, PAGE_LIMIT, 0)
+            })
+        )
+    )
+
+    /*
+     * This effect fetch next set from server
+     * @triggering action: fetch next page
+     * @action fired: fetch success / fetch  error
+     */
+    fetchNextPage$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromSeriesByNameActions.fetchNextPage),
+            withLatestFrom(
+                this.store.pipe(select(fromRoot.selectFilterForCharactersByName)),
+                this.store.select('charactersByName')
+            ),
+            switchMap(([__, filter, { pagination }]) => {
+                if (!pagination.data.hasMore) {
+                    return of(fromSeriesByNameActions.noMoreToFetch())
+                } else {
+                    return this.fetchFromServer(filter, pagination.data.limit, pagination.data.nextPage)
+                }
             })
         )
     )
@@ -46,14 +69,24 @@ export class SeriesByNameEffects {
      * @triggering action: fetch start/fetch next page
      * @action fired: show UI spinner
      */
-    showSpinner$ = this.uiService.showSpinnerEffect([fromSeriesByNameActions.fetchStart], this.TAG)
+    showSpinner$ = this.uiService.showSpinnerEffect(
+        [fromSeriesByNameActions.fetchStart, fromSeriesByNameActions.fetchNextPage],
+        this.TAG
+    )
 
     /*
      * This effect is used to hide spinner
      * @triggering action: fetch success / fetch from store/ no moire to fetch
      * @action fired: show UI spinner
      */
-    hideSpinner$ = this.uiService.hideSpinnerEffect([fromSeriesByNameActions.fetchSuccess], this.TAG)
+    hideSpinner$ = this.uiService.hideSpinnerEffect(
+        [
+            fromSeriesByNameActions.fetchSuccess,
+            fromSeriesByNameActions.fetchedFromStore,
+            fromSeriesByNameActions.noMoreToFetch,
+        ],
+        this.TAG
+    )
 
     /*
      * This function fetch data from server

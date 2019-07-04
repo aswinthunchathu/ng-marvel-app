@@ -8,4 +8,24 @@
         </div>
         <app-characters [withPagination]="false" [spacedItems]="true" [infinityScroll]="false"></app-characters>
     </div>
+
+    <div>
+        <div class="search-results--heading">
+            Comics
+            <a class="search-results--show-more" [routerLink]="['/comics']" queryParamsHandling="merge">
+                Show More
+            </a>
+        </div>
+        <app-comics [withPagination]="false" [spacedItems]="true" [infinityScroll]="false"></app-comics>
+    </div>
+
+    <div>
+        <div class="search-results--heading">
+            Series
+            <a class="search-results--show-more" [routerLink]="['/series']" queryParamsHandling="merge">
+                Show More
+            </a>
+        </div>
+        <app-series [withPagination]="false" [spacedItems]="true" [infinityScroll]="false"></app-series>
+    </div>
 </div>

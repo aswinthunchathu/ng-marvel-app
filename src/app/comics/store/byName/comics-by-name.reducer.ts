@@ -16,11 +16,20 @@ const initialState = adapter.getInitialState({
 
 const generateReducer = createReducer<State>(
     initialState,
-    on(fromComicsByNameActions.fetchStart, (state, action) => ({
-        ...state,
-        filter: action.payload,
-    })),
-    on(fromComicsByNameActions.fetchSuccess, (state, action) => adapter.addAll(action.payload, state))
+    on(fromComicsByNameActions.fetchStart, (state, action) => {
+        if (state.filter === action.payload) {
+            return {
+                ...state,
+            }
+        } else {
+            return {
+                ...state,
+                ...initialState,
+                filter: action.payload,
+            }
+        }
+    }),
+    on(fromComicsByNameActions.fetchSuccess, (state, action) => adapter.addMany(action.payload, state))
 )
 
 export function reducer(state: State | undefined, action: Action) {

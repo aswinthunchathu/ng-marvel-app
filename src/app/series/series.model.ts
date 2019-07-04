@@ -12,3 +12,9 @@ export class SeriesModel {
         return ['/series', this.id]
     }
 }
+
+export enum FILTER_TYPE {
+    'none' = 'none',
+    'byCharacterId' = 'byCharacterId',
+    'byTitle' = 'byTitle',
+}

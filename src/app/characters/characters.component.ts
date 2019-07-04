@@ -20,8 +20,6 @@ import * as fromCharactersByNameAction from './store/byName/characters-by-name.a
 import { Pagination } from '../shared/model/pagination.model'
 import { ROUTE_PATHS } from '../constants'
 
-//filtered by title without infinite scroll
-
 export interface Filter {
     type: FILTER_TYPE
     value: string | number
@@ -148,7 +146,6 @@ export class CharactersComponent implements OnInit {
                 break
             default:
                 this.store.dispatch(fromCharactersAction.fetchNextPage())
-                this.initCharacters()
         }
     }
 }
