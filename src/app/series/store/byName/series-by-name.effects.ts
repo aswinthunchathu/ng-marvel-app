@@ -5,12 +5,12 @@ import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
 import * as fromSeriesByNameActions from './series-by-name.actions'
-import * as fromRoot from '../../app.selector'
-import { AppState } from '../../app.reducer'
-import { SeriesModel } from '../../../series/series.model'
+import * as fromRoot from '../../../store/app.selector'
+import { AppState } from '../../../store/app.reducer'
+import { SeriesModel } from '../../series.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS, SEARCH_PAGE_LIMIT } from '../../../constants'
-import { UIService } from '../../ui/ui.service'
+import { UIService } from '../../../store/ui/ui.service'
 
 @Injectable()
 export class SeriesByNameEffects {

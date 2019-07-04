@@ -1,7 +1,7 @@
 import { FILTER_TYPE } from '../list-view.metadata'
 import * as fromCharacterActions from '../../characters/store/details/character.actions'
 import * as fromComicActions from '../../comics/store/details/comic.actions'
-import * as fromSeriesDetailsActions from '../../store/series/details/series-details.actions'
+import * as fromSeriesDetailsActions from '../../series/store/details/series-details.actions'
 
 /*
     app-details component type

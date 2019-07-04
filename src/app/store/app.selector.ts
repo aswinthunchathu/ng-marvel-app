@@ -14,9 +14,9 @@ import * as fromComicsReducer from '../comics/store/comics.reducer'
 import * as fromComicsByCharacterIdReducer from '../comics/store/byCharacterId/comics-by-characterId.reducer'
 import * as fromComicsBySeriesIdReducer from '../comics/store/bySeriesId/comics-by-seriesId.reducer'
 import * as fromComicsByNameReducer from '../comics/store/byName/comics-by-name.reducer'
-import * as fromSeriesReducer from './series/series.reducer'
-import * as fromSeriesByCharacterIdReducer from './series/byCharacterId/series-by-characterId.reducer'
-import * as fromSeriesByNameReducer from './series/byName/series-by-name.reducer'
+import * as fromSeriesReducer from '../series/store/series.reducer'
+import * as fromSeriesByCharacterIdReducer from '../series/store/byCharacterId/series-by-characterId.reducer'
+import * as fromSeriesByNameReducer from '../series/store/byName/series-by-name.reducer'
 
 const characters = (state: AppState) => state.characters.data
 

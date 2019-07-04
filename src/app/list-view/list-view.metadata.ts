@@ -5,11 +5,11 @@ import * as fromCharactersBySeriesIdAction from '../characters/store/bySeriesId/
 import * as fromComicsAction from '../comics/store/comics.actions'
 import * as fromComicsByCharacterIdAction from '../comics/store/byCharacterId/comics-by-characterId.actions'
 import * as fromComicsBySeriesIdAction from '../comics/store/bySeriesId/comics-by-seriesId.actions'
-import * as fromSeriesActions from '../store/series/series.actions'
-import * as fromSeriesByCharacterIdActions from '../store/series/byCharacterId/series-by-characterId.actions'
+import * as fromSeriesActions from '../series/store/series.actions'
+import * as fromSeriesByCharacterIdActions from '../series/store/byCharacterId/series-by-characterId.actions'
 import * as fromCharactersByNameActions from '../characters/store/byName/characters-by-name.actions'
 import * as fromComicsByNameActions from '../comics/store/byName/comics-by-name.actions'
-import * as fromSeriesByNameActions from '../store/series/byName/series-by-name.actions'
+import * as fromSeriesByNameActions from '../series/store/byName/series-by-name.actions'
 /*
     Types of filter app-lits-view component accepts
 */

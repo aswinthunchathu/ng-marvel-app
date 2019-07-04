@@ -4,16 +4,16 @@ import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import * as fromUIActions from '../../ui/ui.actions'
-import * as fromPaginationActions from '../../pagination/pagination.action'
-import * as fromRoot from '../..//app.selector'
+import * as fromUIActions from '../../../store/ui/ui.actions'
+import * as fromPaginationActions from '../../../store/pagination/pagination.action'
+import * as fromRoot from '../../../store/app.selector'
 import * as fromSeriesByCharacterIDActions from './series-by-characterId.actions'
 import { Pagination } from '../../../model/pagination.model'
-import { AppState } from '../..//app.reducer'
-import { SeriesModel } from '../../../series/series.model'
+import { AppState } from '../../../store/app.reducer'
+import { SeriesModel } from '../../series.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS } from '../../../constants'
-import { UIService } from '../../ui/ui.service'
+import { UIService } from '../../../store/ui/ui.service'
 
 @Injectable()
 export class SeriesByCharacterIdEffects {
