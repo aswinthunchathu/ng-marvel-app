@@ -3,7 +3,7 @@ import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 import { createReducer, on, Action } from '@ngrx/store'
 
 import * as fromComicsBySeriesIdActions from './comics-by-seriesId.actions'
-import { ComicModel } from '../../../model/comic.model'
+import { ComicModel } from '../../comic.model'
 
 export interface State extends EntityState<ComicModel> {
     filterId: number

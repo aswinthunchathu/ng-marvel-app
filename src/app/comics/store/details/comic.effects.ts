@@ -5,12 +5,12 @@ import { of } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
 import * as fromComicActions from './comic.actions'
-import * as fromRoot from '../../app.selector'
-import { AppState } from '../../app.reducer'
-import { ComicModel } from '../../../model/comic.model'
+import * as fromRoot from '../../../store/app.selector'
+import { AppState } from '../../../store/app.reducer'
+import { ComicModel } from '../../comic.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS } from '../../../constants'
-import { UIService } from '../../ui/ui.service'
+import { UIService } from '../../../store/ui/ui.service'
 
 @Injectable()
 export class ComicEffects {

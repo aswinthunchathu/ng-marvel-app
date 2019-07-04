@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store'
 
-import { ComicModel } from '../../../model/comic.model'
+import { ComicModel } from '../../comic.model'
 import { ACTION_TAGS } from '../../../constants'
 
 export const FETCH_COMIC_START = '[COMIC] Fetch Start'

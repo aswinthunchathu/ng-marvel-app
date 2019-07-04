@@ -1,8 +1,8 @@
 import { combineReducers } from '@ngrx/store'
 
 import { ACTION_TAGS } from '../../constants'
-import * as fromUIReducer from '../ui/ui.reducer'
-import * as fromPaginationReducer from '../pagination/pagination.reducer'
+import * as fromUIReducer from '../../store/ui/ui.reducer'
+import * as fromPaginationReducer from '../../store/pagination/pagination.reducer'
 import * as fromReducer from './comics.reducer'
 
 export interface State {

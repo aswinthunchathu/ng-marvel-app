@@ -1,8 +1,8 @@
 import { combineReducers } from '@ngrx/store'
 
 import { ACTION_TAGS } from '../../../constants'
-import * as fromUIReducer from '../../ui/ui.reducer'
-import * as fromReducer from './comics-by-name.reducer'
+import * as fromUIReducer from '../../../store/ui/ui.reducer'
+import * as fromReducer from './comic.reducer'
 
 export interface State {
     ui: fromUIReducer.State
@@ -10,6 +10,6 @@ export interface State {
 }
 
 export default combineReducers<State>({
-    ui: fromUIReducer.reducer(ACTION_TAGS.comicsByName),
+    ui: fromUIReducer.reducer(ACTION_TAGS.comic),
     data: fromReducer.reducer,
 })

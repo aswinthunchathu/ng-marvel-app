@@ -14,7 +14,9 @@ import { DetailsComponent } from './list-view/details/details.component'
 import { SearchBoxComponent } from './search/search-box/search-box.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
 import { CharactersComponent } from './characters/characters.component'
-import { DummyComponent } from './dummy/dummy.component'
+import { DummyComponent } from './dummy/dummy.component';
+import { ComicsComponent } from './comics/comics.component';
+import { SeriesComponent } from './series/series.component'
 
 @NgModule({
     declarations: [
@@ -27,6 +29,8 @@ import { DummyComponent } from './dummy/dummy.component'
         SearchResultsComponent,
         CharactersComponent,
         DummyComponent,
+        ComicsComponent,
+        SeriesComponent,
     ],
     imports: [BrowserAnimationsModule, ReactiveFormsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],
