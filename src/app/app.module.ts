@@ -14,8 +14,10 @@ import { SearchBoxComponent } from './search/search-box/search-box.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
 import { CharactersComponent } from './characters/characters.component'
 import { ComicsComponent } from './comics/comics.component'
-import { SeriesComponent } from './series/series.component';
-import { DetailsComponent } from './characters/details/details.component'
+import { SeriesComponent } from './series/series.component'
+import { DetailsComponent as CharacterDetails } from './characters/details/details.component'
+import { DetailsComponent as ComicDetails } from './comics/details/details.component'
+import { DetailsComponent as SeriesDetails } from './comics/details/details.component'
 
 @NgModule({
     declarations: [
@@ -23,13 +25,14 @@ import { DetailsComponent } from './characters/details/details.component'
         NavLinkComponent,
         SidebarComponent,
         HeaderComponent,
-        // DetailsComponent,
         SearchBoxComponent,
         SearchResultsComponent,
         CharactersComponent,
         ComicsComponent,
         SeriesComponent,
-        DetailsComponent,
+        CharacterDetails,
+        ComicDetails,
+        SeriesDetails,
     ],
     imports: [BrowserAnimationsModule, ReactiveFormsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],

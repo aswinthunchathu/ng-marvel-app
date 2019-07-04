@@ -6,7 +6,9 @@ import { CharactersComponent } from './characters/characters.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
 import { ComicsComponent } from './comics/comics.component'
 import { SeriesComponent } from './series/series.component'
-import { DetailsComponent } from './characters/details/details.component'
+import { DetailsComponent as CharacterDetails } from './characters/details/details.component'
+import { DetailsComponent as ComicDetails } from './comics/details/details.component'
+import { DetailsComponent as SeriesDetails } from './comics/details/details.component'
 
 const routes: Routes = [
     {
@@ -14,8 +16,16 @@ const routes: Routes = [
         component: SearchResultsComponent,
     },
     {
+        path: `${ROUTE_PATHS.series}/:id`,
+        component: SeriesDetails,
+    },
+    {
         path: ROUTE_PATHS.series,
         component: SeriesComponent,
+    },
+    {
+        path: `${ROUTE_PATHS.comics}/:id`,
+        component: ComicDetails,
     },
     {
         path: ROUTE_PATHS.comics,
@@ -23,7 +33,7 @@ const routes: Routes = [
     },
     {
         path: `${ROUTE_PATHS.characters}/:id`,
-        component: DetailsComponent,
+        component: CharacterDetails,
     },
     {
         path: ROUTE_PATHS.characters,

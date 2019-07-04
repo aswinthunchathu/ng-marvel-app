@@ -4,12 +4,12 @@ import { ActivatedRoute, Router, Params } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 import { AppState } from '../../store/app.reducer'
-import * as fromCharacterDetailsActions from '../store/details/character.actions'
+import * as fromSeriesDetailsActions from '../store/details/series-details.actions'
+import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
 import { Filter as ComicsFilter } from '../../comics/comics.component'
 import { FILTER_TYPE as ComicsFilterType } from '../../comics/comic.model'
-import { Filter as SeriesFilter } from '../../series/series.component'
-import { FILTER_TYPE as SeriesFilterType } from '../../series/series.model'
-import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
+import { Filter as CharacterFilter } from '../../characters/characters.component'
+import { FILTER_TYPE as CharactersFilterType } from '../../characters/character.model'
 
 @Component({
     selector: 'app-details',
@@ -23,7 +23,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     hasError: boolean
     loading: boolean
     comicsFilter: ComicsFilter
-    seriesFilter: SeriesFilter
+    characterFilter: CharacterFilter
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -38,7 +38,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
             const filter = +params[key]
             this.setFilter(filter)
             this.store.dispatch(
-                fromCharacterDetailsActions.fetchStart({
+                fromSeriesDetailsActions.fetchStart({
                     payload: filter,
                 })
             )
@@ -46,7 +46,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     subscribeToStore() {
-        this.storeSub = this.store.select('character').subscribe(res => {
+        this.storeSub = this.store.select('seriesDetails').subscribe(res => {
             this.hasError = !!res.ui.error
             this.loading = res.ui.fetching
 
@@ -63,12 +63,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     setFilter(value: number) {
         this.comicsFilter = {
-            type: ComicsFilterType.byCharacterId,
+            type: ComicsFilterType.bySeriesId,
             value,
         }
 
-        this.seriesFilter = {
-            type: SeriesFilterType.byCharacterId,
+        this.characterFilter = {
+            type: CharactersFilterType.bySeriesId,
             value,
         }
     }

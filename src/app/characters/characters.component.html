@@ -21,9 +21,5 @@
     *ngIf="withPagination && showPagination"
     (hideEvent)="showPagination = false"
     [total]="(state | async) ? (state | async).pagination.data.total : 0"
-    [current]="
-        (state | async) && (state | async).pagination.data.offset > -1
-            ? (state | async).pagination.data.offset + (state | async).pagination.data.count
-            : 0
-    "
+    [current]="(list | async).length"
 ></app-pagination>
