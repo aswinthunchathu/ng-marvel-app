@@ -10,12 +10,12 @@ import { HeaderComponent } from './header/header.component'
 import { AppStoreModule } from './store/app-store.module'
 import { SharedModule } from './shared/shared.module'
 import { AppRoutingModule } from './app-routing.module'
-import { DetailsComponent } from './list-view/details/details.component'
 import { SearchBoxComponent } from './search/search-box/search-box.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
 import { CharactersComponent } from './characters/characters.component'
 import { ComicsComponent } from './comics/comics.component'
-import { SeriesComponent } from './series/series.component'
+import { SeriesComponent } from './series/series.component';
+import { DetailsComponent } from './characters/details/details.component'
 
 @NgModule({
     declarations: [
@@ -29,6 +29,7 @@ import { SeriesComponent } from './series/series.component'
         CharactersComponent,
         ComicsComponent,
         SeriesComponent,
+        DetailsComponent,
     ],
     imports: [BrowserAnimationsModule, ReactiveFormsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],

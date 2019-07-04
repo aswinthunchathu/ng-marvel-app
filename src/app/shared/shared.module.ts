@@ -17,6 +17,7 @@ import { NoDataComponent } from './components/no-data/no-data.component'
 import { PillComponent } from './components/pill/pill.component'
 import { ListViewComponent } from './components/list-view/list-view.component'
 import { PaginationComponent } from './components/pagination/pagination.component'
+import { ListViewDetailsComponent } from './components/list-view/list-view-details/list-view-details.component'
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
         PillComponent,
         ListViewComponent,
         PaginationComponent,
+        ListViewDetailsComponent,
     ],
     imports: [CommonModule, HttpClientModule, InfiniteScrollModule, MaterialComponentsModule],
     exports: [
@@ -42,6 +44,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
         PillComponent,
         ListViewComponent,
         PaginationComponent,
+        ListViewDetailsComponent,
     ],
     providers: [
         {

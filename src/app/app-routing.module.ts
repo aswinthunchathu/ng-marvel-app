@@ -6,6 +6,7 @@ import { CharactersComponent } from './characters/characters.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
 import { ComicsComponent } from './comics/comics.component'
 import { SeriesComponent } from './series/series.component'
+import { DetailsComponent } from './characters/details/details.component'
 
 const routes: Routes = [
     {
@@ -19,6 +20,10 @@ const routes: Routes = [
     {
         path: ROUTE_PATHS.comics,
         component: ComicsComponent,
+    },
+    {
+        path: `${ROUTE_PATHS.characters}/:id`,
+        component: DetailsComponent,
     },
     {
         path: ROUTE_PATHS.characters,
