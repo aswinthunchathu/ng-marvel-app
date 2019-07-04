@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 
-import { ImageType } from '../model/image-generator.model'
+import { ImageType } from '../shared/model/image-generator.model'
 import { switchMap } from 'rxjs/operators'
 import { AppState } from '../store/app.reducer'
 import { ComicModel } from '../comics/comic.model'
@@ -11,7 +11,7 @@ import { CharacterModel } from '../characters/character.model'
 import * as fromMapping from './list-view.metadata'
 import { ActivatedRoute } from '@angular/router'
 import { Filter } from './list-view.interface'
-import { Pagination } from '../model/pagination.model'
+import { Pagination } from '../shared/model/pagination.model'
 
 export enum Style {
     grid = 'grid',

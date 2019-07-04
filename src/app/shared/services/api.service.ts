@@ -3,9 +3,8 @@ import { HttpClient, HttpParams, HttpInterceptor, HttpRequest, HttpHandler, Http
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-import { APIResponse, Character, Series } from '../../model/shared.interface'
-import { Comic } from '../../model/shared.interface'
-import { environment } from 'src/environments/environment'
+import { environment } from '../../../environments/environment'
+import { APIResponse, Character, Comic, Series } from '../model/shared.interface'
 
 /*
     http interceptor to add API key and other settings

@@ -12,7 +12,7 @@ import { CharacterModel } from '../../character.model'
 import { APIService } from '../../../shared/services/api.service'
 import { ACTION_TAGS, SEARCH_PAGE_LIMIT, PAGE_LIMIT } from '../../../constants'
 import { UIService } from '../../../store/ui/ui.service'
-import { Pagination } from 'src/app/model/pagination.model'
+import { Pagination } from '../../../shared/model/pagination.model'
 
 @Injectable()
 export class CharactersByNameEffects {

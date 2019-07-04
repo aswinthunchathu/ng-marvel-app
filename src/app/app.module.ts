@@ -14,8 +14,7 @@ import { DetailsComponent } from './list-view/details/details.component'
 import { SearchBoxComponent } from './search/search-box/search-box.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
 import { CharactersComponent } from './characters/characters.component'
-import { DummyComponent } from './dummy/dummy.component';
-import { ComicsComponent } from './comics/comics.component';
+import { ComicsComponent } from './comics/comics.component'
 import { SeriesComponent } from './series/series.component'
 
 @NgModule({
@@ -28,7 +27,6 @@ import { SeriesComponent } from './series/series.component'
         SearchBoxComponent,
         SearchResultsComponent,
         CharactersComponent,
-        DummyComponent,
         ComicsComponent,
         SeriesComponent,
     ],

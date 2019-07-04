@@ -10,14 +10,14 @@ import { State as CharactersByComicIdState } from './store/byComicId'
 import { State as CharactersBySeriesIdState } from './store/bySeriesId'
 import { State as CharactersByNameState } from './store/byName'
 import { CharacterModel, FILTER_TYPE } from './character.model'
-import { ImageType } from '../model/image-generator.model'
+import { ImageType } from '../shared/model/image-generator.model'
 
 import * as fromRoot from '../store/app.selector'
 import * as fromCharactersAction from './store/characters.actions'
 import * as fromCharactersByComicIdAction from './store/byComicId/characters-by-comicId.actions'
 import * as fromCharactersBySeriesIdAction from './store/bySeriesId/characters-by-seriesId.actions'
 import * as fromCharactersByNameAction from './store/byName/characters-by-name.actions'
-import { Pagination } from '../model/pagination.model'
+import { Pagination } from '../shared/model/pagination.model'
 import { ROUTE_PATHS } from '../constants'
 
 //filtered by title without infinite scroll
