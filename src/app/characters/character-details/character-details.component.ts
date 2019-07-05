@@ -4,7 +4,7 @@ import { COMPONENT_TYPE } from '../../list/list-details/list-details.metadata'
 @Component({
     selector: 'app-character-details',
     template: `
-        <app-list-details [type]="componentType"></app-list-details>
+        <app-list-details [isBgImage]="true" [type]="componentType"></app-list-details>
     `,
 })
 export class CharacterDetailsComponent implements OnInit {

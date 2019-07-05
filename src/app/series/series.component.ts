@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router'
 import { COMPONENT_TYPE, FILTER_TYPE, Filter } from '../list/list.metadata'
 
 @Component({
-    selector: 'app-comics',
+    selector: 'app-series',
     template: `
         <app-list [filter]="filter" [type]="type" [infinityScroll]="true" [withPagination]="true"></app-list>
     `,

@@ -1,36 +1,43 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input, AfterViewChecked } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { ActivatedRoute, Router, Params } from '@angular/router'
+import { ActivatedRoute, Params } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 import { AppState } from '../../store/app.reducer'
-import * as fromCharacterDetailsActions from '../../characters/store/details/character.actions'
 import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
 import { Filter, FILTER_TYPE } from '../../list/list.metadata'
 import { COMPONENT_TYPE, mapping } from './list-details.metadata'
+import { BgService } from 'src/app/shared/services/bg.service'
 
 @Component({
     selector: 'app-list-details',
     templateUrl: './list-details.component.html',
     styleUrls: ['./list-details.component.scss'],
 })
-export class ListDetailsComponent implements OnInit, OnDestroy {
+export class ListDetailsComponent implements OnInit, OnDestroy, AfterViewChecked {
     storeSub: Subscription
     routeSub: Subscription
     data: ListDetailsModel
     hasError: boolean
     loading: boolean
     filter: Filter
-
-    @Input() type: COMPONENT_TYPE
     tabs: any[]
 
-    constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
+    @Input() isBgImage: false
+    @Input() type: COMPONENT_TYPE
+
+    constructor(private store: Store<AppState>, private route: ActivatedRoute, private bgService: BgService) {}
 
     ngOnInit() {
         this.tabs = mapping[this.type].tabs
         this.subscribeToStore()
         this.queryOnStore()
+    }
+
+    ngAfterViewChecked() {
+        if (this.data && this.isBgImage) {
+            this.bgService.setBgImage(this.data.image)
+        }
     }
 
     queryOnStore() {
@@ -39,7 +46,7 @@ export class ListDetailsComponent implements OnInit, OnDestroy {
             const filter = params[key]
             this.setFilter(filter)
             this.store.dispatch(
-                fromCharacterDetailsActions.fetchStart({
+                mapping[this.type].action.fetchStart({
                     payload: filter,
                 })
             )
@@ -72,5 +79,9 @@ export class ListDetailsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.storeSub.unsubscribe()
         this.routeSub.unsubscribe()
+
+        if (this.isBgImage) {
+            this.bgService.setBgImage('')
+        }
     }
 }

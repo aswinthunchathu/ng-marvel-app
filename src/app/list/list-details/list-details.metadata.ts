@@ -1,5 +1,9 @@
 import { FILTER_TYPE } from '../list.metadata'
+
 import * as fromListMetadata from '../list.metadata'
+import * as fromCharacterDetailsActions from '../../characters/store/details/character.actions'
+import * as fromComicDetailsActions from '../../comics/store/details/comic.actions'
+import * as fromSeriesDetailsActions from '../../series/store/details/series-details.actions'
 
 export enum COMPONENT_TYPE {
     'character' = 'character',
@@ -9,6 +13,7 @@ export enum COMPONENT_TYPE {
 
 export const mapping: Record<string, any> = {
     [COMPONENT_TYPE.character]: {
+        action: fromCharacterDetailsActions,
         filterKey: FILTER_TYPE.byCharacterId,
         tabs: [
             {
@@ -22,6 +27,7 @@ export const mapping: Record<string, any> = {
         ],
     },
     [COMPONENT_TYPE.comic]: {
+        action: fromComicDetailsActions,
         filterKey: FILTER_TYPE.byComicId,
         tabs: [
             {
@@ -31,6 +37,7 @@ export const mapping: Record<string, any> = {
         ],
     },
     [COMPONENT_TYPE.seriesDetails]: {
+        action: fromSeriesDetailsActions,
         filterKey: FILTER_TYPE.bySeriesId,
         tabs: [
             {
