@@ -4,10 +4,10 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 import { AppState } from '../../store/app.reducer'
-import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
-import { Filter, FILTER_TYPE } from '../../list/list.metadata'
+import { Filter } from '../../list/list.metadata'
 import { COMPONENT_TYPE, mapping } from './list-details.metadata'
 import { BgService } from 'src/app/shared/services/bg.service'
+import { ListDetailsModel } from './list-details.model'
 
 @Component({
     selector: 'app-list-details',
