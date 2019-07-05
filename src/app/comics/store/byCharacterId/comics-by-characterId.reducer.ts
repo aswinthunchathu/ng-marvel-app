@@ -6,7 +6,7 @@ import { ComicModel } from '../../comic.model'
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity'
 
 export interface State extends EntityState<ComicModel> {
-    filterId: number
+    filterId: string
 }
 
 export const adapter: EntityAdapter<ComicModel> = createEntityAdapter<ComicModel>()

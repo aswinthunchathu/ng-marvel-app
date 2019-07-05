@@ -1,5 +1,5 @@
-@import '../../../../../styles/mixins';
-@import '../../../../../styles/variables';
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
 
 .tab--spacer {
     @include rem-fallback(margin-top, 40px);

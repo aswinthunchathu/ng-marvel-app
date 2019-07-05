@@ -9,6 +9,6 @@ export const FETCH_COMIC_ERROR = '[COMIC] Fetch Error'
 
 const TAG = ACTION_TAGS.comic
 
-export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
+export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: string }>())
 
 export const fetchSuccess = createAction(`${TAG} Fetch Success`, props<{ payload: ComicModel }>())

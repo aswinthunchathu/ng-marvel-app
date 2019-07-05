@@ -20,4 +20,11 @@
             text-decoration: underline;
         }
     }
+
+    &--block {
+        @include rem-fallback(margin, 20px, 0, 0, 0);
+        &:first-child {
+            margin: 0;
+        }
+    }
 }

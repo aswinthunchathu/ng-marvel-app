@@ -6,9 +6,9 @@ import { CharactersComponent } from './characters/characters.component'
 import { SearchResultsComponent } from './search/search-results/search-results.component'
 import { ComicsComponent } from './comics/comics.component'
 import { SeriesComponent } from './series/series.component'
-import { DetailsComponent as CharacterDetails } from './characters/details/details.component'
-import { DetailsComponent as ComicDetails } from './comics/details/details.component'
-import { DetailsComponent as SeriesDetails } from './comics/details/details.component'
+import { CharacterDetailsComponent } from './characters/character-details/character-details.component'
+import { SeriesDetailsComponent } from './series/series-details/series-details.component'
+import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
 
 const routes: Routes = [
     {
@@ -17,7 +17,7 @@ const routes: Routes = [
     },
     {
         path: `${ROUTE_PATHS.series}/:id`,
-        component: SeriesDetails,
+        component: SeriesDetailsComponent,
     },
     {
         path: ROUTE_PATHS.series,
@@ -25,7 +25,7 @@ const routes: Routes = [
     },
     {
         path: `${ROUTE_PATHS.comics}/:id`,
-        component: ComicDetails,
+        component: ComicDetailsComponent,
     },
     {
         path: ROUTE_PATHS.comics,
@@ -33,7 +33,7 @@ const routes: Routes = [
     },
     {
         path: `${ROUTE_PATHS.characters}/:id`,
-        component: CharacterDetails,
+        component: CharacterDetailsComponent,
     },
     {
         path: ROUTE_PATHS.characters,

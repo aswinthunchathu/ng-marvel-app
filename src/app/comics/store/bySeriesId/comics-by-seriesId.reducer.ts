@@ -6,7 +6,7 @@ import * as fromComicsBySeriesIdActions from './comics-by-seriesId.actions'
 import { ComicModel } from '../../comic.model'
 
 export interface State extends EntityState<ComicModel> {
-    filterId: number
+    filterId: string
 }
 
 export const adapter: EntityAdapter<ComicModel> = createEntityAdapter<ComicModel>()

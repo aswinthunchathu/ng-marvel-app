@@ -67,7 +67,7 @@ export class ComicEffects {
      * @params id : number
      * return : Observable<fetch success / fetch error action>
      */
-    private fetchFromServer(id: number) {
+    private fetchFromServer(id: string) {
         return this.api.getComic(id).pipe(
             map(res =>
                 fromComicActions.fetchSuccess({

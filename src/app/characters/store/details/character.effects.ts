@@ -67,7 +67,7 @@ export class CharacterEffects {
      * @params id : number
      * return : Observable<fetch success / fetch error action>
      */
-    private fetchFromServer(id: number) {
+    private fetchFromServer(id: string) {
         return this.api.getCharacter(id).pipe(
             map(res =>
                 fromCharacterActions.fetchSuccess({

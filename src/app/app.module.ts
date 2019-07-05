@@ -15,9 +15,11 @@ import { SearchResultsComponent } from './search/search-results/search-results.c
 import { CharactersComponent } from './characters/characters.component'
 import { ComicsComponent } from './comics/comics.component'
 import { SeriesComponent } from './series/series.component'
-import { DetailsComponent as CharacterDetails } from './characters/details/details.component'
-import { DetailsComponent as ComicDetails } from './comics/details/details.component'
-import { DetailsComponent as SeriesDetails } from './comics/details/details.component'
+import { ListComponent } from './list/list.component'
+import { ListDetailsComponent } from './list/list-details/list-details.component'
+import { CharacterDetailsComponent } from './characters/character-details/character-details.component';
+import { ComicDetailsComponent } from './comics/comic-details/comic-details.component';
+import { SeriesDetailsComponent } from './series/series-details/series-details.component'
 
 @NgModule({
     declarations: [
@@ -30,9 +32,11 @@ import { DetailsComponent as SeriesDetails } from './comics/details/details.comp
         CharactersComponent,
         ComicsComponent,
         SeriesComponent,
-        CharacterDetails,
-        ComicDetails,
-        SeriesDetails,
+        ListComponent,
+        ListDetailsComponent,
+        CharacterDetailsComponent,
+        ComicDetailsComponent,
+        SeriesDetailsComponent,
     ],
     imports: [BrowserAnimationsModule, ReactiveFormsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],
