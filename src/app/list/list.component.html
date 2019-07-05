@@ -31,9 +31,9 @@
     </a>
 </ng-template>
 
-<!-- <app-pagination
+<app-pagination
     *ngIf="withPagination && showPagination"
     (hideEvent)="showPagination = false"
-    [total]="(state | async) ? (state | async).pagination.data.total : 0"
+    [total]="pagination.data.total"
     [current]="(list | async).length"
-></app-pagination> -->
+></app-pagination>

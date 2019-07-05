@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { COMPONENT_TYPE, FILTER_TYPE, Filter } from '../list/list.metadata'
 import { ActivatedRoute } from '@angular/router'
+import { ImageType } from '../shared/model/image-generator.model'
 
 @Component({
     selector: 'app-characters',
@@ -13,12 +14,14 @@ import { ActivatedRoute } from '@angular/router'
             [isAnimated]="true"
             [isFloatingLabel]="true"
             [spacedItems]="false"
+            [imageType]="imageType"
         ></app-list>
     `,
 })
 export class CharactersComponent implements OnInit {
     type = COMPONENT_TYPE.characters
     filter: Filter
+    imageType = ImageType.standard
 
     constructor(private route: ActivatedRoute) {}
 

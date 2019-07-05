@@ -30,6 +30,7 @@ export class ListComponent implements OnInit, OnChanges {
 
     //component props
     ui: UIState
+    pagination: Pagination
     list: Observable<CharacterModel[] | ComicModel[] | SeriesModel[]>
     showPagination: boolean
 
@@ -71,6 +72,7 @@ export class ListComponent implements OnInit, OnChanges {
             .pipe(tap(res => this.setShowPagination(res.pagination.data)))
             .subscribe(res => {
                 this.ui = res.ui
+                this.pagination = res.pagination
             })
         this.list = this.store.pipe(select(settings.list))
     }
