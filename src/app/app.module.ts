@@ -1,5 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component'
 
@@ -9,9 +10,14 @@ import { HeaderComponent } from './header/header.component'
 import { AppStoreModule } from './store/app-store.module'
 import { SharedModule } from './shared/shared.module'
 import { AppRoutingModule } from './app-routing.module'
-import { ListViewComponent } from './list-view/list-view.component'
-import { DetailsComponent } from './list-view/details/details.component'
-import { PageInfoComponent } from './list-view/page-info/page-info.component'
+import { SearchBoxComponent } from './search/search-box/search-box.component'
+import { SearchResultsComponent } from './search/search-results/search-results.component'
+import { CharactersComponent } from './characters/characters.component'
+import { ComicsComponent } from './comics/comics.component'
+import { SeriesComponent } from './series/series.component'
+import { DetailsComponent as CharacterDetails } from './characters/details/details.component'
+import { DetailsComponent as ComicDetails } from './comics/details/details.component'
+import { DetailsComponent as SeriesDetails } from './comics/details/details.component'
 
 @NgModule({
     declarations: [
@@ -19,11 +25,16 @@ import { PageInfoComponent } from './list-view/page-info/page-info.component'
         NavLinkComponent,
         SidebarComponent,
         HeaderComponent,
-        ListViewComponent,
-        DetailsComponent,
-        PageInfoComponent,
+        SearchBoxComponent,
+        SearchResultsComponent,
+        CharactersComponent,
+        ComicsComponent,
+        SeriesComponent,
+        CharacterDetails,
+        ComicDetails,
+        SeriesDetails,
     ],
-    imports: [BrowserAnimationsModule, SharedModule, AppStoreModule, AppRoutingModule],
+    imports: [BrowserAnimationsModule, ReactiveFormsModule, SharedModule, AppStoreModule, AppRoutingModule],
     providers: [],
     bootstrap: [AppComponent],
 })

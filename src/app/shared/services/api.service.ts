@@ -3,11 +3,10 @@ import { HttpClient, HttpParams, HttpInterceptor, HttpRequest, HttpHandler, Http
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-import { APIResponse, Character, Series } from '../../model/shared.interface'
-import { Comic } from '../../model/shared.interface'
-import { environment } from 'src/environments/environment'
+import { environment } from '../../../environments/environment'
+import { APIResponse, Character, Comic, Series } from '../model/shared.interface'
 
-/* 
+/*
     http interceptor to add API key and other settings
 */
 export class ApiInterceptor implements HttpInterceptor {
@@ -20,7 +19,7 @@ export class ApiInterceptor implements HttpInterceptor {
     }
 }
 
-/* 
+/*
     All Marvel APIs goes here
 */
 @Injectable({
@@ -29,17 +28,17 @@ export class ApiInterceptor implements HttpInterceptor {
 export class APIService {
     constructor(private http$: HttpClient) {}
 
-    fetchFromServer<T>(url: string, limit?: number, offset?: number) {
+    fetchFromServer<T>(url: string, limit = 20, offset = 0) {
         const options = {}
         const params = 'params'
-        if (limit && offset) {
-            options[params] = new HttpParams().set('limit', String(limit)).set('offset', String(offset))
-        }
+        options[params] = new HttpParams().set('limit', String(limit)).set('offset', String(offset))
         return this.http$.get<APIResponse<T>>(url, options)
     }
 
-    getCharacters = (limit?: number, offset?: number) =>
-        this.fetchFromServer<Character>('characters', limit, offset).pipe(map(res => res.data))
+    getCharacters = (limit?: number, offset?: number, filter?: string) =>
+        this.fetchFromServer<Character>(`characters${filter ? '?nameStartsWith=' + filter : ''}`, limit, offset).pipe(
+            map(res => res.data)
+        )
 
     getCharacter = (id: number) =>
         this.fetchFromServer<Character>(`characters/${id}`).pipe(
@@ -52,8 +51,10 @@ export class APIService {
     getCharactersByComicId = (id: number, limit?: number, offset?: number) =>
         this.fetchFromServer<Character>(`comics/${id}/characters`, limit, offset).pipe(map(res => res.data))
 
-    getComics = (limit?: number, offset?: number) =>
-        this.fetchFromServer<Comic>('comics', limit, offset).pipe(map(res => res.data))
+    getComics = (limit?: number, offset?: number, filter?: string) =>
+        this.fetchFromServer<Comic>(`comics${filter ? '?titleStartsWith=' + filter : ''}`, limit, offset).pipe(
+            map(res => res.data)
+        )
 
     getComic = (id: number) =>
         this.fetchFromServer<Comic>(`comics/${id}`).pipe(
@@ -66,8 +67,10 @@ export class APIService {
     getComicsByCharactersId = (id: number, limit?: number, offset?: number) =>
         this.fetchFromServer<Comic>(`characters/${id}/comics`, limit, offset).pipe(map(res => res.data))
 
-    getSeries = (limit?: number, offset?: number) =>
-        this.fetchFromServer<Series>('series', limit, offset).pipe(map(res => res.data))
+    getSeries = (limit?: number, offset?: number, filter?: string) =>
+        this.fetchFromServer<Comic>(`series${filter ? '?titleStartsWith=' + filter : ''}`, limit, offset).pipe(
+            map(res => res.data)
+        )
 
     getSeriesById = (id: number) =>
         this.fetchFromServer<Series>(`series/${id}`).pipe(
