@@ -1,4 +1,5 @@
 <app-error-handler [hasError]="false">
+    <app-no-data *ngIf="!ui.fetching && (list | async).length === 0">No data available</app-no-data>
     <ng-container [ngSwitch]="infinityScroll">
         <div
             *ngSwitchCase="true"

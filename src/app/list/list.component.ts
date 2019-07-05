@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core'
 import { Store, select } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import { ActivatedRoute, Params } from '@angular/router'
 import { tap } from 'rxjs/operators'
 
 import { AppState } from '../store/app.reducer'
@@ -19,24 +18,31 @@ import { Required } from '../shared/decorators/inputRequired.decorator'
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnChanges {
     @Input() @Required type: COMPONENT_TYPE
     @Input() filter: Filter
-    @Input() infinityScroll = true
-    @Input() spacedItems = false
-    @Input() withPagination = true
+    @Input() infinityScroll = false
+    @Input() spacedItems = true
+    @Input() withPagination = false
+    @Input() imageType = ImageType.portrait
+    @Input() isAnimated = false
+    @Input() isFloatingLabel = false
 
     //component props
     ui: UIState
     list: Observable<CharacterModel[] | ComicModel[] | SeriesModel[]>
     showPagination: boolean
 
-    //app-card props
-    imageType = ImageType.portrait
-    isAnimated = false
-    isFloatingLabel = false
+    constructor(private store: Store<AppState>) {}
 
-    constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.filter && !changes.filter.firstChange) {
+            if (changes.filter.previousValue !== changes.filter.currentValue) {
+                this.filter = changes.filter.currentValue
+                this.queryOnStore()
+            }
+        }
+    }
 
     ngOnInit() {
         this.subscribeToStore()

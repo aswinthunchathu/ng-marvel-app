@@ -1,14 +1,34 @@
 import { Component, OnInit } from '@angular/core'
-import { COMPONENT_TYPE } from '../list/list.metadata'
+import { COMPONENT_TYPE, FILTER_TYPE, Filter } from '../list/list.metadata'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
     selector: 'app-characters',
-    templateUrl: './characters.component.html',
-    styleUrls: ['./characters.component.scss'],
+    template: `
+        <app-list
+            [filter]="filter"
+            [type]="type"
+            [infinityScroll]="true"
+            [withPagination]="true"
+            [isAnimated]="true"
+            [isFloatingLabel]="true"
+            [spacedItems]="false"
+        ></app-list>
+    `,
 })
 export class CharactersComponent implements OnInit {
     type = COMPONENT_TYPE.characters
-    constructor() {}
+    filter: Filter
 
-    ngOnInit() {}
+    constructor(private route: ActivatedRoute) {}
+
+    ngOnInit() {
+        const { key } = this.route.snapshot.queryParams
+        if (key) {
+            this.filter = {
+                type: FILTER_TYPE.byTitle,
+                value: key,
+            }
+        }
+    }
 }

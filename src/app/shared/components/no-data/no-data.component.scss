@@ -5,5 +5,5 @@
     color: $white;
     @include rem-fallback(font-size, 30px);
     text-align: center;
-    @include rem-fallback(padding, 15px);
+    @include rem-fallback(padding, 15px, 0);
 }
