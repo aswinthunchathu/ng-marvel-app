@@ -1,0 +1,39 @@
+<app-error-handler [hasError]="false">
+    <app-no-data *ngIf="!ui.fetching && (list | async).length === 0">No data available</app-no-data>
+    <ng-container [ngSwitch]="infinityScroll">
+        <div
+            *ngSwitchCase="true"
+            [class]="spacedItems ? 'grid-spaced' : 'grid'"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll()"
+        >
+            <ng-container *ngTemplateOutlet="listData"></ng-container>
+        </div>
+        <div *ngSwitchCase="false" [class]="spacedItems ? 'grid-spaced' : 'grid'">
+            <ng-container *ngTemplateOutlet="listData"></ng-container>
+        </div>
+    </ng-container>
+</app-error-handler>
+
+<app-loader *ngIf="ui.fetching"></app-loader>
+
+<ng-template #listData>
+    <a class="no-decoration" [routerLink]="item.linkToDetails" *ngFor="let item of list | async">
+        <app-card
+            [image-src]="item.image[imageType].actual"
+            [placeholder-image-src]="item.image[imageType].placeholder"
+            [title]="item.title"
+            [animated-card]="isAnimated"
+            [floating-label]="isFloatingLabel"
+        ></app-card>
+    </a>
+</ng-template>
+
+<app-pagination
+    *ngIf="withPagination && showPagination"
+    (hideEvent)="showPagination = false"
+    [total]="pagination.data.total"
+    [current]="(list | async).length"
+></app-pagination>

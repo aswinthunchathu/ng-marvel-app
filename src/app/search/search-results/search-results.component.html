@@ -1,0 +1,46 @@
+<div class="search-results">
+    <div class="search-results--block">
+        <div class="search-results--heading">
+            Characters
+            <a
+                *ngIf="showCharactersLink | async"
+                class="search-results--show-more"
+                [routerLink]="['/characters']"
+                queryParamsHandling="merge"
+            >
+                Show More
+            </a>
+        </div>
+        <app-list [type]="charactersType" [filter]="filter"></app-list>
+    </div>
+
+    <div class="search-results--block">
+        <div class="search-results--heading">
+            Comics
+            <a
+                *ngIf="showComicsLink | async"
+                class="search-results--show-more"
+                [routerLink]="['/comics']"
+                queryParamsHandling="merge"
+            >
+                Show More
+            </a>
+        </div>
+        <app-list [type]="comicsType" [filter]="filter"></app-list>
+    </div>
+
+    <div class="search-results--block">
+        <div class="search-results--heading">
+            Series
+            <a
+                *ngIf="showSeriesLink | async"
+                class="search-results--show-more"
+                [routerLink]="['/series']"
+                queryParamsHandling="merge"
+            >
+                Show More
+            </a>
+        </div>
+        <app-list [type]="seriesType" [filter]="filter"></app-list>
+    </div>
+</div>

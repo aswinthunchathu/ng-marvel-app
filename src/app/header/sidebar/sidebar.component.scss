@@ -10,15 +10,10 @@
     box-sizing: border-box;
     z-index: 10;
     @include rem-fallback(padding, 0, 15px);
-    @include rem-fallback(top, 90px);
-
-    &.sidebar--mobile {
-        display: block;
-    }
-
-    &.sidebar--desktop {
-        display: none;
-    }
+    @include rem-fallback(top, 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     @media (max-width: $breakpoint-lg - 1) {
         -webkit-font-smoothing: antialiased;
@@ -37,17 +32,10 @@
 
     @media (min-width: $breakpoint-lg) {
         position: absolute;
-        @include rem-fallback(top, 130px);
+        top: 130px;
         background-color: transparent;
         width: 100%;
-
-        &.sidebar--mobile {
-            display: none;
-        }
-
-        &.sidebar--desktop {
-            display: block;
-        }
+        height: calc(100% - 130px);
     }
 }
 
@@ -134,5 +122,17 @@
 
     &.active {
         display: block;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        display: none !important;
+    }
+}
+
+.sidebar--search {
+    @include rem-fallback(padding, 20px, 0, 50px, 0);
+
+    @media (max-width: $breakpoint-lg - 1) {
+        display: none;
     }
 }

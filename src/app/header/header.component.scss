@@ -1,12 +1,13 @@
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
-$logo-sm: 60px;
+$logo-sm: 50px;
 $padding: 15px;
 
 .header {
     display: grid;
-    grid-template-columns: 55px auto 60px;
+    grid-template-columns: 50px auto 50px;
+    grid-gap: 10px;
     @include rem-fallback(padding, 0, $padding);
     background-color: $black-75;
     position: fixed;
@@ -21,6 +22,15 @@ $padding: 15px;
 
     @media (min-width: $website-max-width) {
         left: calc(50% - (1900px / 2));
+    }
+
+    .header--search {
+        display: flex;
+        align-self: center;
+
+        @media (min-width: $breakpoint-lg) {
+            display: none;
+        }
     }
 
     .header--logo {
@@ -56,4 +66,8 @@ $padding: 15px;
             display: block;
         }
     }
+}
+
+.w-100 {
+    width: 100%;
 }

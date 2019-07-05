@@ -10,37 +10,35 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { LoaderComponent } from './components/loader/loader.component'
 import { ProgressiveImageLoadingDirective } from './directives/progressive-image-loading.directive'
 import { CardComponent } from './components/card/card.component'
-import { ListComponent } from './components/list/list.component'
-import { ListDetailsComponent } from './components/list/list-details/list-details.component'
 import { ErrorHandlerComponent } from './components/error-handler/error-handler.component'
 import { MaterialComponentsModule } from './material-components.module'
 import { ApiInterceptor } from './services/api.service'
 import { NoDataComponent } from './components/no-data/no-data.component'
 import { PillComponent } from './components/pill/pill.component'
+import { PaginationComponent } from './components/pagination/pagination.component'
 
 @NgModule({
     declarations: [
         LoaderComponent,
         ProgressiveImageLoadingDirective,
         CardComponent,
-        ListComponent,
-        ListDetailsComponent,
         ErrorHandlerComponent,
         NoDataComponent,
         PillComponent,
+        PaginationComponent,
     ],
     imports: [CommonModule, HttpClientModule, InfiniteScrollModule, MaterialComponentsModule],
     exports: [
         HttpClientModule,
+        InfiniteScrollModule,
         MaterialComponentsModule,
         LoaderComponent,
         ProgressiveImageLoadingDirective,
         CardComponent,
-        ListComponent,
-        ListDetailsComponent,
         ErrorHandlerComponent,
         NoDataComponent,
         PillComponent,
+        PaginationComponent,
     ],
     providers: [
         {

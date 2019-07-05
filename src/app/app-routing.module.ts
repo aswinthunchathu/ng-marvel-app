@@ -1,84 +1,45 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 
-import { COMPONENT_TYPE as ListViewType } from './list-view/list-view.metadata'
-import { COMPONENT_TYPE as DetailViewType } from './list-view/details/details.metadata'
-import { ListViewComponent } from './list-view/list-view.component'
-import { DetailsComponent } from './list-view/details/details.component'
+import { ROUTE_PATHS } from './constants'
+import { CharactersComponent } from './characters/characters.component'
+import { SearchResultsComponent } from './search/search-results/search-results.component'
+import { ComicsComponent } from './comics/comics.component'
+import { SeriesComponent } from './series/series.component'
+import { CharacterDetailsComponent } from './characters/character-details/character-details.component'
+import { SeriesDetailsComponent } from './series/series-details/series-details.component'
+import { ComicDetailsComponent } from './comics/comic-details/comic-details.component'
 
 const routes: Routes = [
     {
-        path: 'series/:id',
-        component: DetailsComponent,
-        data: {
-            type: DetailViewType.seriesDetails,
-            isBgImage: false,
-            tabs: [
-                {
-                    title: 'Characters',
-                    type: ListViewType.characters,
-                },
-                {
-                    title: 'Comics',
-                    type: ListViewType.comics,
-                },
-            ],
-        },
+        path: ROUTE_PATHS.search,
+        component: SearchResultsComponent,
     },
     {
-        path: 'comics/:id',
-        component: DetailsComponent,
-        data: {
-            type: DetailViewType.comicDetails,
-            isBgImage: false,
-            tabs: [
-                {
-                    title: 'Characters',
-                    type: ListViewType.characters,
-                },
-            ],
-        },
+        path: `${ROUTE_PATHS.series}/:id`,
+        component: SeriesDetailsComponent,
     },
     {
-        path: 'characters/:id',
-        component: DetailsComponent,
-        data: {
-            type: DetailViewType.characterDetails,
-            isBgImage: true,
-            tabs: [
-                {
-                    title: 'Comics',
-                    type: ListViewType.comics,
-                },
-                {
-                    title: 'Series',
-                    type: ListViewType.series,
-                },
-            ],
-        },
+        path: ROUTE_PATHS.series,
+        component: SeriesComponent,
     },
     {
-        path: 'series',
-        component: ListViewComponent,
-        data: {
-            type: ListViewType.series,
-        },
+        path: `${ROUTE_PATHS.comics}/:id`,
+        component: ComicDetailsComponent,
     },
     {
-        path: 'comics',
-        component: ListViewComponent,
-        data: {
-            type: ListViewType.comics,
-        },
+        path: ROUTE_PATHS.comics,
+        component: ComicsComponent,
     },
     {
-        path: 'characters',
-        component: ListViewComponent,
-        data: {
-            type: ListViewType.characters,
-        },
+        path: `${ROUTE_PATHS.characters}/:id`,
+        component: CharacterDetailsComponent,
     },
-    { path: '', redirectTo: '/characters', pathMatch: 'full' },
+    {
+        path: ROUTE_PATHS.characters,
+        component: CharactersComponent,
+    },
+    { path: '', redirectTo: `/${ROUTE_PATHS.characters}`, pathMatch: 'full' },
 ]
 
 @NgModule({
