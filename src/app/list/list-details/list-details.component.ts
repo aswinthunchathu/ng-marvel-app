@@ -1,30 +1,34 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { ActivatedRoute, Router, Params } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 import { AppState } from '../../store/app.reducer'
-import * as fromCharacterDetailsActions from '../store/details/character.actions'
+import * as fromCharacterDetailsActions from '../../characters/store/details/character.actions'
 import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
-import { Filter } from '../../list/list.metadata'
+import { Filter, FILTER_TYPE } from '../../list/list.metadata'
+import { COMPONENT_TYPE, mapping } from './list-details.metadata'
 
 @Component({
-    selector: 'app-details',
-    templateUrl: './details.component.html',
-    styleUrls: ['./details.component.scss'],
+    selector: 'app-list-details',
+    templateUrl: './list-details.component.html',
+    styleUrls: ['./list-details.component.scss'],
 })
-export class DetailsComponent implements OnInit, OnDestroy {
+export class ListDetailsComponent implements OnInit, OnDestroy {
     storeSub: Subscription
     routeSub: Subscription
     data: ListDetailsModel
     hasError: boolean
     loading: boolean
-    comicsFilter: Filter
-    seriesFilter: Filter
+    filter: Filter
+
+    @Input() type: COMPONENT_TYPE
+    tabs: any[]
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
     ngOnInit() {
+        this.tabs = mapping[this.type].tabs
         this.subscribeToStore()
         this.queryOnStore()
     }
@@ -43,7 +47,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     subscribeToStore() {
-        this.storeSub = this.store.select('character').subscribe(res => {
+        this.storeSub = this.store.select(this.type).subscribe(res => {
             this.hasError = !!res.ui.error
             this.loading = res.ui.fetching
 
@@ -59,14 +63,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     setFilter(value: string) {
-        // this.comicsFilter = {
-        //     type: ComicsFilterType.byCharacterId,
-        //     value,
-        // }
-        // this.seriesFilter = {
-        //     type: SeriesFilterType.byCharacterId,
-        //     value,
-        // }
+        this.filter = {
+            type: mapping[this.type].filterKey,
+            value,
+        }
     }
 
     ngOnDestroy() {

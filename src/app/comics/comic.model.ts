@@ -12,10 +12,3 @@ export class ComicModel {
         return ['/comics', this.id]
     }
 }
-
-export enum FILTER_TYPE {
-    'none' = 'none',
-    'byCharacterId' = 'byCharacterId',
-    'bySeriesId' = 'bySeriesId',
-    'byTitle' = 'byTitle',
-}
