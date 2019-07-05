@@ -6,8 +6,7 @@ import { Subscription } from 'rxjs'
 import { AppState } from '../../store/app.reducer'
 import * as fromComicDetailsActions from '../store/details/comic.actions'
 import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
-import { Filter as CharactersFilter } from '../../characters/characters.component'
-import { FILTER_TYPE as CharactersFilterType } from '../../characters/character.model'
+import { Filter } from '../../list/list.metadata'
 
 @Component({
     selector: 'app-details',
@@ -20,7 +19,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     data: ListDetailsModel
     hasError: boolean
     loading: boolean
-    charactersFilter: CharactersFilter
+    charactersFilter: Filter
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -32,7 +31,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     queryOnStore() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
             const key = 'id'
-            const filter = +params[key]
+            const filter = params[key]
             this.setFilter(filter)
             this.store.dispatch(
                 fromComicDetailsActions.fetchStart({
@@ -58,11 +57,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
     }
 
-    setFilter(value: number) {
-        this.charactersFilter = {
-            type: CharactersFilterType.byComicId,
-            value,
-        }
+    setFilter(value: string) {
+        // this.charactersFilter = {
+        //     type: CharactersFilterType.byComicId,
+        //     value,
+        // }
     }
 
     ngOnDestroy() {

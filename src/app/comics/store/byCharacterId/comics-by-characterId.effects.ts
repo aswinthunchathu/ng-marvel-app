@@ -101,7 +101,7 @@ export class ComicsByCharacterIdEffects {
      * @params offset : number
      * return : Observable<fetch success / fetch error action>
      */
-    private fetchFromServer(id: number, limit: number, offset: number) {
+    private fetchFromServer(id: string, limit: number, offset: number) {
         return this.api.getComicsByCharactersId(id, limit, offset).pipe(
             mergeMap(res => [
                 fromComicsByCharacterIDActions.fetchSuccess({

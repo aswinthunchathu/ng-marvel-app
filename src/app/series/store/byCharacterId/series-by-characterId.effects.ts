@@ -101,7 +101,7 @@ export class SeriesByCharacterIdEffects {
      * @params offset : number
      * return : Observable<fetch success / fetch error action>
      */
-    private fetchFromServer(id: number, limit: number, offset: number) {
+    private fetchFromServer(id: string, limit: number, offset: number) {
         return this.api.getSeriesByCharactersId(id, limit, offset).pipe(
             mergeMap(res => [
                 fromSeriesByCharacterIDActions.fetchSuccess({

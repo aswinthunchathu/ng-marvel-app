@@ -67,7 +67,7 @@ export class SeriesDetailsEffects {
      * @params id : number
      * return : Observable<fetch success / fetch error action>
      */
-    private fetchFromServer(id: number) {
+    private fetchFromServer(id: string) {
         return this.api.getSeriesById(id).pipe(
             map(res =>
                 fromSeriesDetailsActions.fetchSuccess({

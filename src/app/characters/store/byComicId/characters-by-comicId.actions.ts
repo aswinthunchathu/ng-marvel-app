@@ -5,7 +5,7 @@ import { ACTION_TAGS } from '../../../constants'
 
 const TAG = ACTION_TAGS.charactersByComicId
 
-export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: number }>())
+export const fetchStart = createAction(`${TAG} Fetch Start`, props<{ payload: string }>())
 
 export const fetchNextPage = createAction(`${TAG} Fetch Next Page`)
 

@@ -6,9 +6,14 @@
                 Show More
             </a>
         </div>
-        <app-characters [withPagination]="false" [spacedItems]="true" [infinityScroll]="false"></app-characters>
+        <app-list
+            [filter]="characterFilter"
+            [withPagination]="false"
+            [spacedItems]="true"
+            [infinityScroll]="false"
+        ></app-list>
     </div>
-
+    <!-- 
     <div>
         <div class="search-results--heading">
             Comics
@@ -27,5 +32,5 @@
             </a>
         </div>
         <app-series [withPagination]="false" [spacedItems]="true" [infinityScroll]="false"></app-series>
-    </div>
+    </div> -->
 </div>

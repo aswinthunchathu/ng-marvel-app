@@ -40,15 +40,15 @@ export class APIService {
             map(res => res.data)
         )
 
-    getCharacter = (id: number) =>
+    getCharacter = (id: string) =>
         this.fetchFromServer<Character>(`characters/${id}`).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null))
         )
 
-    getCharactersBySeriesId = (id: number, limit?: number, offset?: number) =>
+    getCharactersBySeriesId = (id: string, limit?: number, offset?: number) =>
         this.fetchFromServer<Character>(`series/${id}/characters`, limit, offset).pipe(map(res => res.data))
 
-    getCharactersByComicId = (id: number, limit?: number, offset?: number) =>
+    getCharactersByComicId = (id: string, limit?: number, offset?: number) =>
         this.fetchFromServer<Character>(`comics/${id}/characters`, limit, offset).pipe(map(res => res.data))
 
     getComics = (limit?: number, offset?: number, filter?: string) =>
@@ -56,15 +56,15 @@ export class APIService {
             map(res => res.data)
         )
 
-    getComic = (id: number) =>
+    getComic = (id: string) =>
         this.fetchFromServer<Comic>(`comics/${id}`).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null))
         )
 
-    getComicsBySeriesId = (id: number, limit?: number, offset?: number) =>
+    getComicsBySeriesId = (id: string, limit?: number, offset?: number) =>
         this.fetchFromServer<Comic>(`series/${id}/comics`, limit, offset).pipe(map(res => res.data))
 
-    getComicsByCharactersId = (id: number, limit?: number, offset?: number) =>
+    getComicsByCharactersId = (id: string, limit?: number, offset?: number) =>
         this.fetchFromServer<Comic>(`characters/${id}/comics`, limit, offset).pipe(map(res => res.data))
 
     getSeries = (limit?: number, offset?: number, filter?: string) =>
@@ -72,11 +72,11 @@ export class APIService {
             map(res => res.data)
         )
 
-    getSeriesById = (id: number) =>
+    getSeriesById = (id: string) =>
         this.fetchFromServer<Series>(`series/${id}`).pipe(
             map(res => (res.data && res.data.results && res.data.results.length > 0 ? res.data.results[0] : null))
         )
 
-    getSeriesByCharactersId = (id: number, limit?: number, offset?: number) =>
+    getSeriesByCharactersId = (id: string, limit?: number, offset?: number) =>
         this.fetchFromServer<Series>(`characters/${id}/series`, limit, offset).pipe(map(res => res.data))
 }

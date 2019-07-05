@@ -6,10 +6,7 @@ import { Subscription } from 'rxjs'
 import { AppState } from '../../store/app.reducer'
 import * as fromSeriesDetailsActions from '../store/details/series-details.actions'
 import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
-import { Filter as ComicsFilter } from '../../comics/comics.component'
-import { FILTER_TYPE as ComicsFilterType } from '../../comics/comic.model'
-import { Filter as CharacterFilter } from '../../characters/characters.component'
-import { FILTER_TYPE as CharactersFilterType } from '../../characters/character.model'
+import { Filter } from '../../list/list.metadata'
 
 @Component({
     selector: 'app-details',
@@ -22,8 +19,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     data: ListDetailsModel
     hasError: boolean
     loading: boolean
-    comicsFilter: ComicsFilter
-    characterFilter: CharacterFilter
+    comicsFilter: Filter
+    characterFilter: Filter
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -35,7 +32,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     queryOnStore() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
             const key = 'id'
-            const filter = +params[key]
+            const filter = params[key]
             this.setFilter(filter)
             this.store.dispatch(
                 fromSeriesDetailsActions.fetchStart({
@@ -61,16 +58,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
     }
 
-    setFilter(value: number) {
-        this.comicsFilter = {
-            type: ComicsFilterType.bySeriesId,
-            value,
-        }
-
-        this.characterFilter = {
-            type: CharactersFilterType.bySeriesId,
-            value,
-        }
+    setFilter(value: string) {
+        // this.comicsFilter = {
+        //     type: ComicsFilterType.bySeriesId,
+        //     value,
+        // }
+        // this.characterFilter = {
+        //     type: CharactersFilterType.bySeriesId,
+        //     value,
+        // }
     }
 
     ngOnDestroy() {

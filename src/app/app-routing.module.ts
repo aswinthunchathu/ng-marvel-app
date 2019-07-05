@@ -9,6 +9,7 @@ import { SeriesComponent } from './series/series.component'
 import { DetailsComponent as CharacterDetails } from './characters/details/details.component'
 import { DetailsComponent as ComicDetails } from './comics/details/details.component'
 import { DetailsComponent as SeriesDetails } from './comics/details/details.component'
+import { ListComponent } from './list/list.component'
 
 const routes: Routes = [
     {

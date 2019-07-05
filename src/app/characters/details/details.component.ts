@@ -5,11 +5,8 @@ import { Subscription } from 'rxjs'
 
 import { AppState } from '../../store/app.reducer'
 import * as fromCharacterDetailsActions from '../store/details/character.actions'
-import { Filter as ComicsFilter } from '../../comics/comics.component'
-import { FILTER_TYPE as ComicsFilterType } from '../../comics/comic.model'
-import { Filter as SeriesFilter } from '../../series/series.component'
-import { FILTER_TYPE as SeriesFilterType } from '../../series/series.model'
 import { ListDetailsModel } from '../../shared/components/list-view/list-view-details/list-details.model'
+import { Filter } from '../../list/list.metadata'
 
 @Component({
     selector: 'app-details',
@@ -22,8 +19,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     data: ListDetailsModel
     hasError: boolean
     loading: boolean
-    comicsFilter: ComicsFilter
-    seriesFilter: SeriesFilter
+    comicsFilter: Filter
+    seriesFilter: Filter
 
     constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
@@ -35,7 +32,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     queryOnStore() {
         this.routeSub = this.route.params.subscribe((params: Params) => {
             const key = 'id'
-            const filter = +params[key]
+            const filter = params[key]
             this.setFilter(filter)
             this.store.dispatch(
                 fromCharacterDetailsActions.fetchStart({
@@ -61,16 +58,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
     }
 
-    setFilter(value: number) {
-        this.comicsFilter = {
-            type: ComicsFilterType.byCharacterId,
-            value,
-        }
-
-        this.seriesFilter = {
-            type: SeriesFilterType.byCharacterId,
-            value,
-        }
+    setFilter(value: string) {
+        // this.comicsFilter = {
+        //     type: ComicsFilterType.byCharacterId,
+        //     value,
+        // }
+        // this.seriesFilter = {
+        //     type: SeriesFilterType.byCharacterId,
+        //     value,
+        // }
     }
 
     ngOnDestroy() {

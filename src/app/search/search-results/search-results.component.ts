@@ -1,11 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Params } from '@angular/router'
-import { Subscription } from 'rxjs'
-import { Store } from '@ngrx/store'
-
-import { AppState } from '../../store/app.reducer'
-import { Filter as CharactersFilter } from 'src/app/characters/characters.component'
-import { FILTER_TYPE as CharactersFilterType } from 'src/app/characters/character.model'
+import { Filter } from '../../list/list.metadata'
 
 @Component({
     selector: 'app-search-results',
@@ -13,7 +8,17 @@ import { FILTER_TYPE as CharactersFilterType } from 'src/app/characters/characte
     styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent implements OnInit {
-    constructor() {}
+    characterFilter: Filter
 
-    ngOnInit() {}
+    constructor(private route: ActivatedRoute) {}
+
+    ngOnInit() {
+        // this.route.queryParams.subscribe((data: Params) => {
+        //     const { key } = data
+        //     this.characterFilter = {
+        //         type: CharactersFilterType.byTitle,
+        //         value: key,
+        //     }
+        // })
+    }
 }
